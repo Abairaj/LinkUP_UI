@@ -15,7 +15,7 @@ const Register = () => {
             doloremque cum, non excepturi libero. Nesciunt, fuga?
           </p>
           <span>Do you have an Account?</span>
-          <Link to="/register"> 
+          <Link to="/login"> 
           <button>Login</button>
           </Link>
         </div>
