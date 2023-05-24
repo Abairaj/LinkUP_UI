@@ -53,6 +53,10 @@
       flex-direction: column;
       gap: 50px;
       justify-content: center;
+      .error{
+        color: red;
+        font-size: 18px;
+      }
       h1 {
       }
       form {
@@ -64,14 +68,18 @@
           border-bottom: 1px solid lightgrey;
           padding: 20px 10px;
         }
+        .error {
+          color: red;
+          font-size: 14px;
+        }
         button {
-            width: 50%;
-            padding: 10px;
-            bottom: none;
-            background-color: #938eef;
-            color: white;
-            font-weight: bold;
-            cursor: pointer;
+          width: 50%;
+          padding: 10px;
+          bottom: none;
+          background-color: #938eef;
+          color: white;
+          font-weight: bold;
+          cursor: pointer;
         }
       }
     }
