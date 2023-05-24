@@ -1,4 +1,4 @@
-import React from "./rightBar.scss?inline";
+import React from "./rightBar.scss";
 
 const RightBar = () => {
   return (

@@ -9,50 +9,81 @@ import Comments from "../Comments/Comments";
 import { useState } from "react";
 
 const Post = ({ post }) => {
+  const API_URL = import.meta.env.VITE_API_URL
   const [commentOpen, setCommentOpen] = useState(false);
+  
 
+
+    // to show hours ago and days ago
+    const getDuration = (created_at) => {
+      const currentTime = new Date();
+      const postTime = new Date(created_at);
+      const timeDiff = currentTime - postTime;
+      const duration = Math.floor(timeDiff / (1000 * 60 * 60));
+      const daysAgo = Math.floor(duration / 24);
+  
+      if (daysAgo > 0) {
+        return `${daysAgo}d`;
+      } else if (duration === 0) {
+        return "Just now";
+      } else if (duration === 1) {
+        return "1h";
+      } else {
+        return `${duration}h`;
+      }
+    };
+  
+console.log(post)
   //TEMPORARY
   const liked = false;
 
   return (
-    <div className="post">
-      <div className="container">
-        <div className="user">
-          <div className="userInfo">
-            <img src="" alt="" />
-            <div className="details">
-              <Link
-                to={`/profile/${1}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <span className="name">{"post.name"}</span>
-              </Link>
-              <span className="date">1 min ago</span>
-            </div>
-          </div>
-          <MoreHorizIcon />
+<>
+{post.length>0? post.map((post)=>(
+  <div key={post.post_id} className="post">
+  <div className="container">
+    <div className="user">
+      <div className="userInfo">
+        <img src={`${API_URL}/${post.user.profile}`} alt="" />
+        <div className="details">
+          <Link
+            to={`/profile/${"post.user.id"}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <span className="name">{post.user.username}</span>
+          </Link>
+          <span className="date">{getDuration(post.created_at)}</span>
         </div>
-        <div className="content">
-          <p>{"post.desc"}</p>
-          <img src="" alt="" />
-        </div>
-        <div className="info">
-          <div className="item">
-            {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
-            12 Likes
-          </div>
-          <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
-            <TextsmsOutlinedIcon />
-            12 Comments
-          </div>
-          <div className="item">
-            <ShareOutlinedIcon />
-            Share
-          </div>
-        </div>
-        {commentOpen && <Comments />}
+      </div>
+      <MoreHorizIcon />
+    </div>
+    <div className="content">
+      <p>{post.caption}</p>
+      {post.media_type === "Image"?( <img src={`${API_URL}/${post.media_url}`} alt="post" />):(<video src={`${API_URL}/${post.media_url}`}/>)}
+      <img src="" alt="" />
+    </div>
+    <div className="info">
+      <div className="item">
+        {liked ? <FavoriteOutlinedIcon /> : <FavoriteBorderOutlinedIcon />}
+        {post.likes.length}
+      </div>
+      <div className="item" onClick={() => setCommentOpen(!commentOpen)}>
+        <TextsmsOutlinedIcon />
+        12 Comments
+      </div>
+      <div className="item">
+        <ShareOutlinedIcon />
+        Share
       </div>
     </div>
+    {commentOpen && <Comments />}
+  </div>
+</div>
+
+)):"No post"}
+
+</>
+   
   );
 };
 

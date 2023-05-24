@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Navbar = () => {
   const dispatch = useDispatch()
   const darkMode = useSelector(state=>state.theme.darkMode)
+  const user = useSelector(state=>state.user)
 
   const handleToggle = () =>{
     dispatch(toggle())
@@ -35,10 +36,12 @@ const Navbar = () => {
         <PersonOutlineOutlinedIcon />
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
+        <Link to={`profile/${user.full_name}`} style={{cursor:"pointer",textDecoration:"none"}}>
         <div className="user">
           <img src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1931&q=80" alt="" />
-          <span>Abairaj.K</span>
+          <span>{user.username}</span>
         </div>
+        </Link>
       </div>
     </div>
   );

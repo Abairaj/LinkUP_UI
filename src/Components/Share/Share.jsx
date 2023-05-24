@@ -1,17 +1,23 @@
+import { useSelector } from "react-redux";
 import "./share.scss";
+import { Avatar } from "@mui/material";
 
 
 const Share = () => {
+
+  const user = useSelector(state=>state.user)
+  const API_URL = import.meta.env.VITE_API_URL
 
   return (
     <div className="share">
       <div className="container">
         <div className="top">
-          <img
-            src=""
+          {user.profile?(          <img
+            src={`${API_URL}/${user.profile}`}
             alt=""
-          />
-          {/* <input type="text" placeholder={`What's on your mind ${currentUser.name}?`} /> */}
+          />):<Avatar>{user.username[0]}</Avatar>}
+
+          <input type="text" placeholder={`What's on your mind ${user.username}?`} />
         </div>
         <hr />
         <div className="bottom">
