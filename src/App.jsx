@@ -1,29 +1,32 @@
-import Login from "./Pages/Login/Login";
+import Login from "./Pages/Login/Login"
 import Register from "./Pages/Register/Register";
-import './styles.scss'
 import {
-  createBrowserRouter as Router,
+  createBrowserRouter,
   RouterProvider,
   Route,
   Outlet,
   Navigate,
 } from "react-router-dom";
-import Navbar from "./Components/Navbar/Navbar";
-import LeftBar from "./Components/leftBar/LeftBar";
-import RightBar from "./Components/rightBar/RightBar";
+import Navbar from "./Components/Navbar/Navbar"
+import LeftBar from "./Components/leftBar/LeftBar"
+import RightBar from "./Components/rightBar/RightBar"
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/User_Profile/Profile";
+import "./styles.scss?inline";
+import { useSelector } from "react-redux";
 
 function App() {
-  const currentUser = true;
 
+  const darkMode = useSelector(state=>state.theme.darkMode);
+
+const currentUser=true;
   const Layout = () => {
     return (
-      <div className="theme-dark">
+      <div className={`theme-${darkMode?"dark":"light"}`}>
         <Navbar />
         <div style={{ display: "flex" }}>
           <LeftBar />
-          <div style={{flex:6}}>
+          <div style={{ flex: 6 }}>
             <Outlet />
           </div>
           <RightBar />
@@ -34,12 +37,13 @@ function App() {
 
   const ProtectedRoute = ({ children }) => {
     if (!currentUser) {
-      return <Navigate to={"/login"} />;
+      return <Navigate to="/login" />;
     }
+
     return children;
   };
 
-  const router = Router([
+  const router = createBrowserRouter([
     {
       path: "/",
       element: (
@@ -50,11 +54,7 @@ function App() {
       children: [
         {
           path: "/",
-          element: (
-            <ProtectedRoute>
-              <Home />
-            </ProtectedRoute>
-          ),
+          element: <Home />,
         },
         {
           path: "/profile/:id",
@@ -71,6 +71,7 @@ function App() {
       element: <Register />,
     },
   ]);
+
   return (
     <div>
       <RouterProvider router={router} />
