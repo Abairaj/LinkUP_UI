@@ -46,6 +46,7 @@ function App() {
       .catch((error) => {
         console.log(error)
         setCUrrentUser(false);
+        // setLoading(false);
       });
   },[]);
   const Layout = () => {
@@ -72,7 +73,7 @@ function App() {
     if (!currentUser) {
       return <Navigate to="/login" />; // Redirect to the login page
     }
-
+    setLoading(false)
     return children;
   };
   const router = createBrowserRouter([

@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react'
 import Post from '../Post/Post'
 import axios, { all } from 'axios'
 import Cookies from 'js.cookie'
+import { useSelector } from 'react-redux'
 
 export default function UserPost() {
     const [allPost,setAllPost] = useState([])
     const API_URL = import.meta.env.VITE_API_URL
+    // render userpost after sharing post is successfull
+    const shareSuccess = useSelector(state=>state.shareSuccess)
 
     useEffect(()=>{
         fetchAllPost();
 
-    },[])
+    },[shareSuccess])
 
     const fetchAllPost = ()=>{
         axios.get(`${API_URL}/post/all_posts/`,{headers:{Authorization:`Bearer ${Cookies.get("token")}`}}).then((response)=>{

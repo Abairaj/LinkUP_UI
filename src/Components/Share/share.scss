@@ -16,7 +16,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        img {
+        .profile_img{
           width: 40px;
           height: 40px;
           border-radius: 50%;
@@ -30,6 +30,13 @@
           background-color: transparent;
           width: 60%;
           color: themed("textColor");
+        }
+        .selected_image{
+          height: 200px;
+          width: 200px;
+          border-radius: none;
+          object-fit: cover;
+          border-radius: 35px;
         }
       }
 
@@ -60,8 +67,8 @@
             }
 
             span {
-              font-size: 12px;
-              color: gray;
+              font-size: 14px;
+              color: themed("taxtColor");
             }
           }
         }
