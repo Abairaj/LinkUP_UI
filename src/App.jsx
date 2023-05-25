@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { userData } from "./Redux/Slice/UserProfileSlice";
 import Post from "./Components/Post/Post";
 import Reels from "./Components/Reels/Reels";
+import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,6 +65,20 @@ function App() {
     );
   };
 
+  const AdminLayout = () =>{
+    return(
+      <div className={`theme-${darkMode ? "dark" : "light"}`}>
+      <Navbar admin={true}/>
+      <div style={{ display: "flex" }}>
+        <LeftBar admin={true}/>
+        <div style={{ flex: 9 }}>
+          <Outlet admin={true} />
+        </div>
+      </div>
+    </div>
+    )
+  }
+
   const ProtectedRoute = ({ children }) => {
 
     if (loading) {
@@ -94,6 +109,29 @@ function App() {
           element: <Profile />,
         },
       ],
+    },
+    {
+      path:"/admin_dashboard",
+      element:(
+        <AdminLayout/>
+      ),
+      children:[
+        {
+          path:"admin_dashboard",
+          element:<Home/>
+        }
+      ]
+    },
+    {
+      path:"/admin",
+      element:<Login admin = {true}/>
+
+    },
+    ,
+    {
+      path:"/admin_user",
+      element:<Usertable/>
+
     },
     {
       path: "/login",

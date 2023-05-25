@@ -3,27 +3,32 @@ import "./login.scss";
 import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
-import Cookies from 'js.cookie'
-const Login = () => {
+import Cookies from "js.cookie";
+const Login = ({ admin }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
   const [formError, setFormError] = useState();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const onFormsubmit = (data) => {
+    const url = admin ? "admin/" : "/users/login/";
+
     axios
-      .post(`${API_URL}/users/login/`, data)
+      .post(`${API_URL}/${url}`, data)
       .then((response) => {
         if (response.status === 200) {
           console.log(response.data.user);
+          Cookies.remove("token");
+          Cookies.remove("id");
           Cookies.set("token", response.data.token);
           Cookies.set("id", response.data.id);
-          navigate("/");
+          {
+            admin ? navigate("/admin_dashboard") : navigate("/");
+          }
         }
       })
       .catch((error) => {
-        console.log(error, ";;;;;;;;;;;");
         if (error.response.status === 401) {
           setFormError("username or password not valid");
         } else if (error.response.status === 403) {
@@ -51,7 +56,7 @@ const Login = () => {
           </Link>
         </div>
         <div className="right">
-          <h1>Login</h1>
+          <h1>{admin && "Admin "}Login</h1>
           <p className="error">{formError}</p>
           <form onSubmit={handleSubmit(onFormsubmit)}>
             <input
