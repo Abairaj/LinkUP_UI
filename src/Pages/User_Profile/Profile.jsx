@@ -1,16 +1,40 @@
 import "./profile.scss";
-import FacebookTwoToneIcon from "@mui/icons-material/FacebookTwoTone";
-import LinkedInIcon from "@mui/icons-material/LinkedIn";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import PinterestIcon from "@mui/icons-material/Pinterest";
-import TwitterIcon from "@mui/icons-material/Twitter";
 import PlaceIcon from "@mui/icons-material/Place";
 import LanguageIcon from "@mui/icons-material/Language";
 import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Post from "../../Components/Post/Post";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
+import male_contact from "../../assets/malecontact.png";
+import female_contact from "../../assets/femalecontact.png";
+import contact from "../../assets/contact.png";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const Profile = () => {
+const Profile = ({ myprofile }) => {
+  const API_URL = import.meta.env.VITE_API_URL;
+  const myProfile = useSelector((state) => state.user);
+  const [userData, setUserData] = useState([]);
+  const { id } = useParams();
+  const user = myprofile ? myProfile : userData;
+  console.log(user,'lllllllllllllldddddddddddd')
+
+  useEffect(() => {
+    fetchUserData();
+  }, [id]);
+
+  const fetchUserData = () => {
+    axios
+      .get(`${API_URL}/users/user_profile/${id}`)
+      .then((response) => {
+        setUserData(response.data.user);
+      })
+      .catch((error) => {
+        alert(error);
+      });
+  };
+
   return (
     <div className="profile">
       <div className="images">
@@ -19,41 +43,40 @@ const Profile = () => {
           alt=""
           className="cover"
         />
-        <img
-          src="https://images.pexels.com/photos/14028501/pexels-photo-14028501.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load"
-          alt=""
-          className="profilePic"
-        />
+        {user.profile ? (
+          <img
+            src={`${API_URL}/${user.profile}`}
+            alt=""
+            className="profilePic"
+          />
+        ) : (
+          <img
+            src={
+              user.gender === "Male"
+                ? male_contact
+                : user.gender === "Female"
+                ? female_contact
+                : contact
+            }
+            alt=""
+            className="profilePic"
+          />
+        )}
       </div>
       <div className="profileContainer">
         <div className="uInfo">
-          <div className="left">
-            <a href="http://facebook.com">
-              <FacebookTwoToneIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <InstagramIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <TwitterIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <LinkedInIcon fontSize="large" />
-            </a>
-            <a href="http://facebook.com">
-              <PinterestIcon fontSize="large" />
-            </a>
-          </div>
           <div className="center">
-            <span>Jane Doe</span>
+            <div className="username">
+              <span>{user.username}</span>
+            </div>
             <div className="info">
               <div className="item">
-                <PlaceIcon />
-                <span>USA</span>
+                <span>followers</span>
+                      {user&&user.length>0?user.following.length:"0"}
               </div>
               <div className="item">
                 <LanguageIcon />
-                <span>lama.dev</span>
+                <span></span>
               </div>
             </div>
             <button>follow</button>
@@ -63,7 +86,7 @@ const Profile = () => {
             <MoreVertIcon />
           </div>
         </div>
-      <Post/>
+        <Post />
       </div>
     </div>
   );

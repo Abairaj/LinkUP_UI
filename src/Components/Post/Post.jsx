@@ -8,16 +8,12 @@ import { Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import { useState } from "react";
 import { Avatar } from "@mui/material";
-import axios from "axios";
-import Cookies from 'js.cookie'
-import { useFetchCommentQuery,useCreateCommentMutation } from "../../Redux/Query/CommentQuery";
 
 const Post = ({ post }) => {
-  const { data, error, isLoading,refetch } = useFetchCommentQuery();
   const API_URL = import.meta.env.VITE_API_URL;
 
   const [commentOpen, setCommentOpen] = useState(false);
-  const [comments,setComments] = useState()
+  
 
   // to show hours ago and days ago
   const getDuration = (created_at) => {
@@ -39,44 +35,14 @@ const Post = ({ post }) => {
   };
 
 
-  // const fetchComment = (post_id) =>{
-  //   // setCommentOpen(!commentOpen)
-  //   // const formData = {post_id:post_id}
-  //   // axios.get(`${API_URL}/post/get_comment/`,formData,{headers:{Authorization:`Bearer ${Cookies.get('token')}`}}).then((response)=>{
-  //   //   setComments(response.data)
-  //   //   console.log(response,'////////////////')
-  //   // })
 
 
-    
-  // }
-
-
-  const fetchComment = (post_id) => {
-    setCommentOpen(!commentOpen)
-    // Fetch comments using the useFetchCommentQuery hook
-  refetch(post_id);
-
-    if (isLoading) {
-      // Show loading state
-    } else if (error) {
-      // Handle error
-    } else if (data) {
-      // Process the fetched comments in `data` variable
-      console.log(data, "//////////////////////");
-    }
-  };
-
-
-
-
-  console.log(post);
   //TEMPORARY
   const liked = false;
 
   return (
     <>
-      {post.length > 0
+      {post&&post.length > 0
         ? post.map((post) => (
             <div key={post.post_id} className="post">
               <div className="container">
@@ -127,7 +93,7 @@ const Post = ({ post }) => {
                   </div>
                   <div
                     className="item"
-                    onClick={() =>fetchComment(post.post_id) }
+                    onClick={() =>setCommentOpen(!commentOpen) }
                   >
                     <TextsmsOutlinedIcon />
                     {post.post_id}

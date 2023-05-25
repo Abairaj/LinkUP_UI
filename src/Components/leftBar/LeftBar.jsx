@@ -1,9 +1,15 @@
 import "./leftBar.scss";
 import friend from "./../../assets/friend.png";
 import { useSelector } from "react-redux";
+import video_icon from "./../../assets/multimedia.png"
+import explore_icon from "./../../assets/explore.png"
+import messages_icon from "./../../assets/chat.png"
+
 
 const LeftBar = () => {
   const user = useSelector((state) => state.user);
+
+
   return (
     <div className="leftBar">
       <div className="container">
@@ -16,11 +22,11 @@ const LeftBar = () => {
             <span>{user.username}</span>
           </div>
           <div className="item">
-            <img src={friend} alt="" />
+            <img src={video_icon} alt="" />
             <span>Videos</span>
           </div>
           <div className="item">
-            <img src={friend} alt="" />
+            <img src={explore_icon} alt="" />
             <span>Explore</span>
           </div>
           <div className="item">
@@ -29,12 +35,12 @@ const LeftBar = () => {
           </div>
 
           <div className="item">
-            <img src={friend} alt="" />
+            <img src={messages_icon} alt="" />
             <span>Chat</span>
           </div>
         </div>
         <hr />
-        <div className="menu">
+        {/* <div className="menu">
           <span>Your Shortcuts</span>
           <div className="item">
             <img src={friend} alt="" />
@@ -52,9 +58,9 @@ const LeftBar = () => {
             <img src={friend} alt="" />
             <span>My Post</span>
           </div>{" "}
-        </div>
+        </div> */}
         <hr />
-        <div className="menu">
+        {/* <div className="menu">
           <span>Others</span>
           <div className="item">
             <img src={friend} alt="" />
@@ -68,7 +74,7 @@ const LeftBar = () => {
             <img src={friend} alt="" />
             <span>Friends</span>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

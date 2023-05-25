@@ -105,8 +105,12 @@ function App() {
           element: <Home />,
         },
         {
+          path: "/my_profile",
+          element: <Profile myprofile={true}/>,
+        },
+        {
           path: "/profile/:id",
-          element: <Profile />,
+          element: <Profile/>,
         },
       ],
     },
