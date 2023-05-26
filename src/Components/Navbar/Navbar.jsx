@@ -8,13 +8,14 @@ import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import { toggle } from "./../../Redux/Slice/DarkModeSlice";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from "js.cookie";
 const Navbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const darkMode = useSelector((state) => state.theme.darkMode);
   const user = useSelector((state) => state.user);
   const [userSearchlist, setuserSearchlist] = useState([]);
@@ -42,7 +43,7 @@ const Navbar = () => {
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <span>LinkUp</span>
         </Link>
-        <HomeOutlinedIcon />
+        <HomeOutlinedIcon onClick={()=>navigate('/')} style={{cursor:"pointer"}}/>
         {darkMode ? (
           <WbSunnyOutlinedIcon onClick={handleToggle} />
         ) : (

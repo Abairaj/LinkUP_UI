@@ -3,11 +3,13 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from "js.cookie";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const RightBar = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const [UserSuggestion, setUserSuggestion] = useState([]);
-  const navigate = useNavigate()
+  const myUser = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchSuggestion();
@@ -26,12 +28,31 @@ const RightBar = () => {
       });
   };
 
-  const followUser = (id)=>{
-    const formData = {user_id:id}
-    axios.post(`${API_URL}/users/follow/${Cookies.get("id")}`,formData,{headers:{Authorization:`Bearer${Cookies.get("token")}`}}).then((response)=>{
-      console.log(response)
-    })
-  }
+  const followUser = (id) => {
+    const formData = { user_id: id };
+    axios
+      .post(`${API_URL}/users/follow/${Cookies.get("id")}`, formData, {
+        headers: { Authorization: `Bearer${Cookies.get("token")}` },
+      })
+      .then((response) => {
+        console.log(response);
+      });
+  };
+
+  const UnfollowUser = (id) => {
+    const formData = { user_id: id };
+    axios
+      .post(`${API_URL}/users/unfollow/${Cookies.get("id")}`, formData, {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
     <div className="rightBar">
       <div className="container">
@@ -42,11 +63,21 @@ const RightBar = () => {
               <div key={user.id} className="user">
                 <div className="userinfo">
                   <img src="" alt="" />
-                  <Link to={`/profile/${user.id}`} style={{cursor:"pointer"}} ><span>{user.username}</span></Link>
-                  
+                  <Link
+                    to={`/profile/${user.id}`}
+                    style={{ cursor: "pointer", textDecoration: "none" }}
+                  >
+                    <span>{user.username}</span>
+                  </Link>
                 </div>
                 <div className="buttons">
-                  <button onClick={()=>followUser(user.id)}>Follow</button>
+                  {myUser.following.includes(user.id) ? (
+                    <button onClick={() => followUser(user.id)}>Follow</button>
+                  ) : (
+                    <button onClick={() => UnfollowUser(user.id)}>
+                      Unfollow
+                    </button>
+                  )}
                   <button>Dismiss</button>
                 </div>
               </div>

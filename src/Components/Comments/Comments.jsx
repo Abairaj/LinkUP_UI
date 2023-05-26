@@ -3,10 +3,12 @@ import "./comments.scss";
 import { useSelector } from "react-redux";
 import { Avatar } from "@mui/material";
 import { useCreateCommentMutation, useFetchCommentQuery } from "../../Redux/Query/CommentQuery";
+import { useNavigate } from "react-router-dom";
 
 const Comments = ({ post }) => {
   const user = useSelector((state) => state.user);
   const API_URL = import.meta.env.VITE_API_URL;
+  const navigate = useNavigate()
   const [createComment, { isLoading: isCreatingComment, error: createCommentError }] = useCreateCommentMutation();
   const { data: commentsData, isLoading: isFetchingComments, error: fetchCommentsError, refetch: refetchComments } = useFetchCommentQuery(post.post_id);
 
@@ -64,10 +66,10 @@ const Comments = ({ post }) => {
       ) : commentsData && commentsData.length > 0 ? (
         <>
           {commentsData.slice(0, visibleComments).map((comment) => (
-            <div className="comment" key={comment.id}>
+            <div className="comment" key={comment.comment_id}>
               <img src={`${API_URL}/${comment.user.profile}`} alt="" />
               <div className="info">
-                <span>{comment.user.username}</span>
+                <span onClick={()=>navigate(`/profile/${comment.user.id}`)}>{comment.user.username}</span>
                 <p>{comment.content}</p>
               </div>
               <span className="date">1 hour ago</span>

@@ -20,12 +20,13 @@ import Cookies from "js.cookie";
 import { useDispatch } from "react-redux";
 import { userData } from "./Redux/Slice/UserProfileSlice";
 import Post from "./Components/Post/Post";
-import Reels from "./Components/Reels/Reels";
+import Videos from "./Components/Videos/VIdeos";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
+import Explore from "./Components/Explore/Explore";
 
 function App() {
   const dispatch = useDispatch();
-  const user = useSelector(state=>state.user)
+  const user = useSelector((state) => state.user);
   const [currentUser, setCUrrentUser] = useState(false);
   const API_URL = import.meta.env.VITE_API_URL;
   const darkMode = useSelector((state) => state.theme.darkMode);
@@ -45,11 +46,11 @@ function App() {
         }
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
         setCUrrentUser(false);
         // setLoading(false);
       });
-  },[]);
+  }, []);
   const Layout = () => {
     return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
@@ -65,22 +66,21 @@ function App() {
     );
   };
 
-  const AdminLayout = () =>{
-    return(
+  const AdminLayout = () => {
+    return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
-      <Navbar admin={true}/>
-      <div style={{ display: "flex" }}>
-        <LeftBar admin={true}/>
-        <div style={{ flex: 9 }}>
-          <Outlet admin={true} />
+        <Navbar admin={true} />
+        <div style={{ display: "flex" }}>
+          <LeftBar admin={true} />
+          <div style={{ flex: 9 }}>
+            <Outlet admin={true} />
+          </div>
         </div>
       </div>
-    </div>
-    )
-  }
+    );
+  };
 
   const ProtectedRoute = ({ children }) => {
-
     if (loading) {
       return "Loading..."; // Display a loading indicator
     }
@@ -88,7 +88,7 @@ function App() {
     if (!currentUser) {
       return <Navigate to="/login" />; // Redirect to the login page
     }
-    setLoading(false)
+    setLoading(false);
     return children;
   };
   const router = createBrowserRouter([
@@ -106,36 +106,42 @@ function App() {
         },
         {
           path: "/my_profile",
-          element: <Profile myprofile={true}/>,
+          element: <Profile myprofile={true} />,
         },
         {
           path: "/profile/:id",
-          element: <Profile/>,
+          element: <Profile />,
+        },
+        ,
+        {
+          path: "/reels",
+          element: <Videos />,
+        },
+        ,
+        {
+          path: "/explore",
+          element: <Explore />,
         },
       ],
     },
     {
-      path:"/admin_dashboard",
-      element:(
-        <AdminLayout/>
-      ),
-      children:[
+      path: "/admin_dashboard",
+      element: <AdminLayout />,
+      children: [
         {
-          path:"admin_dashboard",
-          element:<Home/>
-        }
-      ]
+          path: "admin_dashboard",
+          element: <Home />,
+        },
+      ],
     },
     {
-      path:"/admin",
-      element:<Login admin = {true}/>
-
+      path: "/admin",
+      element: <Login admin={true} />,
     },
     ,
     {
-      path:"/admin_user",
-      element:<Usertable/>
-
+      path: "/admin_user",
+      element: <Usertable />,
     },
     {
       path: "/login",
@@ -146,10 +152,9 @@ function App() {
       element: <Register />,
     },
     {
-      path:"/reels",
-      element:<Reels/>
-
-    }
+      path: "*",
+      element: <Videos />,
+    },
   ]);
 
   return (

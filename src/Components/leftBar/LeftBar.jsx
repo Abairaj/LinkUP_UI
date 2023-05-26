@@ -4,10 +4,13 @@ import { useSelector } from "react-redux";
 import video_icon from "./../../assets/multimedia.png"
 import explore_icon from "./../../assets/explore.png"
 import messages_icon from "./../../assets/chat.png"
+import { Link } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
 const LeftBar = () => {
   const user = useSelector((state) => state.user);
+  const navigate = useNavigate()
 
 
   return (
@@ -22,16 +25,12 @@ const LeftBar = () => {
             <span>{user.username}</span>
           </div>
           <div className="item">
-            <img src={video_icon} alt="" />
-            <span>Videos</span>
-          </div>
-          <div className="item">
             <img src={explore_icon} alt="" />
             <span>Explore</span>
           </div>
           <div className="item">
-            <img src={friend} alt="" />
-            <span>Reels</span>
+            <img src={video_icon} alt="" />
+            <span style={{cursor:"pointer"}} onClick={()=>navigate('/reels')}>Videos</span>
           </div>
 
           <div className="item">

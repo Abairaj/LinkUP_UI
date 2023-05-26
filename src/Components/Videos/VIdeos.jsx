@@ -3,7 +3,7 @@ import Post from "../Post/Post";
 import axios from "axios";
 import Cookies from "js.cookie";
 
-export default function Reels() {
+export default function Videos() {
   const API_URL = import.meta.env.VITE_API_URL;
   const [reels, setReels] = useState([]);
   useEffect(() => {
@@ -12,10 +12,13 @@ export default function Reels() {
 
   const fetchReels = () => {
     axios
-      .get(`${API_URL}/post/reels?filter=reels`, {
+      .get(`${API_URL}/post/reels/`, {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       })
-      .then((response) => setReels(response.data.data))
+      .then((response) => {
+        console.log(response, "videos......");
+        setReels(response.data);
+      })
       .catch((errors) => {
         alert(errors);
       });
