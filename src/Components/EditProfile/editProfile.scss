@@ -1,0 +1,52 @@
+@import "../../styles.scss";
+
+.editprofile {
+  @include themify($themes) {
+    background-color: themed("bg");
+    top: 0;
+
+    .head {
+      h1 {
+        font-size: 25px;
+        color: themed("textColor");
+      }
+    }
+
+    .container {
+      background-color: themed("bg");
+
+      .profileedit__profilebar {
+        display: flex;
+        flex-direction: row;
+        .profile_edit__avatar {
+          width: 150px;
+          height: 130px;
+        }
+
+        .profile__name {
+          margin-top: 10px;
+          text-align: center;
+          color: themed("textColor");
+
+          .uploadinput{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+          }
+        }
+      }
+
+      .label {
+        color: themed("textColor");
+      }
+      .field {
+        outline: themed("border") 1px solid;
+        border: themed("border") 1px solid;
+      }
+
+      .selection {
+        color: themed("textColor");
+      }
+    }
+  }
+}

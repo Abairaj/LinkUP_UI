@@ -23,6 +23,7 @@ import Post from "./Components/Post/Post";
 import Videos from "./Components/Videos/VIdeos";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import Explore from "./Components/Explore/Explore";
+import EditProfile from "./Components/EditProfile/EditProfile";
 
 function App() {
   const dispatch = useDispatch();
@@ -111,6 +112,11 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />,
+        },
+        ,
+        {
+          path: "/profile_edit",
+          element: <EditProfile/>,
         },
         ,
         {
