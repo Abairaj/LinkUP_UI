@@ -22,6 +22,19 @@ const Usertable = () => {
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [filterText, setFilterText] = useState("");
+  const [banned,setBanned] = useState(true)
+
+  const handleBanUnban = (id, is_banned) => {
+    const formData = { is_banned: !is_banned };
+    axios
+      .patch(`${API_URL}/admin/block_unblock_user/${id}`, formData, {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      })
+      .then((response) => {
+        console.log(response.data.message);
+        setBanned(!banned)
+      });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -37,18 +50,7 @@ const Usertable = () => {
     };
 
     fetchData();
-  }, []);
-
-  const handleBanUnban = (id, is_banned) => {
-    const formData = { is_banned: !is_banned };
-    axios
-      .patch(`${API_URL}/admin/block_unblock_user/${id}`, formData, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        console.log(response.data.message);
-      });
-  };
+  }, [banned]);
 
   const handleSort = (column) => {
     if (orderBy === column && order === "asc") {
@@ -98,7 +100,7 @@ const Usertable = () => {
   );
 
   return (
-    <div>
+    <div className="user_table" style={{margin:"30px"}}>
       <TextField
         label="Search..."
         value={filterText}
@@ -187,21 +189,29 @@ const Usertable = () => {
                 <TableCell>
                   {user.is_banned ? (
                     <Button
-                      sx={{ backgroundColor: "red", color: "white","&:hover": {
-                        backgroundColor: "#CD1818",
-                      }, }}
-                      onClick={() => handleBanUnban(user.id, user.is_banned)}
-                    >
-                      Ban
-                    </Button>
-                  ) : (
-                    <Button
-                      sx={{ backgroundColor: "#5D9C59" ,color: "white","&:hover": {
-                        backgroundColor: "green",
-                      }, }}
+                      sx={{
+                        backgroundColor: "#5D9C59",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "green",
+                        },
+                      }}
                       onClick={() => handleBanUnban(user.id, user.is_banned)}
                     >
                       Unban
+                    </Button>
+                  ) : (
+                    <Button
+                      sx={{
+                        backgroundColor: "red",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: "#CD1818",
+                        },
+                      }}
+                      onClick={() => handleBanUnban(user.id, user.is_banned)}
+                    >
+                      Ban
                     </Button>
                   )}
                 </TableCell>

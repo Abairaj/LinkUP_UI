@@ -1,0 +1,7 @@
+@import "../../styles.scss";
+
+.videos {
+  @include themify($themes) {
+    background-color: themed("bgSoft");
+  }
+}

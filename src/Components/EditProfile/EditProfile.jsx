@@ -17,7 +17,7 @@ import axios from "axios";
 export default function EditProfile() {
   const ApiURL = import.meta.env.VITE_API_URL;
   const User = useSelector((state) => state.user);
-  const [profile,setProfile] = useState("")
+  const [profile, setProfile] = useState("");
   const { register, handleSubmit, formState, reset } = useForm();
   const { errors } = formState;
   console.log(User, "gfg");
@@ -33,7 +33,7 @@ export default function EditProfile() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       })
       .then((response) => {
-        console.log(response.data,'//////////////')
+        console.log(response.data, "//////////////");
         const User = response.data.user;
         let defaultValues = {};
         defaultValues.bio = User.bio;
@@ -45,10 +45,8 @@ export default function EditProfile() {
       });
   };
 
-
-
   const uploadImage = (image) => {
-    setProfile(image)
+    setProfile(image);
     axios
       .put(
         `${ApiURL}/users/user_profile/${Cookies.get("id")}`,
@@ -66,9 +64,6 @@ export default function EditProfile() {
       });
   };
 
-
-
-
   const onFormsubmit = (data, e) => {
     e.preventDefault();
     console.log(data);
@@ -81,7 +76,6 @@ export default function EditProfile() {
       .then((response) => {
         fetchData();
         if (response.status === 200) {
-          
         }
       })
       .catch((error) => {
@@ -124,17 +118,15 @@ export default function EditProfile() {
                 <div className="profileedit__profilebar">
                   <Avatar
                     src={
-                        profile?
-                        URL.createObjectURL(profile)
-                        :
-                      User.profile
+                      profile
+                        ? URL.createObjectURL(profile)
+                        : User.profile
                         ? `${ApiURL}/${User.profile}`
                         : "https://th.bing.com/th/id/OIP.Ii15573m21uyos5SZQTdrAHaHa?pid=ImgDet&rs=1"
                     }
                     className="profile_edit__avatar"
                   >
                     {!User.profile && User.username[0]}
-
                   </Avatar>
 
                   <div className="profile__name">
@@ -143,7 +135,7 @@ export default function EditProfile() {
 
                     <div className="uploadinput">
                       <input
-                      onChange={(e)=>uploadImage(e.target.files[0])}
+                        onChange={(e) => uploadImage(e.target.files[0])}
                         style={{ display: "none" }}
                         type="file"
                         id="imageupload"

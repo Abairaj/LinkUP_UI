@@ -24,34 +24,46 @@ import Videos from "./Components/Videos/VIdeos";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import Explore from "./Components/Explore/Explore";
 import EditProfile from "./Components/EditProfile/EditProfile";
+import { useUserDataQuery } from "./Redux/Query/userDataQuery";
+import AdminHome from "./Pages/Admin/adminHome/AdminHome";
+import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
 
 function App() {
+  const {
+    data: userInfo,
+    isLoading: isFetchingUserData,
+    error: userDataFetchingError,
+    refetch: refetchUserData,
+  } = useUserDataQuery(Cookies.get("id"));
+  console.log(userInfo, "userdata");
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
-  const [currentUser, setCUrrentUser] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL;
+  const [currentUser, setCurrentUser] = useState(false);
   const darkMode = useSelector((state) => state.theme.darkMode);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
-    axios
-      .get(`${API_URL}/users/auth/${Cookies.get("id")}`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        if (response) {
-          setCUrrentUser(true);
+    const fetchData = async () => {
+      try {
+        await refetchUserData(Cookies.get("id"));
+        console.log(userInfo, "user data is here");
+
+        if (userInfo) {
+          setCurrentUser(true);
           setLoading(false);
-          dispatch(userData(response.data));
+          dispatch(userData(userInfo));
+        } else if (userDataFetchingError) {
+          setCurrentUser(false);
         } else {
-          setCUrrentUser(false);
+          setCurrentUser(false);
         }
-      })
-      .catch((error) => {
-        console.log(error);
-        setCUrrentUser(false);
-        // setLoading(false);
-      });
-  }, []);
+      } catch (error) {
+        setCurrentUser(false);
+      }
+    };
+
+    fetchData();
+  }, [userInfo]);
+
   const Layout = () => {
     return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
@@ -72,7 +84,7 @@ function App() {
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
         <Navbar admin={true} />
         <div style={{ display: "flex" }}>
-          <LeftBar admin={true} />
+          <LeftBar Is_admin={true} />
           <div style={{ flex: 9 }}>
             <Outlet admin={true} />
           </div>
@@ -82,16 +94,17 @@ function App() {
   };
 
   const ProtectedRoute = ({ children }) => {
-    if (loading) {
-      return "Loading..."; // Display a loading indicator
+    if (loading || isFetchingUserData) {
+      return "Loading...";
     }
 
     if (!currentUser) {
-      return <Navigate to="/login" />; // Redirect to the login page
+      return <Navigate to="/login" />;
     }
-    setLoading(false);
+
     return children;
   };
+
   const router = createBrowserRouter([
     {
       path: "/",
@@ -113,17 +126,14 @@ function App() {
           path: "/profile/:id",
           element: <Profile />,
         },
-        ,
         {
           path: "/profile_edit",
-          element: <EditProfile/>,
+          element: <EditProfile />,
         },
-        ,
         {
           path: "/reels",
           element: <Videos />,
         },
-        ,
         {
           path: "/explore",
           element: <Explore />,
@@ -135,19 +145,23 @@ function App() {
       element: <AdminLayout />,
       children: [
         {
-          path: "admin_dashboard",
-          element: <Home />,
+          path: "", // No need to repeat "admin_dashboard" here
+          element: <AdminHome />,
+        },
+        {
+          path: "admin_user",
+          element: <Usertable />,
+        },
+        
+        {
+          path: "admin_reports",
+          element: <AdminReports/>,
         },
       ],
     },
     {
       path: "/admin",
       element: <Login admin={true} />,
-    },
-    ,
-    {
-      path: "/admin_user",
-      element: <Usertable />,
     },
     {
       path: "/login",
@@ -163,11 +177,7 @@ function App() {
     },
   ]);
 
-  return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

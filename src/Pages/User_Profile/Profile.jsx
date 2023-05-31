@@ -14,12 +14,12 @@ import axios from "axios";
 
 const Profile = ({ myprofile }) => {
   const API_URL = import.meta.env.VITE_API_URL;
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const myProfile = useSelector((state) => state.user);
   const [userData, setUserData] = useState([]);
   const { id } = useParams();
   const user = myprofile ? myProfile : userData;
-  console.log(user,'lllllllllllllldddddddddddd')
+  console.log(user, "lllllllllllllldddddddddddd");
 
   useEffect(() => {
     fetchUserData();
@@ -67,9 +67,8 @@ const Profile = ({ myprofile }) => {
       <div className="profileContainer">
         <div className="uInfo">
           <div className="center">
-           
-              <span>{user.username}</span>
-       
+            <span>{user.username}</span>
+
             {/* <div className="info">
               <div className="item">
                 <span>followers</span>
@@ -83,20 +82,19 @@ const Profile = ({ myprofile }) => {
 
             <div className="user_info">
               <div className="item">
-              <p>Followers</p>
-              <span>0</span>
+                <p>Followers</p>
+                <span>0</span>
               </div>
-              
+
               <div className="item">
-              <p>Followers</p>
-              <span>0</span>
+                <p>Followers</p>
+                <span>0</span>
               </div>
             </div>
             <div className="buttons">
-            <button>follow</button>
-            <button onClick={()=>navigate('/profile_edit')}>Edit</button>
+              <button>follow</button>
+              <button onClick={() => navigate("/profile_edit")}>Edit</button>
             </div>
-            
           </div>
           {/* <div className="right">
             <EmailOutlinedIcon />

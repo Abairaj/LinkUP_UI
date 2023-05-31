@@ -1,0 +1,7 @@
+@import "../../styles.scss";
+
+.explore {
+  @include themify($themes) {
+    background-color: themed("bgSoft");
+  }
+}

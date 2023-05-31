@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Post from '../Post/Post';
 import axios from 'axios';
 import Cookies from 'js.cookie';
+import './explore.scss'
 
 
 export default function Explore() {
@@ -20,7 +21,7 @@ export default function Explore() {
         })
     }
   return (
-    <div>
+    <div className='explore'>
        <Post post={explore} />
     </div>
   )

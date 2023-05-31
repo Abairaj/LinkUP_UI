@@ -17,20 +17,35 @@ const Share = () => {
   const API_URL = import.meta.env.VITE_API_URL;
   const dispatch = useDispatch();
 
-  const handleShare = () => {
+  const findMediatype = (mediafile) => {
     let media_type;
-    // Determine media_type based on selectedPost (assuming it contains the filename)
-    const fileExtension = media.name
-      .slice(media.name.lastIndexOf("."))
+    const fileExtension = mediafile.name
+      .slice(mediafile.name.lastIndexOf("."))
       .toLowerCase();
     if ([".mp4", ".avi", ".mov"].includes(fileExtension)) {
-      media_type = "Video";
+      return media_type = "Video";
     } else if (
       [".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(fileExtension)
     ) {
-      media_type = "Image";
+      return media_type = "Image";
     }
-    console.log(media, ".......", caption, ".........", location);
+  };
+  const media_type = media&&findMediatype(media)
+
+
+  const handleShare = () => {
+    let media_type = findMediatype(media)
+    // Determine media_type based on selectedPost (assuming it contains the filename)
+    // const fileExtension = media.name
+    //   .slice(media.name.lastIndexOf("."))
+    //   .toLowerCase();
+    // if ([".mp4", ".avi", ".mov"].includes(fileExtension)) {
+    //   media_type = "Video";
+    // } else if (
+    //   [".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(fileExtension)
+    // ) {
+    //   media_type = "Image";
+    // }
 
     let formdata = {
       media_url: media,
@@ -71,12 +86,16 @@ const Share = () => {
             onChange={(e) => setCaption(e.target.value)}
             placeholder={`What's on your mind ${user.username}?`}
           />
-          {media && (
+          {media && media_type == "Image" ? (
             <img
               className="selected_image"
               src={URL.createObjectURL(media)}
               alt=""
             />
+          ) : (
+            media_type == "Video" && (
+              <video className="selected_image" src={URL.createObjectURL(media)} alt="" />
+            )
           )}
         </div>
         <hr />

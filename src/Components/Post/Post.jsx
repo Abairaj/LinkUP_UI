@@ -8,12 +8,14 @@ import { Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import { useState } from "react";
 import { Avatar } from "@mui/material";
-
-const Post = ({ post }) => {
+import Popover from "@mui/material/Popover";
+import Typography from "@mui/material/Typography";
+const Post = ({ post,loading }) => {
   const API_URL = import.meta.env.VITE_API_URL;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openMore, setOpenMore] = useState(false);
 
   const [commentOpen, setCommentOpen] = useState(false);
-  
 
   // to show hours ago and days ago
   const getDuration = (created_at) => {
@@ -34,15 +36,21 @@ const Post = ({ post }) => {
     }
   };
 
+  const handlePopoverOpen = (event) => {
+    setOpenMore(true);
+    setAnchorEl(event.currentTarget);
+  };
 
-
+  const handlePopoverClose = () => {
+    setOpenMore(false);
+  };
 
   //TEMPORARY
   const liked = false;
 
   return (
     <>
-      {post&&post.length > 0
+      {!loading?post && post.length > 0
         ? post.map((post) => (
             <div key={post.post_id} className="post">
               <div className="container">
@@ -66,12 +74,68 @@ const Post = ({ post }) => {
                       </span>
                     </div>
                   </div>
-                  <MoreHorizIcon />
+                  <div className="more_button">
+                    <Typography
+                      aria-owns={openMore ? "mouse-over-popover" : undefined}
+                      aria-haspopup="true"
+                      onMouseEnter={handlePopoverOpen}
+                      onMouseLeave={handlePopoverClose}
+                    >
+                      <MoreHorizIcon />
+                    </Typography>
+                    <Popover
+                      id="mouse-over-popover"
+                      sx={{
+                        pointerEvents: "none",
+                        backgroundColor: "transparent", // Set background color to transparent
+                      }}
+                      open={openMore}
+                      anchorEl={anchorEl}
+                      anchorOrigin={{
+                        vertical: "bottom",
+                        horizontal: "right",
+                      }}
+                      transformOrigin={{
+                        vertical: "top",
+                        horizontal: "right",
+                      }}
+                      onClose={handlePopoverClose}
+                      disableRestoreFocus
+                    >
+                      <Typography
+                        sx={{
+                          p: 2,
+                          display: "flex",
+                          flexDirection: "column",
+                          backgroundColor: "transparent",
+                        }}
+                      >
+                        <Link
+                          style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            padding: "5px",
+                          }}
+                        >
+                          Delete
+                        </Link>
+                        <Link
+                          style={{
+                            textDecoration: "none",
+                            cursor: "pointer",
+                            padding: "5px",
+                          }}
+                        >
+                          Report
+                        </Link>
+                      </Typography>
+                    </Popover>
+                  </div>
                 </div>
                 <div className="content">
                   <p>{post.caption}</p>
                   {post.media_type === "Image" ? (
-                    <img src={`${API_URL}/${post.media_url}`} alt="post" />
+                    <img src={post.media_url} alt="post" />
                   ) : (
                     <video
                       src={`${API_URL}/${post.media_url}`}
@@ -93,22 +157,21 @@ const Post = ({ post }) => {
                   </div>
                   <div
                     className="item"
-                    onClick={() =>setCommentOpen(!commentOpen) }
+                    onClick={() => setCommentOpen(!commentOpen)}
                   >
                     <TextsmsOutlinedIcon />
-                    {post.post_id}
-                    12 Comments
+                    Comments
                   </div>
                   <div className="item">
                     <ShareOutlinedIcon />
                     Share
                   </div>
                 </div>
-                {commentOpen && <Comments post = {post} />}
+                {commentOpen && <Comments post={post} />}
               </div>
             </div>
           ))
-        : "No post"}
+        : "No post":"loading....."}
     </>
   );
 };

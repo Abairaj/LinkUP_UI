@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Post from "../Post/Post";
 import axios from "axios";
 import Cookies from "js.cookie";
+import './videos.scss'
 
 export default function Videos() {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -16,7 +17,6 @@ export default function Videos() {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       })
       .then((response) => {
-        console.log(response, "videos......");
         setReels(response.data);
       })
       .catch((errors) => {
@@ -24,8 +24,8 @@ export default function Videos() {
       });
   };
   return (
-    <>
+    <div className="videos">
       <Post post={reels} />
-    </>
+    </div>
   );
 }

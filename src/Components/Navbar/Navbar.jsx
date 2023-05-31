@@ -20,10 +20,12 @@ const Navbar = () => {
   const user = useSelector((state) => state.user);
   const [userSearchlist, setuserSearchlist] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
+  const [searchVal,setSearchVal] = useState();
 
-  const searchUser = (e) => {
+  const searchUser = (key) => {
+    setSearchVal(key);
     axios
-      .get(`${API_URL}/users/user_search/?key=${e.target.value}`, {
+      .get(`${API_URL}/users/user_search/?key=${key}`, {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       })
       .then((response) => {
@@ -52,7 +54,7 @@ const Navbar = () => {
         <GridViewOutlinedIcon />
         <div className="search">
           <SearchOutlinedIcon />
-          <input type="text" onChange={searchUser} placeholder="search..." />
+          <input type="text"  value={searchVal} onChange={(e)=>searchUser(e.target.value)} placeholder="search..." />
         </div>
         <div
           className="search_list"
@@ -80,10 +82,10 @@ const Navbar = () => {
         >
           <div className="user">
             <img
-              src="https://images.unsplash.com/photo-1511367461989-f85a21fda167?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1931&q=80"
+              src={`${API_URL}/${user.profile}`}
               alt=""
             />
-            <span>{user.username}</span>
+            <span style={{textDecoration:"none"}}>{user.username}</span>
           </div>
         </Link>
       </div>

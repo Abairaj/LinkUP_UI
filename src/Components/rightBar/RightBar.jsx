@@ -1,64 +1,47 @@
 import "./rightBar.scss";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import Cookies from "js.cookie";
-import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
+import {useSelector } from "react-redux";
+import { useFollowUnfollowUserMutation } from "../../Redux/Query/followUnfollowQuery";
+import { useUserSuggestionsQuery } from "../../Redux/Query/UserSuggestionsQuery";
 
 const RightBar = () => {
-  const API_URL = import.meta.env.VITE_API_URL;
+  const [updateFollowStatus, result] = useFollowUnfollowUserMutation();
+  const {
+    data: suggestionData,
+    error: UseSuggestionError,
+    isLoading: SuggestionLoading,
+    refetch: fetchUserSuggestion,
+  } = useUserSuggestionsQuery();
+
   const [UserSuggestion, setUserSuggestion] = useState([]);
   const myUser = useSelector((state) => state.user);
-  const navigate = useNavigate();
+
+  const updateFollow = (user_to_follow) => {
+    const user_id = Cookies.get("id");
+    const formData = { user_id: user_to_follow };
+    updateFollowStatus({ user_id, formData });
+    fetchUserSuggestion();
+  };
+  useEffect(() => {
+    fetchUserSuggestion();
+    setUserSuggestion(suggestionData);
+  }, [myUser, suggestionData]);
 
   useEffect(() => {
-    fetchSuggestion();
+    if (suggestionData) {
+      setUserSuggestion(suggestionData);
+    }
   }, []);
-  const fetchSuggestion = () => {
-    axios
-      .get(`${API_URL}/users/user_suggestion/`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        setUserSuggestion(response.data);
-        console.log(response.data, "llllllllllll");
-      })
-      .catch((error) => {
-        alert(error);
-      });
-  };
-
-  const followUser = (id) => {
-    const formData = { user_id: id };
-    axios
-      .post(`${API_URL}/users/follow/${Cookies.get("id")}`, formData, {
-        headers: { Authorization: `Bearer${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        console.log(response);
-      });
-  };
-
-  const UnfollowUser = (id) => {
-    const formData = { user_id: id };
-    axios
-      .post(`${API_URL}/users/unfollow/${Cookies.get("id")}`, formData, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
 
   return (
     <div className="rightBar">
       <div className="container">
         <div className="item">
           <span>Suggestions for You</span>
-          {UserSuggestion.length > 0 &&
+          {UserSuggestion &&
+            UserSuggestion.length > 0 &&
             UserSuggestion.map((user) => (
               <div key={user.id} className="user">
                 <div className="userinfo">
@@ -71,10 +54,12 @@ const RightBar = () => {
                   </Link>
                 </div>
                 <div className="buttons">
-                  {myUser.following.includes(user.id) ? (
-                    <button onClick={() => followUser(user.id)}>Follow</button>
+                  {!user.followers.includes(myUser.id) ? (
+                    <button onClick={() => updateFollow(user.id)}>
+                      Follow
+                    </button>
                   ) : (
-                    <button onClick={() => UnfollowUser(user.id)}>
+                    <button onClick={() => updateFollow(user.id)}>
                       Unfollow
                     </button>
                   )}
@@ -92,21 +77,21 @@ const RightBar = () => {
               <span>Abairaj.K</span>
             </div>
             <div className="buttons">
-              <span>1 minite ago</span>
+              <span>1 minute ago</span>
             </div>
-          </div>{" "}
+          </div>
           <div className="user">
             <div className="userinfo">
               <img src="" alt="" />
               <span>Abairaj.K</span>
             </div>
             <div className="buttons">
-              <span>2 minute ago</span>
+              <span>2 minutes ago</span>
             </div>
           </div>
         </div>
         <div className="item">
-          <span>online friends</span>
+          <span>Online friends</span>
           <div className="user">
             <div className="userinfo">
               <img src="" alt="" />
