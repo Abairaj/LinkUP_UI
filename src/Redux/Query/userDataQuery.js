@@ -7,15 +7,14 @@ export const UserDataApi = createApi({
   reducerPath: "userDataQuery",
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
-    credentials: "same-origin",
     prepareHeaders: (headers) => {
-        const accessToken = Cookies.get("token");
-        if (accessToken) {
-            headers.set("authorization", `Bearer ${accessToken}`);
-            headers.set("Content-Type", "application/json");
-        }
+      const accessToken = Cookies.get("token");
+      accessToken;
+      if (accessToken) {
+        headers.set("Authorization", `Bearer ${accessToken}`);
+      }
 
-        return headers;
+      return headers;
     },
   }),
   endpoints: (builder) => ({
@@ -24,7 +23,7 @@ export const UserDataApi = createApi({
     }),
     updateUser: builder.mutation({
       query: (user_id, userData) => ({
-        url: `/user_profile/${user_id}`,
+        url: `users/user_profile/${user_id}`,
         method: "PUT",
         body: userData,
       }),

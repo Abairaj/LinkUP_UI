@@ -2,7 +2,7 @@ import "./rightBar.scss";
 import { useState, useEffect } from "react";
 import Cookies from "js.cookie";
 import { Link } from "react-router-dom";
-import {useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useFollowUnfollowUserMutation } from "../../Redux/Query/followUnfollowQuery";
 import { useUserSuggestionsQuery } from "../../Redux/Query/UserSuggestionsQuery";
 
@@ -15,34 +15,39 @@ const RightBar = () => {
     refetch: fetchUserSuggestion,
   } = useUserSuggestionsQuery();
 
-  const [UserSuggestion, setUserSuggestion] = useState([]);
+  const [userSuggestions, setUserSuggestions] = useState([]);
   const myUser = useSelector((state) => state.user);
 
-  const updateFollow = (user_to_follow) => {
-    const user_id = Cookies.get("id");
-    const formData = { user_id: user_to_follow };
-    updateFollowStatus({ user_id, formData });
-    fetchUserSuggestion();
+  const updateFollow = (userToFollow) => {
+    const userId = Cookies.get("id");
+    const formData = { user_id: userToFollow };
+    updateFollowStatus({ user_id: userId, formData })
+      .then(() => {
+        fetchUserSuggestion(); // Refetch suggestion data after following/unfollowing
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
-  useEffect(() => {
-    fetchUserSuggestion();
-    setUserSuggestion(suggestionData);
-  }, [myUser, suggestionData]);
 
   useEffect(() => {
     if (suggestionData) {
-      setUserSuggestion(suggestionData);
+      setUserSuggestions(suggestionData);
     }
-  }, []);
+  }, [suggestionData]);
+
+  useEffect(() => {
+    fetchUserSuggestion();
+  }, [myUser]);
 
   return (
     <div className="rightBar">
       <div className="container">
         <div className="item">
           <span>Suggestions for You</span>
-          {UserSuggestion &&
-            UserSuggestion.length > 0 &&
-            UserSuggestion.map((user) => (
+          {userSuggestions &&
+            userSuggestions.length > 0 &&
+            userSuggestions.map((user) => (
               <div key={user.id} className="user">
                 <div className="userinfo">
                   <img src="" alt="" />

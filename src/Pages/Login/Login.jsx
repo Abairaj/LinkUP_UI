@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from "js.cookie";
+import { userData } from "../../Redux/Slice/UserProfileSlice";
+import { useDispatch } from "react-redux";
 
 const Login = ({ admin }) => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -11,6 +13,7 @@ const Login = ({ admin }) => {
   const { errors } = formState;
   const [formError, setFormError] = useState();
   const navigate = useNavigate();
+  const dispatch = useDispatch()
 
   const onFormsubmit = (data) => {
     const url = admin ? "admin/" : "/users/login/";
@@ -19,6 +22,7 @@ const Login = ({ admin }) => {
       .post(`${API_URL}/${url}`, data)
       .then((response) => {
         if (response.status === 200) {
+          dispatch(userData(response.data.user))
           console.log(response.data.user);
           Cookies.remove("token");
           Cookies.remove("id");

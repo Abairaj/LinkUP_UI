@@ -9,6 +9,7 @@ import axios from "axios";
 import Cookies from "js.cookie";
 import { useDispatch } from "react-redux";
 import { shareStatus } from "../../Redux/Slice/ShareSuccessSlice";
+import axiosInstance from "../../AxiosQueries/axosInstance";
 
 const Share = () => {
   const user = useSelector((state) => state.user);
@@ -23,18 +24,17 @@ const Share = () => {
       .slice(mediafile.name.lastIndexOf("."))
       .toLowerCase();
     if ([".mp4", ".avi", ".mov"].includes(fileExtension)) {
-      return media_type = "Video";
+      return (media_type = "Video");
     } else if (
       [".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(fileExtension)
     ) {
-      return media_type = "Image";
+      return (media_type = "Image");
     }
   };
-  const media_type = media&&findMediatype(media)
-
+  const media_type = media && findMediatype(media);
 
   const handleShare = () => {
-    let media_type = findMediatype(media)
+    let media_type = findMediatype(media);
     // Determine media_type based on selectedPost (assuming it contains the filename)
     // const fileExtension = media.name
     //   .slice(media.name.lastIndexOf("."))
@@ -46,6 +46,7 @@ const Share = () => {
     // ) {
     //   media_type = "Image";
     // }
+    console.log("data loading");
 
     let formdata = {
       media_url: media,
@@ -53,11 +54,12 @@ const Share = () => {
       media_type: media_type,
       user: Cookies.get("id"),
     };
-    axios
-      .post(`${API_URL}/post/create_post/${Cookies.get("id")}`, formdata, {
+    console.log(formdata);
+
+    axiosInstance
+      .post(`/post/create_post/${Cookies.get("id")}`, formdata, {
         headers: {
           "content-type": "multipart/form-data",
-          Authorization: `Bearer ${Cookies.get("token")}`,
         },
       })
       .then((response) => {
@@ -94,7 +96,11 @@ const Share = () => {
             />
           ) : (
             media_type == "Video" && (
-              <video className="selected_image" src={URL.createObjectURL(media)} alt="" />
+              <video
+                className="selected_image"
+                src={URL.createObjectURL(media)}
+                alt=""
+              />
             )
           )}
         </div>

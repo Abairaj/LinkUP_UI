@@ -1,31 +1,55 @@
 import React, { useEffect, useState } from "react";
 import Post from "../Post/Post";
-import axios from "axios";
-import Cookies from "js.cookie";
-import './videos.scss'
+
+import { useSelector } from "react-redux";
+import axiosInstance from "../../AxiosQueries/axosInstance";
 
 export default function Videos() {
-  const API_URL = import.meta.env.VITE_API_URL;
   const [reels, setReels] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const API_URL = import.meta.env.VITE_API_URL;
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
-    fetchReels();
+    setReels([]);
+    setPage(1);
   }, []);
 
-  const fetchReels = () => {
-    axios
-      .get(`${API_URL}/post/reels/`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
+  useEffect(() => {
+    setLoading(true);
+    axiosInstance
+      .get(`/post/all_posts/?page=${page}`)
       .then((response) => {
-        setReels(response.data);
+        if (response.data.results) {
+          setReels((prevPosts) => [...prevPosts, ...response.data.results]);
+          setLoading(false);
+          setHasMore(response.data.next !== null); // Check if there is a next page
+        }
       })
-      .catch((errors) => {
-        alert(errors);
+      .catch((error) => {
+        setLoading(false);
+        console.log(error);
       });
+  }, [page]);
+
+  const handleScroll = () => {
+    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
+    if (scrollHeight - scrollTop === clientHeight && !loading && hasMore) {
+      setPage((prevPage) => prevPage + 1);
+    }
   };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [hasMore, loading]);
+
   return (
-    <div className="videos">
-      <Post post={reels} />
-    </div>
+    <>
+      <Post post={reels} loading={loading} />
+    </>
   );
 }

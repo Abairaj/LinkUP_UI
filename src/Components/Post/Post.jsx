@@ -10,7 +10,9 @@ import { useState } from "react";
 import { Avatar } from "@mui/material";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
-const Post = ({ post,loading }) => {
+import Preloader from "../Preloader/Preloader";
+import ReportReason from "../ReportReason/ReportReason";
+const Post = ({ post, loading }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMore, setOpenMore] = useState(false);
@@ -50,128 +52,122 @@ const Post = ({ post,loading }) => {
 
   return (
     <>
-      {!loading?post && post.length > 0
-        ? post.map((post) => (
-            <div key={post.post_id} className="post">
-              <div className="container">
-                <div className="user">
-                  <div className="userInfo">
-                    {post.user.profile ? (
-                      <img src={`${API_URL}/${post.user.profile}`} alt="" />
-                    ) : (
-                      <Avatar>{post.user.username[0]}</Avatar>
-                    )}
+      {!loading
+        ? post && post.length > 0
+          ? post.map((post) => (
+              <div key={post.post_id} className="post">
+                <div className="container">
+                  <div className="user">
+                    <div className="userInfo">
+                      {post.user.profile ? (
+                        <img src={`${API_URL}/${post.user.profile}`} alt="" />
+                      ) : (
+                        <Avatar>{post.user.username[0]}</Avatar>
+                      )}
 
-                    <div className="details">
-                      <Link
-                        to={`/profile/${post.user.id}`}
-                        style={{ textDecoration: "none", color: "inherit" }}
+                      <div className="details">
+                        <Link
+                          to={`/profile/${post.user.id}`}
+                          style={{ textDecoration: "none", color: "inherit" }}
+                        >
+                          <span className="name">{post.user.username}</span>
+                        </Link>
+                        <span className="date">
+                          {getDuration(post.created_at)}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="more_button">
+                      <Typography
+                        aria-owns={openMore ? "mouse-over-popover" : undefined}
+                        aria-haspopup="true"
+                        onMouseEnter={handlePopoverOpen}
+                        onMouseLeave={handlePopoverClose}
                       >
-                        <span className="name">{post.user.username}</span>
-                      </Link>
-                      <span className="date">
-                        {getDuration(post.created_at)}
-                      </span>
+                        <MoreHorizIcon />
+                      </Typography>
+                      <Popover
+                        id="mouse-over-popover"
+                        sx={{
+                          pointerEvents: "none",
+                          backgroundColor: "transparent", // Set background color to transparent
+                        }}
+                        open={openMore}
+                        anchorEl={anchorEl}
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "right",
+                        }}
+                        transformOrigin={{
+                          vertical: "top",
+                          horizontal: "right",
+                        }}
+                        onClose={handlePopoverClose}
+                        disableRestoreFocus
+                      >
+                        <Typography
+                          sx={{
+                            p: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            backgroundColor: "transparent",
+                          }}
+                        >
+                          <Link
+                            style={{
+                              textDecoration: "none",
+                              cursor: "pointer",
+                              padding: "5px",
+                            }}
+                          >
+                            Delete
+                          </Link>
+                          <ReportReason />
+                        </Typography>
+                      </Popover>
                     </div>
                   </div>
-                  <div className="more_button">
-                    <Typography
-                      aria-owns={openMore ? "mouse-over-popover" : undefined}
-                      aria-haspopup="true"
-                      onMouseEnter={handlePopoverOpen}
-                      onMouseLeave={handlePopoverClose}
-                    >
-                      <MoreHorizIcon />
-                    </Typography>
-                    <Popover
-                      id="mouse-over-popover"
-                      sx={{
-                        pointerEvents: "none",
-                        backgroundColor: "transparent", // Set background color to transparent
-                      }}
-                      open={openMore}
-                      anchorEl={anchorEl}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "right",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "right",
-                      }}
-                      onClose={handlePopoverClose}
-                      disableRestoreFocus
-                    >
-                      <Typography
-                        sx={{
-                          p: 2,
-                          display: "flex",
-                          flexDirection: "column",
-                          backgroundColor: "transparent",
-                        }}
-                      >
-                        <Link
-                          style={{
-                            textDecoration: "none",
-                            cursor: "pointer",
-                            padding: "5px",
-                          }}
-                        >
-                          Delete
-                        </Link>
-                        <Link
-                          style={{
-                            textDecoration: "none",
-                            cursor: "pointer",
-                            padding: "5px",
-                          }}
-                        >
-                          Report
-                        </Link>
-                      </Typography>
-                    </Popover>
-                  </div>
-                </div>
-                <div className="content">
-                  <p>{post.caption}</p>
-                  {post.media_type === "Image" ? (
-                    <img src={post.media_url} alt="post" />
-                  ) : (
-                    <video
-                      src={`${API_URL}/${post.media_url}`}
-                      controls
-                      autoPlay
-                      muted
-                    />
-                  )}
-                  <img src="" alt="" />
-                </div>
-                <div className="info">
-                  <div className="item">
-                    {liked ? (
-                      <FavoriteOutlinedIcon />
+                  <div className="content">
+                    <p>{post.caption}</p>
+                    {post.media_type === "Image" ? (
+                      <img src={post.media_url} alt="post" />
                     ) : (
-                      <FavoriteBorderOutlinedIcon />
+                      <video
+                        src={`${API_URL}/${post.media_url}`}
+                        controls
+                        autoPlay
+                        muted
+                      />
                     )}
-                    {post.likes.length}
+                    <img src="" alt="" />
                   </div>
-                  <div
-                    className="item"
-                    onClick={() => setCommentOpen(!commentOpen)}
-                  >
-                    <TextsmsOutlinedIcon />
-                    Comments
+                  <div className="info">
+                    <div className="item">
+                      {liked ? (
+                        <FavoriteOutlinedIcon />
+                      ) : (
+                        <FavoriteBorderOutlinedIcon />
+                      )}
+                      {post.likes.length}
+                    </div>
+                    <div
+                      className="item"
+                      onClick={() => setCommentOpen(!commentOpen)}
+                    >
+                      <TextsmsOutlinedIcon />
+                      Comments
+                    </div>
+                    <div className="item">
+                      <ShareOutlinedIcon />
+                      Share
+                    </div>
                   </div>
-                  <div className="item">
-                    <ShareOutlinedIcon />
-                    Share
-                  </div>
+                  {commentOpen && <Comments post={post} />}
                 </div>
-                {commentOpen && <Comments post={post} />}
               </div>
-            </div>
-          ))
-        : "No post":"loading....."}
+            ))
+          : "No post"
+        : "Loading..."}
     </>
   );
 };

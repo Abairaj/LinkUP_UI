@@ -10,26 +10,27 @@ import male_contact from "../../assets/malecontact.png";
 import female_contact from "../../assets/femalecontact.png";
 import contact from "../../assets/contact.png";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../AxiosQueries/axosInstance";
 
 const Profile = ({ myprofile }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const myProfile = useSelector((state) => state.user);
-  const [userData, setUserData] = useState([]);
+  const [userData, setUserData] = useState(null);
   const { id } = useParams();
+  console.log(id,'////////////////////////////')
   const user = myprofile ? myProfile : userData;
-  console.log(user, "lllllllllllllldddddddddddd");
 
   useEffect(() => {
     fetchUserData();
   }, [id]);
 
   const fetchUserData = () => {
-    axios
-      .get(`${API_URL}/users/user_profile/${id}`)
+    axiosInstance
+      .get(`/users/user_profile/${id}`)
       .then((response) => {
-        setUserData(response.data.user);
+        setUserData(response.data);
+        console.log(response.data)
       })
       .catch((error) => {
         alert(error);
@@ -44,18 +45,18 @@ const Profile = ({ myprofile }) => {
           alt=""
           className="cover"
         />
-        {user.profile ? (
+        {user && user.profile ? (
           <img
-            src={`${API_URL}/${user.profile}`}
+            src={user.profile}
             alt=""
             className="profilePic"
           />
         ) : (
           <img
             src={
-              user.gender === "Male"
+              user && user.gender === "Male"
                 ? male_contact
-                : user.gender === "Female"
+                : user && user.gender === "Female"
                 ? female_contact
                 : contact
             }
@@ -67,39 +68,22 @@ const Profile = ({ myprofile }) => {
       <div className="profileContainer">
         <div className="uInfo">
           <div className="center">
-            <span>{user.username}</span>
-
-            {/* <div className="info">
-              <div className="item">
-                <span>followers</span>
-                      {user&&user.length>0?user.following.length:"0"}
-              </div>
-              <div className="item">
-                <LanguageIcon />
-                <span></span>
-              </div>
-            </div> */}
-
+            <span>{user && user.username}</span>
             <div className="user_info">
               <div className="item">
                 <p>Followers</p>
-                <span>0</span>
+                <span>{`0`}</span>
               </div>
-
               <div className="item">
-                <p>Followers</p>
-                <span>0</span>
+                <p>Following</p>
+                <span>{`0`}</span>
               </div>
             </div>
             <div className="buttons">
-              <button>follow</button>
+              {!myprofile && <button>Follow</button>}
               <button onClick={() => navigate("/profile_edit")}>Edit</button>
             </div>
           </div>
-          {/* <div className="right">
-            <EmailOutlinedIcon />
-            <MoreVertIcon />
-          </div> */}
         </div>
         <Post />
       </div>

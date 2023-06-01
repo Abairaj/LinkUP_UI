@@ -77,7 +77,7 @@ const Navbar = () => {
         <EmailOutlinedIcon />
         <NotificationsOutlinedIcon />
         <Link
-          to={`profile/${user.full_name}`}
+          to={`my_profile/${user.full_name}`}
           style={{ cursor: "pointer", textDecoration: "none" }}
         >
           <div className="user">

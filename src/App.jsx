@@ -1,68 +1,60 @@
-import Login from "./Pages/Login/Login";
-import Register from "./Pages/Register/Register";
+import React, { useEffect, useState} from "react";
+import { useSelector} from "react-redux";
 import {
   createBrowserRouter,
   RouterProvider,
-  Route,
   Outlet,
   Navigate,
 } from "react-router-dom";
+import Cookies from "js.cookie";
+import axios from "axios";
+
 import Navbar from "./Components/Navbar/Navbar";
 import LeftBar from "./Components/leftBar/LeftBar";
 import RightBar from "./Components/rightBar/RightBar";
 import Home from "./Pages/Home/Home";
 import Profile from "./Pages/User_Profile/Profile";
-import "./styles.scss?inline";
-import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import Cookies from "js.cookie";
-import { useDispatch } from "react-redux";
-import { userData } from "./Redux/Slice/UserProfileSlice";
-import Post from "./Components/Post/Post";
-import Videos from "./Components/Videos/VIdeos";
-import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
-import Explore from "./Components/Explore/Explore";
+import Login from "./Pages/Login/Login";
+import Register from "./Pages/Register/Register";
+import Preloader from "./Components/Preloader/Preloader";
 import EditProfile from "./Components/EditProfile/EditProfile";
-import { useUserDataQuery } from "./Redux/Query/userDataQuery";
+import Videos from "./Components/Videos/VIdeos";
+import Explore from "./Components/Explore/Explore";
 import AdminHome from "./Pages/Admin/adminHome/AdminHome";
+import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
-
+import Chattapp from "./Components/ChatPage/Chattapp";
 function App() {
-  const {
-    data: userInfo,
-    isLoading: isFetchingUserData,
-    error: userDataFetchingError,
-    refetch: refetchUserData,
-  } = useUserDataQuery(Cookies.get("id"));
-  console.log(userInfo, "userdata");
-  const dispatch = useDispatch();
+
   const user = useSelector((state) => state.user);
   const [currentUser, setCurrentUser] = useState(false);
   const darkMode = useSelector((state) => state.theme.darkMode);
   const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await refetchUserData(Cookies.get("id"));
-        console.log(userInfo, "user data is here");
-
-        if (userInfo) {
+  const API_URL = import.meta.env.VITE_API_URL;
+  const checkAuth = () => {
+    axios
+      .get(`${API_URL}/users/user_profile/${Cookies.get("id")}`, {
+        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
+      })
+      .then((response) => {
+        if (response) {
           setCurrentUser(true);
           setLoading(false);
-          dispatch(userData(userInfo));
-        } else if (userDataFetchingError) {
-          setCurrentUser(false);
         } else {
           setCurrentUser(false);
         }
-      } catch (error) {
+      })
+      .catch((error) => {
         setCurrentUser(false);
-      }
-    };
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
-    fetchData();
-  }, [userInfo]);
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   const Layout = () => {
     return (
@@ -87,6 +79,7 @@ function App() {
           <LeftBar Is_admin={true} />
           <div style={{ flex: 9 }}>
             <Outlet admin={true} />
+            login
           </div>
         </div>
       </div>
@@ -94,15 +87,13 @@ function App() {
   };
 
   const ProtectedRoute = ({ children }) => {
-    if (loading || isFetchingUserData) {
-      return "Loading...";
-    }
-
-    if (!currentUser) {
-      return <Navigate to="/login" />;
-    }
-
-    return children;
+    return loading ? (
+      <Preloader />
+    ) : currentUser ? (
+      children
+    ) : (
+      <Navigate to="/login" replace />
+    );
   };
 
   const router = createBrowserRouter([
@@ -119,7 +110,7 @@ function App() {
           element: <Home />,
         },
         {
-          path: "/my_profile",
+          path: "/my_profile/:name",
           element: <Profile myprofile={true} />,
         },
         {
@@ -138,6 +129,7 @@ function App() {
           path: "/explore",
           element: <Explore />,
         },
+   
       ],
     },
     {
@@ -152,10 +144,9 @@ function App() {
           path: "admin_user",
           element: <Usertable />,
         },
-        
         {
           path: "admin_reports",
-          element: <AdminReports/>,
+          element: <AdminReports />,
         },
       ],
     },
@@ -172,12 +163,20 @@ function App() {
       element: <Register />,
     },
     {
+      path: "/chat",
+      element: <Chattapp />,
+    },
+    {
       path: "*",
-      element: <Videos />,
+      element: <Navigate to="/" replace />,
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <RouterProvider router={router}>
+      {loading ? <Preloader /> : <Outlet />}
+    </RouterProvider>
+  );
 }
 
 export default App;
