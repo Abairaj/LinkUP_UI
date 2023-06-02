@@ -11,30 +11,44 @@ import female_contact from "../../assets/femalecontact.png";
 import contact from "../../assets/contact.png";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../AxiosQueries/axosInstance";
+import Cookies from "js.cookie";
+import ProfilePosts from "./ProfilePosts";
 
 const Profile = ({ myprofile }) => {
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const myProfile = useSelector((state) => state.user);
+  const [post, setPost] = useState([]);
   const [userData, setUserData] = useState(null);
   const { id } = useParams();
-  console.log(id,'////////////////////////////')
   const user = myprofile ? myProfile : userData;
 
   useEffect(() => {
+    setPost('')
     fetchUserData();
+    fetchPosts();
   }, [id]);
 
   const fetchUserData = () => {
-    axiosInstance
-      .get(`/users/user_profile/${id}`)
-      .then((response) => {
-        setUserData(response.data);
-        console.log(response.data)
-      })
-      .catch((error) => {
-        alert(error);
-      });
+  axiosInstance
+            .get(`/users/user_profile/${id}`)
+            .then((response) => {
+              setUserData(response.data);
+              console.log(response.data);
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+      
+  };
+
+  const fetchPosts = () => {
+    axiosInstance.get(`/post/getpost/${id}`).then((response) => {
+      if (response) {
+        console.log(response);
+        setPost(response.data);
+      }
+    });
   };
 
   return (
@@ -46,11 +60,7 @@ const Profile = ({ myprofile }) => {
           className="cover"
         />
         {user && user.profile ? (
-          <img
-            src={user.profile}
-            alt=""
-            className="profilePic"
-          />
+          <img src={user.profile} alt="" className="profilePic" />
         ) : (
           <img
             src={
@@ -85,7 +95,9 @@ const Profile = ({ myprofile }) => {
             </div>
           </div>
         </div>
-        <Post />
+        <div className="profile_posts">
+        <ProfilePosts posts = {post}/>
+        </div>
       </div>
     </div>
   );

@@ -13,6 +13,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
+import axiosInstance from "../../AxiosQueries/axosInstance";
 
 export default function EditProfile() {
   const ApiURL = import.meta.env.VITE_API_URL;
@@ -28,39 +29,32 @@ export default function EditProfile() {
 
   const fetchData = () => {
     const id = Cookies.get("id");
-    axios
-      .get(`${ApiURL}/users/user_profile/${id}`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        console.log(response.data, "//////////////");
-        const User = response.data.user;
-        let defaultValues = {};
-        defaultValues.bio = User.bio;
-        defaultValues.full_name = User.full_name;
-        defaultValues.phone = User.phone;
-        defaultValues.gender = User.gender;
+    axiosInstance.get(`/users/user_profile/${id}`).then((response) => {
+      const User = response.data;
+      let defaultValues = {};
+      defaultValues.bio = User.bio;
+      defaultValues.full_name = User.full_name;
+      defaultValues.phone = User.phone;
+      defaultValues.gender = User.gender;
 
-        reset({ ...defaultValues });
-      });
+      reset({ ...defaultValues });
+    });
   };
 
   const uploadImage = (image) => {
     setProfile(image);
-    axios
+    axiosInstance
       .put(
-        `${ApiURL}/users/user_profile/${Cookies.get("id")}`,
+        `/users/user_profile/${Cookies.get("id")}`,
         { profile: image },
         {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${Cookies.get("token")}`,
           },
         }
       )
       .then((response) => {
         console.log(response);
-        window.location.reload();
       });
   };
 
@@ -69,10 +63,8 @@ export default function EditProfile() {
     console.log(data);
     const id = Cookies.get("id");
 
-    const response = axios
-      .put(`${ApiURL}/users/user_profile/${id}`, data, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
+    const response = axiosInstance
+      .put(`/users/user_profile/${id}`, data)
       .then((response) => {
         fetchData();
         if (response.status === 200) {
@@ -104,9 +96,7 @@ export default function EditProfile() {
             alignItems: "center",
           }}
         >
-          <Typography component="h1" variant="h5">
-            {"value"}
-          </Typography>
+          <Typography component="h1" variant="h5"></Typography>
           <Box
             component="form"
             noValidate
@@ -121,7 +111,7 @@ export default function EditProfile() {
                       profile
                         ? URL.createObjectURL(profile)
                         : User.profile
-                        ? `${ApiURL}/${User.profile}`
+                        ? User.profile
                         : "https://th.bing.com/th/id/OIP.Ii15573m21uyos5SZQTdrAHaHa?pid=ImgDet&rs=1"
                     }
                     className="profile_edit__avatar"

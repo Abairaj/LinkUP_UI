@@ -18,9 +18,10 @@
       .profileedit__profilebar {
         display: flex;
         flex-direction: row;
+        gap: 20px;
         .profile_edit__avatar {
           width: 150px;
-          height: 130px;
+          height: 140px;
         }
 
         .profile__name {

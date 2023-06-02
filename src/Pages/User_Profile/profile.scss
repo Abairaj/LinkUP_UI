@@ -72,25 +72,22 @@
             text-align: center;
           }
 
-          .user_info{
+          .user_info {
             gap: 30px;
-            .item{
+            .item {
               text-align: center;
 
-              p{
+              p {
                 font-size: 17px;
               }
 
-              span{
+              span {
                 font-size: 15px;
               }
-
             }
-
 
             display: flex;
             flex-direction: row;
-
           }
 
           .info {
@@ -111,7 +108,7 @@
             }
           }
 
-          .buttons{
+          .buttons {
             display: flex;
             flex-direction: row;
             gap: 30px;
@@ -124,9 +121,7 @@
               border-radius: 5px;
               cursor: pointer;
             }
-
           }
-
         }
 
         .right {
@@ -136,6 +131,13 @@
           justify-content: flex-end;
           gap: 10px;
         }
+      }
+
+      .no_profilepost {
+        display: flex;
+
+        justify-self: center;
+        justify-content: center;
       }
     }
   }

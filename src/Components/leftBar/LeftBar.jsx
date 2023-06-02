@@ -7,6 +7,9 @@ import messages_icon from "./../../assets/chat.png";
 import PeopleIcon from "@mui/icons-material/People";
 import ReportIcon from "@mui/icons-material/Report";
 import { Avatar, Link } from "@mui/material";
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import LogoutOutlinedIcon from '@mui/icons-material/LogoutOutlined';
+import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import { useNavigate } from "react-router-dom";
 
 const LeftBar = ({ Is_admin }) => {
@@ -21,8 +24,8 @@ const LeftBar = ({ Is_admin }) => {
           <div className="user">
             {!Is_admin ? (
               <>
-                <img src={`${API_URL}/${user.profile}`} alt="" />
-                <span onClick={() => navigate("my_profile")}>
+                <img src={user.profile} alt="" />
+                <span style={{cursor:"pointer"}} onClick={() => navigate(`/profile/${user.id}`)}>
                   {user.username}
                 </span>
               </>
@@ -54,6 +57,15 @@ const LeftBar = ({ Is_admin }) => {
           ) : (
             <>
               <div className="item">
+                <HomeOutlinedIcon sx={{fontSize:"35px"}}/>
+                <span
+                  style={{ cursor: "pointer" }}
+                  onClick={() => navigate("/")}
+                >
+                  Home
+                </span>
+              </div>
+              <div className="item">
                 <img src={explore_icon} alt="" />
                 <span
                   style={{ cursor: "pointer" }}
@@ -74,7 +86,19 @@ const LeftBar = ({ Is_admin }) => {
 
               <div className="item">
                 <img src={messages_icon} alt="" />
-                <span>Chat</span>
+                <span style={{cursor:"pointer"}} onClick={()=>navigate("/chat")}>Chat</span>
+              </div>
+
+
+              <div className="item">
+                <NotificationsNoneOutlinedIcon/>
+                <span>Notification</span>
+              </div>
+
+
+              <div className="item">
+                <LogoutOutlinedIcon/>
+                <span>Logout</span>
               </div>
             </>
           )}

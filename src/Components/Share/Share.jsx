@@ -76,7 +76,7 @@ const Share = () => {
           {user.profile ? (
             <img
               className="profile_img"
-              src={`${API_URL}/${user.profile}`}
+              src={user.profile}
               alt=""
             />
           ) : (

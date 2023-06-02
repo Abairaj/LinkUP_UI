@@ -45,13 +45,11 @@ const Navbar = () => {
         <Link to={"/"} style={{ textDecoration: "none" }}>
           <span>LinkUp</span>
         </Link>
-        <HomeOutlinedIcon onClick={()=>navigate('/')} style={{cursor:"pointer"}}/>
         {darkMode ? (
           <WbSunnyOutlinedIcon onClick={handleToggle} />
         ) : (
           <DarkModeOutlinedIcon onClick={handleToggle} />
         )}
-        <GridViewOutlinedIcon />
         <div className="search">
           <SearchOutlinedIcon />
           <input type="text"  value={searchVal} onChange={(e)=>searchUser(e.target.value)} placeholder="search..." />
@@ -82,7 +80,7 @@ const Navbar = () => {
         >
           <div className="user">
             <img
-              src={`${API_URL}/${user.profile}`}
+              src={user.profile}
               alt=""
             />
             <span style={{textDecoration:"none"}}>{user.username}</span>

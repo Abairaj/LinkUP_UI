@@ -60,7 +60,7 @@ const Post = ({ post, loading }) => {
                   <div className="user">
                     <div className="userInfo">
                       {post.user.profile ? (
-                        <img src={`${API_URL}/${post.user.profile}`} alt="" />
+                        <img src={post.user.profile} alt="" />
                       ) : (
                         <Avatar>{post.user.username[0]}</Avatar>
                       )}
