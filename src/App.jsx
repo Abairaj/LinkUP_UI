@@ -1,5 +1,5 @@
-import React, { useEffect, useState} from "react";
-import { useSelector} from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import {
   createBrowserRouter,
   RouterProvider,
@@ -25,7 +25,6 @@ import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
 import Chattapp from "./Components/ChatPage/Chattapp";
 function App() {
-
   const user = useSelector((state) => state.user);
   const [currentUser, setCurrentUser] = useState(false);
   const darkMode = useSelector((state) => state.theme.darkMode);
@@ -79,8 +78,7 @@ function App() {
           <LeftBar Is_admin={true} />
           <div style={{ flex: 9 }}>
             <Outlet admin={true} />
-            login
-          </div>
+0          </div>
         </div>
       </div>
     );
@@ -129,7 +127,6 @@ function App() {
           path: "/explore",
           element: <Explore />,
         },
-   
       ],
     },
     {

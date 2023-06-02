@@ -1,9 +1,17 @@
+@import "../../styles.scss";
+
+
+
 .login {
   height: 100vh;
   background-color: rgb(193, 190, 255);
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @include mobile{
+    display: flexbox;
+  }
   .card {
     width: 50%;
     display: flex;
@@ -11,6 +19,18 @@
     border-radius: 10px;
     min-height: 600px;
     overflow: hidden;
+
+    @include mobile{
+      width: 90%;
+      height: 95%;
+    }
+
+
+    @include tablet{
+      width: 90%;
+      height: 98%;
+      gap: 10px;
+    }
 
     .left {
       flex: 1;
@@ -45,6 +65,16 @@
         font-weight: bold;
         cursor: pointer;
       }
+
+
+      @include mobile{
+        display: none;
+        flex: none;
+      }
+
+      @include tablet{
+        display: none;
+      }
     }
     .right {
       flex: 1;
@@ -53,11 +83,46 @@
       flex-direction: column;
       gap: 50px;
       justify-content: center;
+
+      @include mobile{
+        width: 100wh;
+        padding: 30px;
+        padding-top: 3px;
+        gap: 20px;
+
+
+
+      }
+
+      
+
+      .logo_mobile{
+        display: none;
+
+        @include mobile{
+          display: contents;
+          text-align: center;
+          h1{
+            font-size: 30px;
+          }
+        }
+
+        @include tablet{
+          display: contents;
+          text-align: center;
+        }
+      }
+
+
+
       .error{
         color: red;
         font-size: 18px;
       }
       h1 {
+        @include mobile{
+          font-size: 25px;
+        }
       }
       form {
         display: flex;
@@ -72,6 +137,19 @@
           color: red;
           font-size: 14px;
         }
+        .register_mobile{
+          display: none;
+
+          @include mobile{
+            display: contents;
+  
+          }
+
+
+          @include tablet{
+            display: contents;
+          }
+        }
         button {
           width: 50%;
           padding: 10px;
@@ -80,8 +158,11 @@
           color: white;
           font-weight: bold;
           cursor: pointer;
+
+
         }
       }
+  
     }
   }
 }

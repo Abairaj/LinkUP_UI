@@ -1,0 +1,31 @@
+@import "../../../styles.scss";
+
+
+.admin_report{
+  @include themify($themes) {
+
+    background-color: themed("bgSoft");
+    height: 100%;
+
+.admin_report_list {
+    background-color: themed("bgSoft");
+    color: themed("textColor");
+
+    h1 {
+      color: themed("textColor");
+      font-size: 20px;
+    }
+
+    p {
+      color: themed("textColor");
+    }
+
+    .resolve_btn{
+      display: flex;
+      align-self: center;
+    }
+
+
+  }
+}
+}

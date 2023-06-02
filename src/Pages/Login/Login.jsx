@@ -13,7 +13,7 @@ const Login = ({ admin }) => {
   const { errors } = formState;
   const [formError, setFormError] = useState();
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const onFormsubmit = (data) => {
     const url = admin ? "admin/" : "/users/login/";
@@ -22,7 +22,7 @@ const Login = ({ admin }) => {
       .post(`${API_URL}/${url}`, data)
       .then((response) => {
         if (response.status === 200) {
-          dispatch(userData(response.data.user))
+          dispatch(userData(response.data.user));
           console.log(response.data.user);
           Cookies.remove("token");
           Cookies.remove("id");
@@ -61,6 +61,9 @@ const Login = ({ admin }) => {
           </Link>
         </div>
         <div className="right">
+          <div className="logo_mobile">
+            <h1>LinkUp</h1>
+          </div>
           <h1>{admin && "Admin "}Login</h1>
           <p className="error">{formError}</p>
           <form onSubmit={handleSubmit(onFormsubmit)}>
@@ -85,6 +88,9 @@ const Login = ({ admin }) => {
               placeholder="password"
             />
             <p className="error">{errors.password?.message}</p>
+            <div className="register_mobile">
+              <p>Dont have an Account? <Link to={'/register'}>Register</Link></p>
+            </div>
             <button>Login</button>
           </form>
         </div>

@@ -16,26 +16,6 @@
   }
 }
 
-.title {
-  color: #5d5b8d;
-  font-size: 12px;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  input {
-    padding: 15px;
-    border: none;
-    width: 250px;
-    border-bottom: 1px solid #a7bcff;
-
-    &::placeholder {
-      color: rgb(175, 175, 175);
-    }
-  }
-}
 
 .chatapp {
   background-color: #a7bcff;
