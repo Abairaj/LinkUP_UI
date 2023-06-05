@@ -74,11 +74,7 @@ const Share = () => {
       <div className="container">
         <div className="top">
           {user.profile ? (
-            <img
-              className="profile_img"
-              src={user.profile}
-              alt=""
-            />
+            <img className="profile_img" src={user.profile} alt="" />
           ) : (
             <Avatar>{user.username[0]}</Avatar>
           )}

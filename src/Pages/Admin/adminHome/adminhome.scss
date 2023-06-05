@@ -1,23 +1,20 @@
-.admin_home{
-    padding: 4px;
-    display: flex;
-    justify-content: center;
+.admin_home {
+  padding: 4px;
+  display: flex;
+  justify-content: center;
 
-
-
-.user_statistics{
+  .user_statistics {
     display: flex;
     flex-direction: row;
     margin: 10px;
-    
-}
+  }
 
-.user_statistics_item{
+  .user_statistics_item {
     margin: 5px;
     width: 300px;
     height: 150px;
     background-color: black;
     color: white;
     text-align: center;
-}
+  }
 }

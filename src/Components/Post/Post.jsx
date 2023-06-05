@@ -1,10 +1,8 @@
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import "./post.scss";
 import Checkbox from "@mui/material/Checkbox";
 import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
 import Favorite from "@mui/icons-material/Favorite";
-import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
-import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
@@ -16,22 +14,43 @@ import Typography from "@mui/material/Typography";
 import ReportReason from "../ReportReason/ReportReason";
 import Cookies from "js.cookie";
 import axiosInstance from "../../AxiosQueries/axosInstance";
+import { useSelector } from "react-redux";
 
-const Post = ({ post, loading }) => {
+const Post = ({ post, loading, fetchPost }) => {
+  const [like, setLike] = useState(false);
+
   const handleDeletePost = (post_id) => {
     axiosInstance
       .patch(`post/create_post/${post_id}`)
       .then((response) => {
         console.log(response);
+        alert("deleted");
       })
       .catch((error) => {
         console.log(error);
+        alert(error);
       });
   };
+
+  const handleLikeUnlike = (post_id) => {
+    axiosInstance
+      .post(`/post/Post_like/${user.id}`, { post_id: post_id })
+      .then((response) => {
+        if (response) {
+          alert(response);
+          setLike(!like);
+        } else {
+          alert("error like");
+        }
+      });
+  };
+
+  // useCallback(() => fetchPost(), [like]);
 
   const API_URL = import.meta.env.VITE_API_URL;
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMore, setOpenMore] = useState(false);
+  const user = useSelector((state) => state.user);
 
   const [commentOpen, setCommentOpen] = useState(false);
 
@@ -62,9 +81,6 @@ const Post = ({ post, loading }) => {
   const handlePopoverClose = () => {
     setOpenMore(false);
   };
-
-  //TEMPORARY
-  const liked = false;
 
   return (
     <>
@@ -148,12 +164,7 @@ const Post = ({ post, loading }) => {
                   {post.media_type === "Image" ? (
                     <img src={post.media_url} alt="post" />
                   ) : (
-                    <video
-                      src={`${API_URL}/${post.media_url}`}
-                      controls
-                      autoPlay
-                      muted
-                    />
+                    <video src={post.media_url} controls autoPlay muted />
                   )}
                   <img src="" alt="" />
                 </div>
@@ -167,11 +178,11 @@ const Post = ({ post, loading }) => {
                     {post.likes.length} */}
                     <div>
                       <Checkbox
-                        // {}
                         icon={<FavoriteBorder />}
                         checkedIcon={<Favorite />}
+                        checked={post && post.likes.includes(user.id)}
+                        onChange={() => handleLikeUnlike(post.post_id)}
                       />
-
                     </div>
                   </div>
                   <div

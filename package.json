@@ -26,7 +26,11 @@
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.11.2",
     "redux-persist": "^6.0.0",
-    "sass": "^1.62.1"
+    "sass": "^1.62.1",
+    "simple-peer": "^9.11.1",
+    "simplewebrtc": "^3.0.2",
+    "socket.io-client": "^4.6.2",
+    "websocket": "^1.0.34"
   },
   "devDependencies": {
     "@types/react": "^18.0.28",

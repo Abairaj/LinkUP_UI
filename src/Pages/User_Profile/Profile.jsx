@@ -24,22 +24,21 @@ const Profile = ({ myprofile }) => {
   const user = myprofile ? myProfile : userData;
 
   useEffect(() => {
-    setPost('')
+    setPost("");
     fetchUserData();
     fetchPosts();
   }, [id]);
 
   const fetchUserData = () => {
-  axiosInstance
-            .get(`/users/user_profile/${id}`)
-            .then((response) => {
-              setUserData(response.data);
-              console.log(response.data);
-            })
-            .catch((error) => {
-              console.log(error);
-            })
-      
+    axiosInstance
+      .get(`/users/user_profile/${id}`)
+      .then((response) => {
+        setUserData(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const fetchPosts = () => {
@@ -96,7 +95,7 @@ const Profile = ({ myprofile }) => {
           </div>
         </div>
         <div className="profile_posts">
-        <ProfilePosts posts = {post}/>
+          <ProfilePosts posts={post} />
         </div>
       </div>
     </div>

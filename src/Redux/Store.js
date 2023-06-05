@@ -19,12 +19,12 @@ const persistConfig = {
   whitelist: ["user"],
 };
 
-const rootReducer = combineReducers( {
+const rootReducer = combineReducers({
   [UserDataApi.reducerPath]: UserDataApi.reducer,
   [commentApi.reducerPath]: commentApi.reducer,
   [followUnfollowApi.reducerPath]: followUnfollowApi.reducer,
   [UserSuggestionApi.reducerPath]: UserSuggestionApi.reducer,
-  [explorePostApi.reducerPath]:explorePostApi.reducer,
+  [explorePostApi.reducerPath]: explorePostApi.reducer,
   theme: darkModeReducer,
   user: UserProfilereducer,
   shareSuccess: ShareSuccessreducer,

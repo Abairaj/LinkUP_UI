@@ -23,7 +23,10 @@ export default function Explore() {
       .get(`/post/all_posts/?page=${page}`)
       .then((response) => {
         if (response.data.results) {
-          setExplorePost((prevPosts) => [...prevPosts, ...response.data.results]);
+          setExplorePost((prevPosts) => [
+            ...prevPosts,
+            ...response.data.results,
+          ]);
           setLoading(false);
           setHasMore(response.data.next !== null); // Check if there is a next page
         }

@@ -24,6 +24,8 @@ import AdminHome from "./Pages/Admin/adminHome/AdminHome";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
 import Chattapp from "./Components/ChatPage/Chattapp";
+import { VideoCall } from "@mui/icons-material";
+import VerifyOTP from "./Components/OTP/VerifyOTP";
 function App() {
   const user = useSelector((state) => state.user);
   const [currentUser, setCurrentUser] = useState(false);
@@ -77,8 +79,8 @@ function App() {
         <div style={{ display: "flex" }}>
           <LeftBar Is_admin={true} />
           <div style={{ flex: 9 }}>
-            <Outlet admin={true} />
-0          </div>
+            <Outlet admin={true} />0{" "}
+          </div>
         </div>
       </div>
     );
@@ -162,6 +164,14 @@ function App() {
     {
       path: "/chat",
       element: <Chattapp />,
+    },
+    {
+      path: "/call",
+      element: <VideoCall />,
+    },
+    {
+      path: "/verify_otp",
+      element: <VerifyOTP />,
     },
     {
       path: "*",

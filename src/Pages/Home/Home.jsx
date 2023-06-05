@@ -4,7 +4,7 @@ import "./home.scss";
 import { useDispatch, useSelector } from "react-redux";
 import UserPost from "../../Components/UserPost/UserPost";
 import { useUserDataQuery } from "../../Redux/Query/userDataQuery";
-import Cookies from 'js.cookie';
+import Cookies from "js.cookie";
 import { userData } from "../../Redux/Slice/UserProfileSlice";
 import { useEffect } from "react";
 const Home = () => {
@@ -15,22 +15,17 @@ const Home = () => {
     error: userDataFetchingError,
     refetch: refetchUserData,
   } = useUserDataQuery();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  const fetchData=()=>{
-
-    refetchUserData(Cookies.get('id'));
+  const fetchData = () => {
+    refetchUserData(Cookies.get("id"));
     dispatch(userData(userInfo));
-    console.log(userData)
+    console.log(userData);
+  };
 
-
-  }
-
-
-
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[userInfo])
+  }, [userInfo]);
   return (
     <div className="home">
       <Stories />

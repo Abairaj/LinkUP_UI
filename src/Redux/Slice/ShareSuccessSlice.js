@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-const ShareSuccessSlice =  createSlice({
+const ShareSuccessSlice = createSlice({
   name: "shareSuccess",
   initialState: false,
   reducers: {
     shareStatus: (state) => {
       const shareSuccess = !state;
-      console.log(shareSuccess,'..................')
+      console.log(shareSuccess, "..................");
 
-      return  !state;
+      return !state;
     },
   },
 });
 
-export const {shareStatus} = ShareSuccessSlice.actions;
+export const { shareStatus } = ShareSuccessSlice.actions;
 export default ShareSuccessSlice.reducer;

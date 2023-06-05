@@ -24,7 +24,7 @@ const ProfilePosts = ({ posts }) => {
           ))
         ) : (
           <div className="no_profilepost">
-            <NoCOmponenet/>
+            <NoCOmponenet />
           </div>
         )}
       </ImageList>

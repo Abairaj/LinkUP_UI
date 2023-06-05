@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import Cookies from 'js.cookie'
+import Cookies from "js.cookie";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export const followUnfollowApi = createApi({

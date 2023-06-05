@@ -89,7 +89,9 @@ const Login = ({ admin }) => {
             />
             <p className="error">{errors.password?.message}</p>
             <div className="register_mobile">
-              <p>Dont have an Account? <Link to={'/register'}>Register</Link></p>
+              <p>
+                Dont have an Account? <Link to={"/register"}>Register</Link>
+              </p>
             </div>
             <button>Login</button>
           </form>

@@ -1,31 +1,90 @@
 @import "../../../styles.scss";
 
-
-.admin_report{
+.admin_report {
   @include themify($themes) {
-
     background-color: themed("bgSoft");
     height: 100%;
 
-.admin_report_list {
-    background-color: themed("bgSoft");
-    color: themed("textColor");
-
-    h1 {
+    .admin_report_list {
+      background-color: themed("bgSoft");
       color: themed("textColor");
-      font-size: 20px;
+
+      h1 {
+        color: themed("textColor");
+        font-size: 20px;
+      }
+
+      p {
+        color: themed("textColor");
+      }
+
+      .resolve_btn {
+        display: flex;
+        align-self: center;
+      }
     }
-
-    p {
-      color: themed("textColor");
-    }
-
-    .resolve_btn{
-      display: flex;
-      align-self: center;
-    }
-
-
   }
 }
+
+.reported_posts {
+  max-width: 500px;
+  max-height: 500px;
+
+  .reported_post {
+    img {
+      width: 500px;
+      height: 500px;
+    }
+  }
+}
+
+.report_details {
+  width: 500px;
+  height: 500px;
+  position: relative;
+
+
+  .user_bar{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .report_detail {
+    h1 {
+      font-size: 14px;
+    }
+
+    .user_info {
+      display: flex;
+      flex-direction: row;
+      text-align: center;
+      .u_info {
+        display: flex;
+        flex-direction: column;
+
+        .user_name {
+          padding-top: 7px;
+          font-size: 15px;
+        }
+
+        .user_active {
+          font-size: 10px;
+        }
+      }
+    }
+  }
+
+  .report_reason {
+    margin-top: 15px;
+    padding: 10px;
+    border: 1px solid;
+    border-color: black;
+  }
+
+  .resolved_btn {
+    margin-top: 5px;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
 }

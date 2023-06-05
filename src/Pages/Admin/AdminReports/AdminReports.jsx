@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
 import axiosInstance from "../../../AxiosQueries/axosInstance";
 import "./adminreports.scss";
+import ResolveReport from "./AdminResolve";
 
 export default function AdminReports() {
   const [report, setReport] = React.useState([]);
@@ -37,6 +38,10 @@ export default function AdminReports() {
           maxWidth: 900,
           bgcolor: "background.paper",
           overflowY: "scroll",
+          scrollbarWidth: "none" /* Hide scrollbar on Firefox */,
+          "&::-webkit-scrollbar": {
+            display: "none" /* Hide scrollbar on Chrome, Safari, and Opera */,
+          },
         }}
       >
         {report && report.length > 0
@@ -66,7 +71,7 @@ export default function AdminReports() {
                       </React.Fragment>
                     }
                   />
-                  <Button className="resolve_btn">resolve</Button>
+                  <ResolveReport report={obj} fetchReport={fetchReports} />
                 </ListItem>
               );
             })

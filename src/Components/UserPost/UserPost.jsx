@@ -20,20 +20,25 @@ export default function UserPost() {
 
   useEffect(() => {
     setLoading(true);
-    axiosInstance
-      .get(`/post/all_posts/?page=${page}`)
-      .then((response) => {
-        if (response.data.results) {
-          setAllPost((prevPosts) => [...prevPosts, ...response.data.results]);
-          setLoading(false);
-          setHasMore(response.data.next !== null); // Check if there is a next page
-        }
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log(error);
-      });
+    fetchPost();
+
   }, [shareSuccess, page]);
+
+  const fetchPost = () =>{
+    axiosInstance
+    .get(`/post/all_posts/?page=${page}`)
+    .then((response) => {
+      if (response.data.results) {
+        setAllPost((prevPosts) => [...prevPosts, ...response.data.results]);
+        setLoading(false);
+        setHasMore(response.data.next !== null); // Check if there is a next page
+      }
+    })
+    .catch((error) => {
+      setLoading(false);
+      console.log(error);
+    });
+  }
 
   const handleScroll = () => {
     const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
@@ -51,7 +56,7 @@ export default function UserPost() {
 
   return (
     <>
-      <Post post={allPost} loading={loading} />
+      <Post post={allPost} loading={loading} fetchPost={fetchPost} />
     </>
   );
 }

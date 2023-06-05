@@ -1,5 +1,5 @@
 import React from "react";
-import './noComponent.scss';
+import "./noComponent.scss";
 
 const NoCOmponenet = () => {
   return (

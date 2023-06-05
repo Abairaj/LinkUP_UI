@@ -13,6 +13,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+import axiosInstance from "../../../AxiosQueries/axosInstance";
 
 const Usertable = () => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -22,17 +23,17 @@ const Usertable = () => {
   const [orderBy, setOrderBy] = useState("");
   const [order, setOrder] = useState("asc");
   const [filterText, setFilterText] = useState("");
-  const [banned,setBanned] = useState(true)
+  const [banned, setBanned] = useState(true);
 
   const handleBanUnban = (id, is_banned) => {
     const formData = { is_banned: !is_banned };
-    axios
-      .patch(`${API_URL}/admin/block_unblock_user/${id}`, formData, {
+    axiosInstance
+      .patch(`/admin/block_unblock_user/${id}`, formData, {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
       })
       .then((response) => {
         console.log(response.data.message);
-        setBanned(!banned)
+        setBanned(!banned);
       });
   };
 
@@ -100,7 +101,7 @@ const Usertable = () => {
   );
 
   return (
-    <div className="user_table" style={{margin:"30px"}}>
+    <div className="user_table" style={{ margin: "30px" }}>
       <TextField
         label="Search..."
         value={filterText}

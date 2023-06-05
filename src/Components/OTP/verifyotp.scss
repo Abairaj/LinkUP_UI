@@ -1,0 +1,21 @@
+.verify-otp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+
+  .center-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+
+    .otp-input {
+      margin-bottom: 20px;
+    }
+
+    .verify-button {
+      width: 120px;
+    }
+  }
+}

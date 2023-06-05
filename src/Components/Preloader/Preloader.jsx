@@ -1,9 +1,5 @@
-import React from 'react'
+import React from "react";
 
 export default function Preloader() {
-  return (
-    <div>
-      Loading....
-    </div>
-  )
+  return <div>Loading....</div>;
 }

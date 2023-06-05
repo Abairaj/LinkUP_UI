@@ -20,7 +20,7 @@ const Navbar = () => {
   const user = useSelector((state) => state.user);
   const [userSearchlist, setuserSearchlist] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
-  const [searchVal,setSearchVal] = useState();
+  const [searchVal, setSearchVal] = useState();
 
   const searchUser = (key) => {
     setSearchVal(key);
@@ -52,7 +52,12 @@ const Navbar = () => {
         )}
         <div className="search">
           <SearchOutlinedIcon />
-          <input type="text"  value={searchVal} onChange={(e)=>searchUser(e.target.value)} placeholder="search..." />
+          <input
+            type="text"
+            value={searchVal}
+            onChange={(e) => searchUser(e.target.value)}
+            placeholder="search..."
+          />
         </div>
         <div
           className="search_list"
@@ -79,11 +84,8 @@ const Navbar = () => {
           style={{ cursor: "pointer", textDecoration: "none" }}
         >
           <div className="user">
-            <img
-              src={user.profile}
-              alt=""
-            />
-            <span style={{textDecoration:"none"}}>{user.username}</span>
+            <img src={user.profile} alt="" />
+            <span style={{ textDecoration: "none" }}>{user.username}</span>
           </div>
         </Link>
       </div>

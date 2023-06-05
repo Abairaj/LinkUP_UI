@@ -1,7 +1,5 @@
 @import "../../styles.scss";
 
-
-
 .login {
   height: 100vh;
   background-color: rgb(193, 190, 255);
@@ -9,7 +7,7 @@
   align-items: center;
   justify-content: center;
 
-  @include mobile{
+  @include mobile {
     display: flexbox;
   }
   .card {
@@ -20,13 +18,12 @@
     min-height: 600px;
     overflow: hidden;
 
-    @include mobile{
+    @include mobile {
       width: 90%;
       height: 95%;
     }
 
-
-    @include tablet{
+    @include tablet {
       width: 90%;
       height: 98%;
       gap: 10px;
@@ -66,13 +63,12 @@
         cursor: pointer;
       }
 
-
-      @include mobile{
+      @include mobile {
         display: none;
         flex: none;
       }
 
-      @include tablet{
+      @include tablet {
         display: none;
       }
     }
@@ -84,43 +80,36 @@
       gap: 50px;
       justify-content: center;
 
-      @include mobile{
+      @include mobile {
         width: 100wh;
         padding: 30px;
         padding-top: 3px;
         gap: 20px;
-
-
-
       }
 
-      
-
-      .logo_mobile{
+      .logo_mobile {
         display: none;
 
-        @include mobile{
+        @include mobile {
           display: contents;
           text-align: center;
-          h1{
+          h1 {
             font-size: 30px;
           }
         }
 
-        @include tablet{
+        @include tablet {
           display: contents;
           text-align: center;
         }
       }
 
-
-
-      .error{
+      .error {
         color: red;
         font-size: 18px;
       }
       h1 {
-        @include mobile{
+        @include mobile {
           font-size: 25px;
         }
       }
@@ -137,16 +126,14 @@
           color: red;
           font-size: 14px;
         }
-        .register_mobile{
+        .register_mobile {
           display: none;
 
-          @include mobile{
+          @include mobile {
             display: contents;
-  
           }
 
-
-          @include tablet{
+          @include tablet {
             display: contents;
           }
         }
@@ -158,11 +145,8 @@
           color: white;
           font-weight: bold;
           cursor: pointer;
-
-
         }
       }
-  
     }
   }
 }
