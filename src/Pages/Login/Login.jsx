@@ -6,6 +6,7 @@ import { useState } from "react";
 import Cookies from "js.cookie";
 import { userData } from "../../Redux/Slice/UserProfileSlice";
 import { useDispatch } from "react-redux";
+import axiosInstance from './../../AxiosQueries/axosInstance'
 
 const Login = ({ admin }) => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -16,10 +17,10 @@ const Login = ({ admin }) => {
   const dispatch = useDispatch();
 
   const onFormsubmit = (data) => {
-    const url = admin ? "admin/" : "/users/login/";
+    const url = admin ? "/admin/" : "/users/login/";
 
-    axios
-      .post(`${API_URL}/${url}`, data)
+    axiosInstance
+      .post(`${url}`, data)
       .then((response) => {
         if (response.status === 200) {
           dispatch(userData(response.data.user));

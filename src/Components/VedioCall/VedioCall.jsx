@@ -1,147 +1,198 @@
 import React, { useEffect, useRef, useState } from "react";
-import io from "socket.io-client";
-import SimplePeer from "simple-peer";
+import { v4 as uuidv4 } from "uuid";
+import "./videoCall.scss";
+import { useSelector } from "react-redux";
+import Cookies from 'js.cookie'
 
-const VideoCall= () => {
-  const socketRef = useRef();
-  const peerRef = useRef();
-  const localVideoRef = useRef();
-  const remoteVideoRef = useRef();
-  const [isAudioMuted, setIsAudioMuted] = useState(false);
-  const [isVideoFlipped, setIsVideoFlipped] = useState(false);
+const VideoCall = () => {
+  const [roomID, setRoomID] = useState("");
+  const [localStream, setLocalStream] = useState(null);
+  const [remoteStream, setRemoteStream] = useState(null);
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
+  const websocketRef = useRef(null);
+  const peerConnectionRef = useRef(null);
+  const isMicMutedRef = useRef(false);
+  const isCameraFlippedRef = useRef(false);
+  const isCameraOnRef = useRef(true);
+  const user = useSelector((state) => state.user);
+  console.log(user.id, "kkkkkkkkkkkkkkkkkkkkk");
 
   useEffect(() => {
-    socketRef.current = io("http://localhost:8000");
+    if (!roomID) {
+      const generatedRoomID = uuidv4();
+      setRoomID(generatedRoomID);
+    }
 
-    navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
-      .then((stream) => {
+    const initVideoCall = async () => {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: "user" },
+          audio: false,
+        });
+        setLocalStream(stream);
         localVideoRef.current.srcObject = stream;
 
-        socketRef.current.emit("join room", "roomId");
+        const wsUrl = `ws://localhost:8000/ws/video_call/${roomID}/${user.id}`;
+        const websocket = new WebSocket(wsUrl);
 
-        socketRef.current.on("other user", (otherUserId) => {
-          initiatePeerConnection(otherUserId);
-        });
+        // Add the JWT token to the WebSocket connection headers
+        const token = Cookies.get("token");
+        websocketRef.current = websocket;
+        websocketRef.current.onopen = () => {
+          websocketRef.current.send(JSON.stringify(joinMessage));
+        };
+        websocketRef.current.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          handleWebsocketMessage(message);
+        };
+        websocketRef.current.setRequestHeader(
+          "Authorization",
+          `Bearer ${token}`
+        );
+        websocketRef.current = websocket;
 
-        socketRef.current.on("offer", (data) => {
-          handleOffer(data);
-        });
+        websocket.onmessage = (event) => {
+          const message = JSON.parse(event.data);
+          handleWebsocketMessage(message);
+        };
 
-        socketRef.current.on("answer", (data) => {
-          handleAnswer(data);
-        });
+        const joinMessage = {
+          action: "join",
+          user_id: user.id,
+          username: user.username,
+        };
 
-        socketRef.current.on("ice-candidate", (data) => {
-          handleICECandidate(data);
-        });
-      })
-      .catch((error) => {
-        console.error("Error accessing media devices:", error);
-      });
+        websocket.send(JSON.stringify(joinMessage));
+      } catch (error) {
+        console.error("Error initializing video call:", error);
+      }
+    };
+
+    initVideoCall();
 
     return () => {
-      socketRef.current.disconnect();
+      if (websocketRef.current) {
+        websocketRef.current.close();
+      }
+
+      if (localStream) {
+        localStream.getTracks().forEach((track) => track.stop());
+      }
     };
-  }, []);
+  }, [roomID]);
 
-  const initiatePeerConnection = (otherUserId) => {
-    peerRef.current = new SimplePeer({
-      initiator: true,
-      trickle: false,
-      stream: localVideoRef.current.srcObject,
-    });
+  const handleWebsocketMessage = (message) => {
+    const { action, user_id, username, offer, answer, candidate } = message;
 
-    peerRef.current.on("signal", (data) => {
-      socketRef.current.emit("offer", {
-        signalData: data,
-        otherUserId,
-      });
-    });
-
-    peerRef.current.on("stream", (stream) => {
-      remoteVideoRef.current.srcObject = stream;
-    });
-
-    peerRef.current.on("error", (error) => {
-      console.error("Peer connection error:", error);
-    });
-  };
-
-  const handleOffer = (data) => {
-    peerRef.current = new SimplePeer({
-      initiator: false,
-      trickle: false,
-      stream: localVideoRef.current.srcObject,
-    });
-
-    peerRef.current.on("signal", (signalData) => {
-      socketRef.current.emit("answer", {
-        signalData,
-        otherUserId: data.otherUserId,
-      });
-    });
-
-    peerRef.current.on("stream", (stream) => {
-      remoteVideoRef.current.srcObject = stream;
-    });
-
-    peerRef.current.on("error", (error) => {
-      console.error("Peer connection error:", error);
-    });
-
-    peerRef.current.signal(data.signalData);
-  };
-
-  const handleAnswer = (data) => {
-    peerRef.current.signal(data.signalData);
-  };
-
-  const handleICECandidate = (data) => {
-    peerRef.current.addIceCandidate(data.signalData);
-  };
-
-  const handleAudioToggle = () => {
-    const localStream = localVideoRef.current.srcObject;
-    localStream.getAudioTracks().forEach((track) => {
-      track.enabled = !isAudioMuted;
-    });
-    setIsAudioMuted(!isAudioMuted);
-  };
-
-  const handleVideoFlip = () => {
-    const localStream = localVideoRef.current.srcObject;
-    localStream.getVideoTracks().forEach((track) => {
-      track._switchCamera();
-    });
-    setIsVideoFlipped(!isVideoFlipped);
-  };
-
-  const handleEndCall = () => {
-    if (peerRef.current) {
-      peerRef.current.destroy();
+    switch (action) {
+      case "join":
+        console.log(
+          `User ${username} with ID ${user_id} joined the video call`
+        );
+        break;
+      case "leave":
+        console.log(`User ${username} with ID ${user_id} left the video call`);
+        break;
+      case "offer":
+        handleOffer(user_id, offer);
+        break;
+      case "answer":
+        handleAnswer(user_id, answer);
+        break;
+      case "ice_candidate":
+        handleIceCandidate(user_id, candidate);
+        break;
+      default:
+        break;
     }
-    const localStream = localVideoRef.current.srcObject;
-    localStream.getTracks().forEach((track) => {
-      track.stop();
+  };
+
+  const handleOffer = async (callingUserID, offer) => {
+    const pc = new RTCPeerConnection();
+    peerConnectionRef.current = pc;
+
+    localStream.getTracks().forEach((track) => pc.addTrack(track, localStream));
+
+    await pc.setRemoteDescription(offer);
+
+    const answer = await pc.createAnswer();
+    await pc.setLocalDescription(answer);
+
+    const answerMessage = {
+      action: "answer",
+      calling_channel_name: callingUserID,
+      answer: pc.localDescription,
+    };
+    websocketRef.current.send(JSON.stringify(answerMessage));
+    pc.setLocalDescription(answer);
+  };
+
+  const handleAnswer = async (calledUserID, answer) => {
+    await peerConnectionRef.current.setRemoteDescription(answer);
+  };
+
+  const handleIceCandidate = (otherUserID, candidate) => {
+    peerConnectionRef.current.addIceCandidate(candidate);
+  };
+
+  const toggleMicMute = () => {
+    const tracks = localStream.getAudioTracks();
+    tracks.forEach((track) => {
+      track.enabled = !track.enabled;
     });
-    remoteVideoRef.current.srcObject = null;
+    isMicMutedRef.current = !isMicMutedRef.current;
+  };
+
+  const toggleCameraFlip = () => {
+    const tracks = localStream.getVideoTracks();
+    tracks.forEach((track) => {
+      track.applyConstraints({
+        facingMode: isCameraFlippedRef.current ? "user" : "environment",
+      });
+    });
+    isCameraFlippedRef.current = !isCameraFlippedRef.current;
+  };
+
+  const toggleCamera = () => {
+    const tracks = localStream.getVideoTracks();
+    tracks.forEach((track) => {
+      track.enabled = !track.enabled;
+    });
+    isCameraOnRef.current = !isCameraOnRef.current;
   };
 
   return (
-    <div>
-      <div>
-        <video ref={localVideoRef} autoPlay muted />
-        <video ref={remoteVideoRef} autoPlay />
-      </div>
-      <div>
-        <button onClick={handleAudioToggle}>
-          {isAudioMuted ? "Unmute Audio" : "Mute Audio"}
-        </button>
-        <button onClick={handleVideoFlip}>
-          {isVideoFlipped ? "Flip Camera" : "Unflip Camera"}
-        </button>
-        <button onClick={handleEndCall}>End Call</button>
+    <div className="video-call-container">
+      <h2>Video Call</h2>
+      <div className="video-section">
+        <div className="local-stream">
+          <h3>Local Stream</h3>
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className="video-stream"
+          />
+          <button onClick={toggleMicMute}>
+            {isMicMutedRef.current ? "Unmute Mic" : "Mute Mic"}
+          </button>
+          <button onClick={toggleCameraFlip}>
+            {isCameraFlippedRef.current ? "Flip Camera" : "Original Camera"}
+          </button>
+
+          <button onClick={toggleCamera}>camera on/off</button>
+        </div>
+        <div className="remote-stream">
+          <h3>Remote Stream</h3>
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            className="video-stream"
+          />
+        </div>
       </div>
     </div>
   );

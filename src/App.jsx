@@ -24,8 +24,9 @@ import AdminHome from "./Pages/Admin/adminHome/AdminHome";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
 import Chattapp from "./Components/ChatPage/Chattapp";
-import { VideoCall } from "@mui/icons-material";
 import VerifyOTP from "./Components/OTP/VerifyOTP";
+import VideoCall from "./Components/VedioCall/VedioCall";
+import VideoCallAgora from "./Components/VedioCall/vedioCallAgora";
 function App() {
   const user = useSelector((state) => state.user);
   const [currentUser, setCurrentUser] = useState(false);
@@ -166,8 +167,8 @@ function App() {
       element: <Chattapp />,
     },
     {
-      path: "/call",
-      element: <VideoCall />,
+      path: "/video_call",
+      element: <VideoCallAgora />,
     },
     {
       path: "/verify_otp",
