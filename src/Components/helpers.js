@@ -1,4 +1,6 @@
-  // to show hours ago and days ago
+import Cookies from 'js.cookie'; 
+ 
+ // to show hours ago and days ago
   export const getDuration = (created_at) => {
     const currentTime = new Date();
     const postTime = new Date(created_at);
@@ -16,3 +18,9 @@
       return `${duration}h`;
     }
   };
+
+
+  export const clearCookies = () =>{
+    Cookies.remove('token');
+    Cookies.remove('id');
+  }

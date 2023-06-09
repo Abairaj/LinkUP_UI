@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
   createBrowserRouter,
@@ -6,8 +6,7 @@ import {
   Outlet,
   Navigate,
 } from "react-router-dom";
-import Cookies from "js.cookie";
-import axios from "axios";
+
 
 import Navbar from "./Components/Navbar/Navbar";
 import LeftBar from "./Components/leftBar/LeftBar";
@@ -28,36 +27,13 @@ import VideoCallAgora from "./Components/VedioCall/vedioCallAgora";
 import VedioCallWebrtc from "./Components/VedioCall/vedioCallWebrtc";
 import ZegocloudVideo from "./Components/VedioCall/ZegocloudVideo";
 import UserPost from "./Components/UserPost/UserPost";
-function App() {
-  const user = useSelector((state) => state.user);
-  const [currentUser, setCurrentUser] = useState(false);
-  const darkMode = useSelector((state) => state.theme.darkMode);
-  const [loading, setLoading] = useState(true);
-  const API_URL = import.meta.env.VITE_API_URL;
-  const checkAuth = () => {
-    axios
-      .get(`${API_URL}/users/user_profile/${Cookies.get("id")}`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
-      .then((response) => {
-        if (response) {
-          setCurrentUser(true);
-          setLoading(false);
-        } else {
-          setCurrentUser(false);
-        }
-      })
-      .catch((error) => {
-        setCurrentUser(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
 
-  useEffect(() => {
-    checkAuth();
-  }, []);
+
+function App() {
+
+  const darkMode = useSelector((state) => state.theme.darkMode);
+
 
   const Layout = () => {
     return (
@@ -88,15 +64,7 @@ function App() {
     );
   };
 
-  const ProtectedRoute = ({ children }) => {
-    return loading ? (
-      <Preloader />
-    ) : currentUser ? (
-      children
-    ) : (
-      <Navigate to="/login" replace />
-    );
-  };
+  
 
   const router = createBrowserRouter([
     {
@@ -195,7 +163,6 @@ function App() {
 
   return (
     <RouterProvider router={router}>
-      {loading ? <Preloader /> : <Outlet />}
     </RouterProvider>
   );
 }
