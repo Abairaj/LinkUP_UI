@@ -1,62 +1,70 @@
-import React, { useEffect, useState } from "react";
-import Post from "../Post/Post";
-import axios from "axios";
-import Cookies from "js.cookie";
-import { useSelector } from "react-redux";
+import React, { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../AxiosQueries/axosInstance";
+import Post from "../Post/Post";
+import { useSelector } from "react-redux";
 
-export default function UserPost() {
-  const [allPost, setAllPost] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const API_URL = import.meta.env.VITE_API_URL;
-  const [page, setPage] = useState(1);
-  const [hasMore, setHasMore] = useState(true);
-  const shareSuccess = useSelector((state) => state.shareSuccess);
+const UserPost = ({home,explore,reels}) => {
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [posts, setPosts] = useState([]);
+  const [postCount, setPostCount] = useState(true);
+  const [offset, setOffset] = useState(0);
+  const [limit, setLimit] = useState(5);
+  const user = useSelector((state) => state.user);
+  const shareSuccess = useSelector(state=>state.shareSuccess)
+  const filter = home ? 'home' : explore ? 'all' : reels ?'reels':'';
 
-  useEffect(() => {
-    setAllPost([]);
-    setPage(1);
-  }, [shareSuccess]);
+  
+  const loadPost = () => {
 
-  useEffect(() => {
-    setLoading(true);
-    fetchPost();
-
-  }, [shareSuccess, page]);
-
-  const fetchPost = () =>{
     axiosInstance
-    .get(`/post/all_posts/?page=${page}`)
-    .then((response) => {
-      if (response.data.results) {
-        setAllPost((prevPosts) => [...prevPosts, ...response.data.results]);
-        setLoading(false);
-        setHasMore(response.data.next !== null); // Check if there is a next page
-      }
-    })
-    .catch((error) => {
-      setLoading(false);
-      console.log(error);
-    });
-  }
+      .get(`/post/posts/${user.id}?filter=${filter}&limit=${limit}&offset=${offset}`)
+      .then((response) => {
+        const newPosts = response.data.post; // Assuming response.data contains the array of posts
+        const postCount = response.data.postCount;
+        console.log(response);
 
-  const handleScroll = () => {
-    const { scrollTop, clientHeight, scrollHeight } = document.documentElement;
-    if (scrollHeight - scrollTop === clientHeight && !loading && hasMore) {
-      setPage((prevPage) => prevPage + 1);
-    }
+        setPostCount(postCount);
+        setLoading(false);
+        setPosts((prevPosts) => [
+          ...prevPosts,
+          ...newPosts.filter(
+            (newPost) =>
+              !prevPosts.some((post) => post.post_id === newPost.post_id)
+          ),
+        ]);
+        setLimit((prevlimit) => prevlimit + limit);
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [hasMore, loading]);
+    loadPost();
+  }, [shareSuccess,filter]);
+
+  window.onscroll = () => {
+    if (error || loading || posts.length == postCount) return;
+  
+    const isScrolledToBottom =
+      window.innerHeight + document.documentElement.scrollTop ===
+      document.documentElement.offsetHeight;
+  
+    if (isScrolledToBottom) {
+      loadPost();
+    }
+  };
+  
 
   return (
-    <>
-      <Post post={allPost} loading={loading} fetchPost={fetchPost} />
-    </>
+    <div>
+      <Post post={posts} loading={loading} fetchPost={loadPost} />
+      {loading && <p>Loading...</p>}
+      {!loading && postCount === posts.length && <p>No more posts.</p>}
+    </div>
   );
-}
+};
+
+export default UserPost;

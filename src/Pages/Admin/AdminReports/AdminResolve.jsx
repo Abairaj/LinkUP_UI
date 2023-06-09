@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState ,useEffect} from "react";
 import {
   Avatar,
   Button,
@@ -10,15 +10,17 @@ import {
 import "./adminreports.scss";
 import axiosInstance from "../../../AxiosQueries/axosInstance";
 
-function ResolveReport({ report,fetchReport }) {
+function ResolveReport({ report, fetchReport }) {
   const [open, setOpen] = useState(false);
-  const [banned,setBanned] = useState(false);
+  const [banned, setBanned] = useState(false);
 
+  const fetchReportMemoized = useCallback(() => {
+    fetchReport();
+  }, [banned]);
 
-
-  useCallback(
-    fetchReport()
-  ,[banned])
+  useEffect(() => {
+    fetchReportMemoized();
+  }, [fetchReportMemoized]);
 
   const togglePopup = () => {
     setOpen(!open);

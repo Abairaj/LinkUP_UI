@@ -18,8 +18,6 @@ import Login from "./Pages/Login/Login";
 import Register from "./Pages/Register/Register";
 import Preloader from "./Components/Preloader/Preloader";
 import EditProfile from "./Components/EditProfile/EditProfile";
-import Videos from "./Components/Videos/VIdeos";
-import Explore from "./Components/Explore/Explore";
 import AdminHome from "./Pages/Admin/adminHome/AdminHome";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
@@ -27,6 +25,9 @@ import Chattapp from "./Components/ChatPage/Chattapp";
 import VerifyOTP from "./Components/OTP/VerifyOTP";
 import VideoCall from "./Components/VedioCall/VedioCall";
 import VideoCallAgora from "./Components/VedioCall/vedioCallAgora";
+import VedioCallWebrtc from "./Components/VedioCall/vedioCallWebrtc";
+import ZegocloudVideo from "./Components/VedioCall/ZegocloudVideo";
+import UserPost from "./Components/UserPost/UserPost";
 function App() {
   const user = useSelector((state) => state.user);
   const [currentUser, setCurrentUser] = useState(false);
@@ -124,11 +125,11 @@ function App() {
         },
         {
           path: "/reels",
-          element: <Videos />,
+          element: <UserPost reels={true} />,
         },
         {
           path: "/explore",
-          element: <Explore />,
+          element: <UserPost explore={true} />,
         },
       ],
     },
@@ -167,12 +168,24 @@ function App() {
       element: <Chattapp />,
     },
     {
-      path: "/video_call",
+      path: "/video_call/:id",
       element: <VideoCallAgora />,
     },
     {
       path: "/verify_otp",
       element: <VerifyOTP />,
+    },
+    {
+      path: "/video_call_web",
+      element: <VideoCall />,
+    },
+    {
+      path: "/test",
+      element: <VedioCallWebrtc />,
+    },
+    {
+      path: "/zego/:roomId",
+      element: <ZegocloudVideo />,
     },
     {
       path: "*",

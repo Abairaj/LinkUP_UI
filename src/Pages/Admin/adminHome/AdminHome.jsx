@@ -12,7 +12,6 @@ export default function AdminHome() {
             <h5>1453</h5>
         </Box>
 
-
         <Box className="user_statistics_item" >
             <h1>Users Online</h1>
             <h5>1453</h5>

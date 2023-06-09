@@ -28,9 +28,9 @@ const Home = () => {
   }, [userInfo]);
   return (
     <div className="home">
-      <Stories />
+      {/* <Stories /> */}
       <Share />
-      <UserPost />
+      <UserPost home = {true} />
     </div>
   );
 };

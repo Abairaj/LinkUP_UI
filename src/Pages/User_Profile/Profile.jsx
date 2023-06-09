@@ -81,11 +81,11 @@ const Profile = ({ myprofile }) => {
             <div className="user_info">
               <div className="item">
                 <p>Followers</p>
-                <span>{`0`}</span>
+                <span>{user?.followers?.length || 0}</span>
               </div>
               <div className="item">
                 <p>Following</p>
-                <span>{`0`}</span>
+                <span>{user?.following?.length || 0}</span>
               </div>
             </div>
             <div className="buttons">

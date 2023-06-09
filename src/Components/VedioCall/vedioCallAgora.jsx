@@ -16,7 +16,7 @@ function VideoCallAgora() {
   const [isMicMuted, setIsMicMuted] = useState(false);
   const localVideoRef = useRef(null);
   const remoteVideoRef = useRef(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const user = useSelector((state) => state.user);
   const userId = uuidv4() + user.id;
 
@@ -31,9 +31,6 @@ function VideoCallAgora() {
       localVideoTrack.play(localVideoRef.current);
     }
   }, [localVideoTrack]);
-
-
-
 
   function joinVideoCall() {
     // Join the video call
@@ -105,7 +102,6 @@ function VideoCallAgora() {
         console.log("Error subscribing to remote user:", error);
       });
   }
-
 
   function cancelCall() {
     if (client) {

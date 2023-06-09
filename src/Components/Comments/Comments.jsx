@@ -7,6 +7,7 @@ import {
   useFetchCommentQuery,
 } from "../../Redux/Query/CommentQuery";
 import { useNavigate } from "react-router-dom";
+import { getDuration } from "../helpers";
 
 const Comments = ({ post }) => {
   const user = useSelector((state) => state.user);
@@ -35,13 +36,13 @@ const Comments = ({ post }) => {
     })
       .unwrap()
       .then((response) => {
-        alert("Comment added successfully");
+        console.log(response)
         setCommentContent("");
         // Refresh comments after successful creation
         refetchComments();
       })
       .catch((error) => {
-        alert(error);
+        console.log(error)
       });
   };
 
@@ -82,14 +83,14 @@ const Comments = ({ post }) => {
         <>
           {commentsData.slice(0, visibleComments).map((comment) => (
             <div className="comment" key={comment.comment_id}>
-              <img src={`${API_URL}/${comment.user.profile}`} alt="" />
+              <img src={comment.user.profile} alt="" />
               <div className="info">
                 <span onClick={() => navigate(`/profile/${comment.user.id}`)}>
                   {comment.user.username}
                 </span>
                 <p>{comment.content}</p>
               </div>
-              <span className="date">1 hour ago</span>
+              <span className="date"> {getDuration(comment.created_at)}</span>
             </div>
           ))}
           {commentsData.length > visibleComments && !showAllComments && (

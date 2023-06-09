@@ -13,17 +13,23 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { useState } from "react";
 import Cookies from "js.cookie";
-const Navbar = () => {
+import { Avatar } from "@mui/material";
+
+const Navbar = ({ admin }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const darkMode = useSelector((state) => state.theme.darkMode);
   const user = useSelector((state) => state.user);
   const [userSearchlist, setuserSearchlist] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
-  const [searchVal, setSearchVal] = useState();
+  const [searchVal, setSearchVal] = useState("");
 
   const searchUser = (key) => {
     setSearchVal(key);
+    if (key === "") {
+      setuserSearchlist([]); // Clear search results when input is empty
+      return;
+    }
     axios
       .get(`${API_URL}/users/user_search/?key=${key}`, {
         headers: { Authorization: `Bearer ${Cookies.get("token")}` },
@@ -32,13 +38,14 @@ const Navbar = () => {
         setuserSearchlist(response.data);
       })
       .catch((error) => {
-        alert(error);
+        console.log(error);
       });
   };
 
   const handleToggle = () => {
     dispatch(toggle());
   };
+
   return (
     <div className="navbar">
       <div className="left">
@@ -50,43 +57,54 @@ const Navbar = () => {
         ) : (
           <DarkModeOutlinedIcon onClick={handleToggle} />
         )}
-        <div className="search">
-          <SearchOutlinedIcon />
-          <input
-            type="text"
-            value={searchVal}
-            onChange={(e) => searchUser(e.target.value)}
-            placeholder="search..."
-          />
-        </div>
-        <div
-          className="search_list"
-          style={{
-            position: "absolute",
-            zIndex: "999",
-            width: "180px",
-            height: "auto",
-          }}
-        >
-          {userSearchlist.length > 0
-            ? userSearchlist.map((user) => {
-                <p>{user.username}</p>;
-              })
-            : ""}
-        </div>
+
+        {!admin && (
+          <div className="search">
+            <SearchOutlinedIcon />
+            <input
+              type="text"
+              value={searchVal}
+              onChange={(e) => searchUser(e.target.value)}
+              placeholder="Search..."
+            />
+
+            <div className="search_list">
+              {userSearchlist.length > 0 && (
+                <div className="search-suggestions">
+                  {userSearchlist.map((user) => (
+                    <div
+                      onClick={() => navigate(`/profile/${user.id}`)}
+                      key={user.id}
+                      className="user_info"
+                    >
+                      {user.profile ? (
+                        <Avatar src={user.profile} />
+                      ) : (
+                        <Avatar>{user.username[0]}</Avatar>
+                      )}
+                      <p key={user.id}>{user.username}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </div>
       <div className="right">
-        <PersonOutlineOutlinedIcon />
+        {/* <PersonOutlineOutlinedIcon />
         <EmailOutlinedIcon />
-        <NotificationsOutlinedIcon />
+        <NotificationsOutlinedIcon /> */}
         <Link
           to={`my_profile/${user.full_name}`}
           style={{ cursor: "pointer", textDecoration: "none" }}
         >
-          <div className="user">
-            <img src={user.profile} alt="" />
-            <span style={{ textDecoration: "none" }}>{user.username}</span>
-          </div>
+          {!admin && (
+            <div className="user">
+              <img src={user.profile} alt="" />
+              <span>{user.username}</span>
+            </div>
+          )}
         </Link>
       </div>
     </div>

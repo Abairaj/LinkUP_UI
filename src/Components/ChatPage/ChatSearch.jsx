@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChatSearch = () => {
+const ChatSearch = ({usr}) => {
   return (
     <div className="chatSearch">
       <div className="searchForm">
