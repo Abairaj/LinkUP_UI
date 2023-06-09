@@ -71,7 +71,7 @@ export default function AdminReports() {
                       </React.Fragment>
                     }
                   />
-                  <ResolveReport report={obj} fetchReport={fetchReports} />
+                  <ResolveReport  report={obj} fetchReport={fetchReports} />
                 </ListItem>
               );
             })

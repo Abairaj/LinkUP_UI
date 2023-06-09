@@ -1,13 +1,13 @@
-import React from "react";
-import { useEffect,useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Preloader from "../Preloader/Preloader";
 import axiosInstance from "../../AxiosQueries/axosInstance";
 import Cookies from 'js.cookie';
 import { Navigate } from "react-router-dom";
+
 const ProtectedRoute = ({ children }) => {
   const user = useSelector((state) => state.user);
-  const [currentUser, setCurrentUser] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [loading, setLoading] = useState(true);
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -18,14 +18,13 @@ const ProtectedRoute = ({ children }) => {
       })
       .then((response) => {
         if (response) {
-          setCurrentUser(true);
-          setLoading(false);
+          setIsAuthenticated(true);
         } else {
-          setCurrentUser(false);
+          setIsAuthenticated(false);
         }
       })
       .catch((error) => {
-        setCurrentUser(false);
+        setIsAuthenticated(false);
       })
       .finally(() => {
         setLoading(false);
@@ -38,10 +37,10 @@ const ProtectedRoute = ({ children }) => {
 
   return loading ? (
     <Preloader />
-  ) : currentUser ? (
+  ) : isAuthenticated ? (
     children
   ) : (
-    <Navigate to="/login" replace />
+    <Navigate to="/" replace />
   );
 };
 

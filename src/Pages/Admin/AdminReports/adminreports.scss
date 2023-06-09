@@ -81,10 +81,15 @@
     border-color: black;
   }
 
-  .resolved_btn {
+
+  .action_btn{
     margin-top: 5px;
+    display: flex;
+    gap: 18px;
     position: absolute;
     bottom: 0;
     right: 0;
   }
+
+
 }

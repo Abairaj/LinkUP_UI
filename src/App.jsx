@@ -156,6 +156,10 @@ function App() {
       element: <ZegocloudVideo />,
     },
     {
+      path: "/preloader",
+      element: <Preloader />,
+    },
+    {
       path: "*",
       element: <Navigate to="/" replace />,
     },

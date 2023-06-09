@@ -1,4 +1,4 @@
-import React, { useCallback, useState ,useEffect} from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   Avatar,
   Button,
@@ -9,14 +9,42 @@ import {
 } from "@mui/material";
 import "./adminreports.scss";
 import axiosInstance from "../../../AxiosQueries/axosInstance";
+import ConfirmPopup from "../../../Components/confirm_popup/confirmPopup";
 
 function ResolveReport({ report, fetchReport }) {
   const [open, setOpen] = useState(false);
-  const [banned, setBanned] = useState(false);
+  const [change, setChange] = useState(false);
+
+  const handleDelete = (post_id) => {
+    axiosInstance
+      .patch(`report/delete_post/${post_id}`)
+      .then((response) => {
+        if (response) {
+          console.log(response);
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      setChange(!change)
+  };
+
+  const handleResoveReport = (report_id) => {
+    axiosInstance
+      .patch(`report/`, { report_id: report_id })
+      .then((response) => {
+        console.log(response);
+        setChange(!change);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      
+  };
 
   const fetchReportMemoized = useCallback(() => {
     fetchReport();
-  }, [banned]);
+  }, [change]);
 
   useEffect(() => {
     fetchReportMemoized();
@@ -32,7 +60,7 @@ function ResolveReport({ report, fetchReport }) {
       .patch(`/admin/block_unblock_user/${id}`, formData)
       .then((response) => {
         console.log(response.data.message);
-        setBanned(!banned);
+        setChange(!change);
       });
   };
 
@@ -139,9 +167,22 @@ function ResolveReport({ report, fetchReport }) {
                 <p>{report.reason}</p>
               </div>
 
-              <Button className="resolved_btn" variant="outlined">
-                Resolved
-              </Button>
+              <div className="action_btn">
+                <ConfirmPopup
+                  post_id={report.post.post_id}
+                  func={handleDelete}
+                  color={"red"}
+                  name={"Delete Post"}
+                  content={"Are you sure about deleting the post."}
+                />
+
+                <Button
+                  onClick={() => handleResoveReport(report.id)}
+                  variant="outlined"
+                >
+                  Resolved
+                </Button>
+              </div>
             </Grid>
           </Grid>
         </DialogContent>
