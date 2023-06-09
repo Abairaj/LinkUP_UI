@@ -1,50 +1,62 @@
 import "./navbar.scss";
-import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
-import GridViewOutlinedIcon from "@mui/icons-material/GridViewOutlined";
-import WbSunnyOutlinedIcon from "@mui/icons-material/WbSunnyOutlined";
-import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
-import { toggle } from "./../../Redux/Slice/DarkModeSlice";
-import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
+import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { useState } from "react";
-import Cookies from "js.cookie";
 import { Avatar } from "@mui/material";
+import debounce from "lodash.debounce";
+import { toggle } from "./../../Redux/Slice/DarkModeSlice";
+import {
+  HomeOutlined,
+  DarkModeOutlined,
+  SearchOutlined,
+  WbSunnyOutlined,
+  NotificationsOutlined,
+  EmailOutlined,
+  PersonOutlineOutlined,
+} from "@mui/icons-material";
 
 const Navbar = ({ admin }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const darkMode = useSelector((state) => state.theme.darkMode);
   const user = useSelector((state) => state.user);
-  const [userSearchlist, setuserSearchlist] = useState([]);
+  const [userSearchlist, setUserSearchList] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
   const [searchVal, setSearchVal] = useState("");
 
-  const searchUser = (key) => {
-    setSearchVal(key);
+  const handleSearch = (key) => {
     if (key === "") {
-      setuserSearchlist([]); // Clear search results when input is empty
+      setUserSearchList([]);
       return;
     }
     axios
-      .get(`${API_URL}/users/user_search/?key=${key}`, {
-        headers: { Authorization: `Bearer ${Cookies.get("token")}` },
-      })
+      .get(`${API_URL}/users/user_search/?key=${key}`)
       .then((response) => {
-        setuserSearchlist(response.data);
+        setUserSearchList(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
+  const debouncedSearch = useMemo(() => debounce(handleSearch, 700), []);
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchVal(value);
+    debouncedSearch(value);
+  };
+
   const handleToggle = () => {
     dispatch(toggle());
   };
+
+  useEffect(() => {
+    return () => {
+      debouncedSearch.cancel();
+    };
+  }, [debouncedSearch]);
 
   return (
     <div className="navbar">
@@ -53,18 +65,18 @@ const Navbar = ({ admin }) => {
           <span>LinkUp</span>
         </Link>
         {darkMode ? (
-          <WbSunnyOutlinedIcon onClick={handleToggle} />
+          <WbSunnyOutlined onClick={handleToggle} />
         ) : (
-          <DarkModeOutlinedIcon onClick={handleToggle} />
+          <DarkModeOutlined onClick={handleToggle} />
         )}
 
         {!admin && (
           <div className="search">
-            <SearchOutlinedIcon />
+            <SearchOutlined />
             <input
               type="text"
               value={searchVal}
-              onChange={(e) => searchUser(e.target.value)}
+              onChange={handleSearchChange}
               placeholder="Search..."
             />
 
