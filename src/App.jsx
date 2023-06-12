@@ -7,7 +7,6 @@ import {
   Navigate,
 } from "react-router-dom";
 
-
 import Navbar from "./Components/Navbar/Navbar";
 import LeftBar from "./Components/leftBar/LeftBar";
 import RightBar from "./Components/rightBar/RightBar";
@@ -20,21 +19,19 @@ import EditProfile from "./Components/EditProfile/EditProfile";
 import AdminHome from "./Pages/Admin/adminHome/AdminHome";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
-import Chattapp from "./Components/ChatPage/Chattapp";
 import VerifyOTP from "./Components/OTP/VerifyOTP";
 import VideoCall from "./Components/VedioCall/VedioCall";
-import VideoCallAgora from "./Components/VedioCall/vedioCallAgora";
-import VedioCallWebrtc from "./Components/VedioCall/vedioCallWebrtc";
-import ZegocloudVideo from "./Components/VedioCall/ZegocloudVideo";
 import UserPost from "./Components/UserPost/UserPost";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
-
-
+import { AlertProvider } from "./context/alertContext";
+import { ChatLayout } from "./Components/ChatApp/Layouts";
+import Chat from "./Components/ChatApp/Chat";
+import VedioCall from "./Components/VedioCall/VedioCall";
+import CallAlert from "./Components/VedioCall/Call Alert";
+import { connectWebSocket } from "./socket";
 function App() {
-
+  const user = useSelector(state=>state.user);
   const darkMode = useSelector((state) => state.theme.darkMode);
-
-
   const Layout = () => {
     return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
@@ -50,6 +47,10 @@ function App() {
     );
   };
 
+connectWebSocket();
+
+  
+
   const AdminLayout = () => {
     return (
       <div className={`theme-${darkMode ? "dark" : "light"}`}>
@@ -63,8 +64,6 @@ function App() {
       </div>
     );
   };
-
-  
 
   const router = createBrowserRouter([
     {
@@ -115,10 +114,25 @@ function App() {
         },
         {
           path: "admin_reports",
-          element: <AdminReports />,
+          element: (
+            <AlertProvider>
+              <AdminReports />
+            </AlertProvider>
+          ),
         },
       ],
     },
+    {
+      path: "/chat",
+      element: <ChatLayout />,
+      children: [
+        {
+          path: ":id",
+          element: <Chat />,
+        },
+      ],
+    },
+    ,
     {
       path: "/admin",
       element: <Login admin={true} />,
@@ -131,33 +145,24 @@ function App() {
       path: "/register",
       element: <Register />,
     },
-    {
-      path: "/chat",
-      element: <Chattapp />,
-    },
-    {
-      path: "/video_call/:id",
-      element: <VideoCallAgora />,
-    },
+
     {
       path: "/verify_otp",
       element: <VerifyOTP />,
     },
     {
-      path: "/video_call_web",
-      element: <VideoCall />,
+      path: "/video_call_web/:id",
+      element: <VedioCall />,
     },
-    {
-      path: "/test",
-      element: <VedioCallWebrtc />,
-    },
-    {
-      path: "/zego/:roomId",
-      element: <ZegocloudVideo />,
-    },
+   
+  
     {
       path: "/preloader",
       element: <Preloader />,
+    },
+    {
+      path: "/sound",
+      element: <CallAlert/>,
     },
     {
       path: "*",
@@ -165,10 +170,7 @@ function App() {
     },
   ]);
 
-  return (
-    <RouterProvider router={router}>
-    </RouterProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

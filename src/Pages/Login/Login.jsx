@@ -6,7 +6,7 @@ import { useState } from "react";
 import Cookies from "js.cookie";
 import { userData } from "../../Redux/Slice/UserProfileSlice";
 import { useDispatch } from "react-redux";
-import axiosInstance from './../../AxiosQueries/axosInstance'
+import axiosInstance from "../../axosInstance";
 
 const Login = ({ admin }) => {
   const API_URL = import.meta.env.VITE_API_URL;

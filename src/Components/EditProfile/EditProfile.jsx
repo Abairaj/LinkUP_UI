@@ -13,7 +13,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import axios from "axios";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 
 export default function EditProfile() {
   const ApiURL = import.meta.env.VITE_API_URL;

@@ -8,6 +8,8 @@ import Cookies from "js.cookie";
 import { userData } from "../../Redux/Slice/UserProfileSlice";
 import { useEffect } from "react";
 const Home = () => {
+  const user = useSelector(state=>state.user)
+
   const mode = useSelector((state) => state.theme.darkMode);
   const {
     data: userInfo,

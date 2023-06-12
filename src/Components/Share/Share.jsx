@@ -9,7 +9,7 @@ import axios from "axios";
 import Cookies from "js.cookie";
 import { useDispatch } from "react-redux";
 import { shareStatus } from "../../Redux/Slice/ShareSuccessSlice";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 
 const Share = () => {
   const user = useSelector((state) => state.user);

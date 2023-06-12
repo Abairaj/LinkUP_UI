@@ -12,7 +12,7 @@ import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
 import NotificationsNoneOutlinedIcon from "@mui/icons-material/NotificationsNoneOutlined";
 import { useNavigate } from "react-router-dom";
 import { clearCookies } from "../helpers";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 import { useEffect } from "react";
 
 const LeftBar = ({ Is_admin }) => {

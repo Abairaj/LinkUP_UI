@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useCallback, useState, useEffect, useContext } from "react";
 import {
   Avatar,
   Button,
@@ -6,14 +6,19 @@ import {
   DialogContent,
   Divider,
   Grid,
+  Alert,
+  AlertTitle,
 } from "@mui/material";
 import "./adminreports.scss";
-import axiosInstance from "../../../AxiosQueries/axosInstance";
+import axiosInstance from "../../../axosInstance";
 import ConfirmPopup from "../../../Components/confirm_popup/confirmPopup";
+import { AlertContext } from "../../../context/alertContext";
 
 function ResolveReport({ report, fetchReport }) {
   const [open, setOpen] = useState(false);
   const [change, setChange] = useState(false);
+  const [success, setSuccess] = useState(false);
+  const {successAlert, showSuccessAlert} = useContext(AlertContext);
 
   const handleDelete = (post_id) => {
     axiosInstance
@@ -25,8 +30,12 @@ function ResolveReport({ report, fetchReport }) {
       })
       .catch((error) => {
         console.log(error);
+        if (error.status === 304) {
+          setSuccess(True);
+          showSuccessAlert();
+        }
       });
-      setChange(!change)
+    setChange(!change);
   };
 
   const handleResoveReport = (report_id) => {
@@ -39,7 +48,6 @@ function ResolveReport({ report, fetchReport }) {
       .catch((error) => {
         console.log(error);
       });
-      
   };
 
   const fetchReportMemoized = useCallback(() => {
@@ -66,6 +74,12 @@ function ResolveReport({ report, fetchReport }) {
 
   return (
     <div className="resolve_btn">
+      {successAlert && (
+        <Alert severity="success">
+          <AlertTitle>Success</AlertTitle>
+          This is a success alert — <strong>check it out!</strong>
+        </Alert>
+      )}
       <Button onClick={togglePopup}>Resolve</Button>
 
       <Dialog open={open} onClose={togglePopup} maxWidth="md">

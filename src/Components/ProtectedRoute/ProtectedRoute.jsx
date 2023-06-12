@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Preloader from "../Preloader/Preloader";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 import Cookies from 'js.cookie';
 import { Navigate } from "react-router-dom";
 

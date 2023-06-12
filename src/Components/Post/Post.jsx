@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import { Avatar } from "@mui/material";
 import { getDuration } from "../helpers";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 import { useSelector } from "react-redux";
 import Comp from "./moreComp";
 

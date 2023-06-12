@@ -13,7 +13,7 @@ import {
   Button,
   TextField,
 } from "@mui/material";
-import axiosInstance from "../../../AxiosQueries/axosInstance";
+import axiosInstance from "../../../axosInstance";
 
 const Usertable = () => {
   const API_URL = import.meta.env.VITE_API_URL;

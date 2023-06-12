@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import ReportReason from "../ReportReason/ReportReason";
 import Cookies from "js.cookie";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 
 function Comp({ post_id, user }) {
   const API_URL = import.meta.env.VITE_API_URL;

@@ -10,7 +10,7 @@ import male_contact from "../../assets/malecontact.png";
 import female_contact from "../../assets/femalecontact.png";
 import contact from "../../assets/contact.png";
 import { useEffect, useState } from "react";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 import Cookies from "js.cookie";
 import ProfilePosts from "./ProfilePosts";
 

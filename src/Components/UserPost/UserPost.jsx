@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import axiosInstance from "../../AxiosQueries/axosInstance";
+import axiosInstance from "../../axosInstance";
 import Post from "../Post/Post";
 import { useSelector } from "react-redux";
 

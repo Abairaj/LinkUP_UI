@@ -7,7 +7,7 @@ import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
 import { Button } from "@mui/material";
-import axiosInstance from "../../../AxiosQueries/axosInstance";
+import axiosInstance from "../../../axosInstance";
 import "./adminreports.scss";
 import ResolveReport from "./AdminResolve";
 
