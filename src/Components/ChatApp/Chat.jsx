@@ -28,7 +28,10 @@ const Chat = () => {
   const room_name = user.id * id;
   const socket = useSocket();
   const navigate = useNavigate();
+  const [message, setMessage] = useState("");
 
+
+  // fetching user data for the chat recievers info
   const fetchUserData = () => {
     axiosInstance
       .get(`users/user_profile/${id}`)
@@ -41,12 +44,11 @@ const Chat = () => {
       });
   };
 
+  // sending call request to the backend
   const handleSubmit = useCallback(() => {
     navigate(`/video_call_web/${id}`)
-    // navigate(`/call_alert`)
 
     socket.send(
-      // JSON.stringify({ event: "join:room", email: user.email, room: user.id })
       JSON.stringify({event:'join:room',rec_user_id:id,sender_user_id:user.id,email:user.email})
     );
 
@@ -57,49 +59,39 @@ const Chat = () => {
 useEffect(()=>{
   fetchUserData();
 },[id])
-socket.onmessage = (event) => {
-  const message = JSON.parse(event.data).message;
-  if(message.event === 'join_room'){
-    navigate(`/call_alert/${id}`)
-    console.log('lllllllllllllhhhhhhhhhhhhhhhhhhhhhhh')
-
-  }
-  // navigate(`/video_call_web/${id}`)
 
 
 
-};
 
-  const handleJoinRoom = useCallback((data)=>{
-    const{email,user_id} = data;
-    navigate(`/video_call_web/${user_id}`)
-    
-  },[navigate])
 
   useEffect(() => {
     socket.onopen = ()=>{
       console.log('socket connected')
     }
     return () => {
-      // socket.close();
     };
   }, [socket]);
 
-  // Listen for messages
-  socket.addEventListener("message", function (event) {
+  // Listen for messages from remote uder
+  socket.onmessage = (event)=>{
     const recievedMessage = JSON.parse(event.data).message;
-    console.log(recievedMessage, "////////////");
+    if (recievedMessage.event === 'chatmessage'){
+    console.log(recievedMessage.content, "////////////");
     setMessages((prevMessages) => {
-      return [...prevMessages, recievedMessage];
-    });
-  });
+      return [...prevMessages, {local:false,message:recievedMessage.content}];
+  })};}
 
-  const [message, setMessage] = useState("");
+  // sendig message to remote user
   const sendMessageHandler = (e) => {
+    setMessages((prevMessages)=>{
+      return [...prevMessages,{local:true,message:message}]
+    })
     e.preventDefault();
-    socket.send(JSON.stringify({ message: message }));
+    socket.send(JSON.stringify({event:'chat', message: message,from:user.id,to:id }));
     setMessage("");
   };
+
+ 
   return (
     <div className="chat">
       <div className="pannel">
@@ -118,10 +110,19 @@ socket.onmessage = (event) => {
             <VideoCallOutlinedIcon onClick={handleSubmit} />
           </div>
         </div>
+        <div className="messagespmessagesace" style={{ display: 'flex', flexDirection: 'column', justifyContent:'end' }}>
+          {console.log(messages,'[jhgj')}
+          {messages.map((msg,i) => (
+  <React.Fragment key={i}>
+    {/* {console.log(msg)} */}
+    <Messages message={msg} />
+  </React.Fragment>
+))}
+        </div>
 
         <div className="send_input">
-          <input type="text" placeholder="send message..." />
-          <button>send</button>
+          <input type="text" value={message} onChange={(e)=>setMessage(e.target.value)} placeholder="send message..." />
+          <button onClick={sendMessageHandler}>send</button>
         </div>
       </div>
     </div>

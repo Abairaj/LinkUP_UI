@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom"
-import ChatApp from "./ChatApp"
+import ChatApp from "./ChatApp";
+import { TriggerCall } from "./Triggercall";
 
 export const ChatLayout = ()=>{
     return(
@@ -9,6 +10,8 @@ export const ChatLayout = ()=>{
         </div>
         <div className="chatpannel">
             <Outlet/>
+            <TriggerCall/>
+            
         </div>
         </div>
     )

@@ -1,8 +1,10 @@
 @import "../../styles.scss";
 
 .chat {
+
   width: 100%;
   .pannel {
+    position: relative;
     min-width: 60vw;
     height: 100vh;
     border: 1px solid black;
@@ -35,16 +37,25 @@
       }
     }
 
+   
     .send_input {
+      position: absolute;
       bottom: 0;
       left: 0;
+      display: flex;
+      width: 100%;
 
-      input{
-        padding: 8px;
+      input {
+        padding: 12px;
+        width: 100%;
       }
 
-      button{
-
+      button {
+        background-color: blue;
+        color: white;
+        padding-left: 15px;
+        padding-right: 15px;
+        cursor: pointer;
       }
     }
   }
