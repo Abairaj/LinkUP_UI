@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -6,58 +6,54 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Sound from 'react-sound';
-import ringtone from '../../assets/Whatsapp.mp3';
-
-const CallAlert = ({ username }) => {
-  const [playSound, setPlaySound] = useState(false);
-  const handleEvent = () => {
-    setPlaySound(true);
-  };
-
-  useEffect(() => {
-    handleEvent();
-    setOpen(true);
-  }, []);
-
-  const [open, setOpen] = React.useState(false);
-
+import ringtone from '../.././assets/Whatsapp.mp3';
+import { useNavigate, useParams } from 'react-router-dom';
+export default function CallAlert() {
+  const [open, setOpen] = React.useState(true);
+  const [ring,setRing] = React.useState(true);
+  const navigate = useNavigate();
+  const {id} = useParams()
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
+    navigate(`/video_call_web/${id}`)
   };
+
+  React.useEffect(()=>{
+    setTimeout(() => {
+      setOpen(false)
+      // setRing(false);
+    }, 5000);
+  })
 
   return (
     <div>
-      <Sound
-        url={ringtone}
-        playStatus={playSound ? Sound.status.PLAYING : Sound.status.STOPPED}
-        playFromPosition={300 /* in milliseconds */}
-      />
-
-      {/* <Dialog
+<Sound url={ringtone} playStatus={ring ? Sound.status.PLAYING : Sound.status.STOPPED} />
+      <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">Incoming Call</DialogTitle>
+        <DialogTitle id="alert-dialog-title">
+          {"Use Google's location service?"}
+        </DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description">
-            {username} is calling you.
+            Let Google help apps determine location. This means sending anonymous
+            location data to Google, even when no apps are running.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Reject</Button>
+          <Button onClick={handleClose}>Disagree</Button>
           <Button onClick={handleClose} autoFocus>
-            Answer
+            Agree
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
     </div>
   );
-};
-
-export default CallAlert;
+}

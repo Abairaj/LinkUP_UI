@@ -1,0 +1,50 @@
+@import "../../styles.scss";
+
+.chat {
+  .pannel {
+    min-width: 30vw;
+    min-height: 50vh;
+    border: 1px solid black;
+    .user_info_head {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      border: 1px solid black;
+      padding: 10px;
+
+      .user_bar {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+
+        .avatar {
+          font-size: 20px;
+        }
+      }
+
+      .user_det {
+        gap: 5px;
+        p {
+          margin-bottom: 2px;
+        }
+      }
+
+      .head_icons {
+        padding: 5px;
+      }
+    }
+
+    .send_input {
+      bottom: 0;
+      left: 0;
+
+      input{
+        padding: 8px;
+      }
+
+      button{
+
+      }
+    }
+  }
+}

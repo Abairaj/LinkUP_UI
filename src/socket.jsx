@@ -2,11 +2,9 @@ import Cookies from 'js.cookie';
 import CallAlert from './Components/VedioCall/Call Alert';
 import ringtone from "./assets/Whatsapp.mp3"
 
-
 let socket = null;
-let messageCallback = null;
 
-export const connectWebSocket = (callback) => {
+export const connectWebSocket = () => {
   const user_id = Cookies.get('id');
   socket = new WebSocket(`ws://127.0.0.1:8000/userConnect/${user_id}`);
 
@@ -17,24 +15,22 @@ export const connectWebSocket = (callback) => {
 
   socket.onmessage = (event) => {
     const data = JSON.parse(event.data);
-    console.log('Received message:', data);
+    // console.log('Received message:', data);
     const message = data.message;
-    console.log(message, '//////');
+    // console.log(message, '//////');
     const evnt = message.event;
     if (evnt === 'incoming_call') {
-
-      console.log('lllllllll')
-     return (<CallAlert/>)
+      // console.log('lllllllll')
+    //  return (<CallAlert/>)
     }
  
   };
 
   socket.onclose = () => {
-    console.log('WebSocket connection closed');
+    // console.log('WebSocket connection closed');
     // Perform any necessary cleanup or reconnection attempts
   };
 
-  messageCallback = callback;
 };
 
 export const closeWebSocket = () => {
@@ -48,4 +44,26 @@ export const sendMessageToSocket = (data) => {
     socket.send(JSON.stringify(data));
   }
 };
+
+export const messageFromSocket = ()=>{
+  let  datas;
+
+  if(socket){
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      // console.log('Received message:', data);
+      const message = data.message;
+      // console.log(message, '//////');
+      const evnt = message.event;
+      if (evnt === 'incoming_call') {
+      //  return (<CallAlert/>)
+      }
+    
+      datas = data
+    };
+
+  }
+  return datas
+
+}
 

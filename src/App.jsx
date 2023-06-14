@@ -161,7 +161,7 @@ connectWebSocket();
       element: <Preloader />,
     },
     {
-      path: "/sound",
+      path: "/call_alert/:id",
       element: <CallAlert/>,
     },
     {

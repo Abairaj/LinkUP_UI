@@ -13,13 +13,13 @@ const ChatApp = () => {
     <div className="chatusers" style={{ maxWidth: "800px" }}>
       <div className="userlist">
         <List
-          sx={{ width: "100vw",height:'100vh', maxWidth: 600, bgcolor: "background.paper" }}
+          // sx={{ width: "100vw",height:'100vh', maxWidth: 600, bgcolor: "background.paper" }}
         >
           <TextField
-            size="small"
-            placeholder="search User..."
-            type="text"
-            sx={{ width: "100%" }}
+            // size="small"
+            // placeholder="search User..."
+            // type="text"
+            // sx={{ width: "100%" }}
           />
           <ListItem>
             <ListItemAvatar>

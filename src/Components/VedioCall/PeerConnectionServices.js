@@ -12,6 +12,21 @@ if (!this.peer){
 }
     }
 
+    async getAnswer(offer){
+        if(this.peer){
+            await this.peer.setRemoteDescription(offer)
+            const ans = await this.peer.createAnswer()
+            await this.peer.setLocalDescription(new RTCPeerConnection(ans))
+            return ans;
+        }
+    }
+
+    async setLocalDescription(ans){
+        if(this.peer){
+            console.log(ans,'in the peerservide');
+            await this.peer.setRemoteDescription(new RTCSessionDescription(ans));
+        }
+    }
 
     async getOffer(){
         if(this.peer){
