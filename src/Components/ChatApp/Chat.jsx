@@ -22,6 +22,7 @@ const bull = (
 
 const Chat = () => {
   const user = useSelector((state) => state.user);
+  const [users,setUsers] = useState();
   const { id } = useParams();
   const [messages, setMessages] = useState([]);
   const room_name = user.id * id;
@@ -33,6 +34,7 @@ const Chat = () => {
       .get(`users/user_profile/${id}`)
       .then((response) => {
         console.log(response.data);
+        setUsers(response.data)
       })
       .catch((error) => {
         console.log(error);
@@ -52,18 +54,21 @@ const Chat = () => {
   }, []);
 
 
-  socket.onmessage = (event) => {
-    const message = JSON.parse(event.data).message;
-    if(message.event === 'join_room'){
-      navigate(`/call_alert/${id}`)
-      console.log('lllllllllllllhhhhhhhhhhhhhhhhhhhhhhh')
+useEffect(()=>{
+  fetchUserData();
+},[id])
+socket.onmessage = (event) => {
+  const message = JSON.parse(event.data).message;
+  if(message.event === 'join_room'){
+    navigate(`/call_alert/${id}`)
+    console.log('lllllllllllllhhhhhhhhhhhhhhhhhhhhhhh')
 
-    }
-    // navigate(`/video_call_web/${id}`)
+  }
+  // navigate(`/video_call_web/${id}`)
 
 
 
-  };
+};
 
   const handleJoinRoom = useCallback((data)=>{
     const{email,user_id} = data;
@@ -72,7 +77,6 @@ const Chat = () => {
   },[navigate])
 
   useEffect(() => {
-    fetchUserData();
     socket.onopen = ()=>{
       console.log('socket connected')
     }
@@ -105,7 +109,7 @@ const Chat = () => {
               <Avatar className="avatar">A</Avatar>
             </div>
             <div className="user_det">
-              <p>Abai</p>
+              <p>{users&&users.username}</p>
               {/* <span>active</span> */}
             </div>
           </div>
@@ -126,64 +130,3 @@ const Chat = () => {
 
 export default Chat;
 
-{
-  /* <Card className="card">
-<CardContent>
-  <Stack
-    sx={{
-      display: "flex",
-      flexDirection: "row",
-      justifyContent: "space-between",
-      padding: "8px",
-    }}
-  >
-    <Stack sx={{ display: "flex", flexDirection: "row", gap: "5px" }}>
-      <Avatar>A</Avatar>
-      <Typography sx={{ marginTop: "8px" }}>Abai</Typography>
-    </Stack>
-    <Stack
-      className="icons"
-      sx={{ display: "flex", flexDirection: "row" }}
-    >
-      <VideoCallOutlinedIcon sx={{ cursor: "pointer" }} />
-    </Stack>
-  </Stack>
-
-  <Divider />
-  {messages && messages.length > 0
-    ? messages.map((msg, index) => (
-        <Stack
-          key={index}
-          sx={{ width: "90%", marginTop: "30px", padding: "40px" }}
-          className="messages"
-        >
-          <Messages msg={msg} />
-        </Stack>
-      ))
-    : ""}
-</CardContent>
-<CardActions
-  sx={{
-    display: "flex",
-    flexDirection: "row",
-    gap: 3,
-    position: "absolute",
-    bottom: 0,
-    right: 0,
-    width: "90%",
-    margin: "5px",
-  }}
->
-  <TextField
-    value={message}
-    onChange={(e) => setMessage(e.target.value)}
-    sx={{ width: "95%", margin: "2px" }}
-    size="small"
-    placeholder="Send message"
-  />
-  <Button onClick={sendMessageHandler} variant="contained">
-    Send
-  </Button>
-</CardActions>
-</Card> */
-}

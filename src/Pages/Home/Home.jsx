@@ -21,8 +21,8 @@ const Home = () => {
 
   const fetchData = () => {
     refetchUserData(Cookies.get("id"));
-    dispatch(userData(userInfo));
-    console.log(userData);
+    // dispatch(userData(userInfo));
+    console.log(userInfo,';;;;;;;;;;;;;;;')
   };
 
   useEffect(() => {

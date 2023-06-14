@@ -15,6 +15,7 @@ import {
   EmailOutlined,
   PersonOutlineOutlined,
 } from "@mui/icons-material";
+import axiosInstance from "../../axosInstance";
 
 const Navbar = ({ admin }) => {
   const dispatch = useDispatch();
@@ -30,8 +31,8 @@ const Navbar = ({ admin }) => {
       setUserSearchList([]);
       return;
     }
-    axios
-      .get(`${API_URL}/users/user_search/?key=${key}`)
+    axiosInstance
+      .get(`/users/user_search/?key=${key}`)
       .then((response) => {
         setUserSearchList(response.data);
       })

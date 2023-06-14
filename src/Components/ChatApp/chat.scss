@@ -1,9 +1,10 @@
 @import "../../styles.scss";
 
 .chat {
+  width: 100%;
   .pannel {
-    min-width: 30vw;
-    min-height: 50vh;
+    min-width: 60vw;
+    height: 100vh;
     border: 1px solid black;
     .user_info_head {
       display: flex;

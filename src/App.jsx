@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   Navigate,
+  useNavigate,
 } from "react-router-dom";
 
 import Navbar from "./Components/Navbar/Navbar";
@@ -29,8 +30,11 @@ import Chat from "./Components/ChatApp/Chat";
 import VedioCall from "./Components/VedioCall/VedioCall";
 import CallAlert from "./Components/VedioCall/Call Alert";
 import { connectWebSocket } from "./socket";
+import { useSocket } from "./SocketProvider";
+import { TriggerCall } from "./Components/ChatApp/Triggercall";
 function App() {
-  const user = useSelector(state=>state.user);
+  const user = useSelector((state) => state.user);
+  const socket = useSocket();
   const darkMode = useSelector((state) => state.theme.darkMode);
   const Layout = () => {
     return (
@@ -40,6 +44,7 @@ function App() {
           <LeftBar />
           <div style={{ flex: 6 }}>
             <Outlet />
+            <TriggerCall/>
           </div>
           <RightBar />
         </div>
@@ -47,9 +52,7 @@ function App() {
     );
   };
 
-connectWebSocket();
 
-  
 
   const AdminLayout = () => {
     return (
@@ -154,15 +157,14 @@ connectWebSocket();
       path: "/video_call_web/:id",
       element: <VedioCall />,
     },
-   
-  
+
     {
       path: "/preloader",
       element: <Preloader />,
     },
     {
       path: "/call_alert/:id",
-      element: <CallAlert/>,
+      element: <CallAlert />,
     },
     {
       path: "*",
@@ -170,7 +172,10 @@ connectWebSocket();
     },
   ]);
 
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <RouterProvider router={router}>
+    </RouterProvider>
+  );
 }
 
 export default App;
