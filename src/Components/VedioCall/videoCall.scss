@@ -3,12 +3,21 @@
   flex-direction: column;
   gap: 2em;
 
-
   .streams {
     display: flex;
     justify-content: space-around;
 
-   
+    @media (max-width: 540px) {
+      flex-direction: column;
+
+      .mystream {
+        width: 50px;
+      }
+
+      .remotestream {
+        min-width: 20px;
+      }
+    }
   }
 
   .icons {
@@ -19,5 +28,5 @@
       font-size: 40px;
       margin: 5px;
     }
-}
+  }
 }

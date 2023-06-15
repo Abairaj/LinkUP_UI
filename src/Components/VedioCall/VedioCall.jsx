@@ -159,7 +159,7 @@ const VideoCall = () => {
         <div className="remotestream">
           {/* <h1>Remote Stream</h1> */}
           {remoteStream && (
-            <ReactPlayer className="remoteVideo" playing url={remoteStream} />
+            <ReactPlayer className="remoteVideo"  playing url={remoteStream} />
           )}
         </div>
       </div>

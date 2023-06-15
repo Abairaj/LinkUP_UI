@@ -13,6 +13,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../axosInstance";
 import Cookies from "js.cookie";
 import ProfilePosts from "./ProfilePosts";
+import { useFollowUnfollowUserMutation } from "../../Redux/Query/followUnfollowQuery";
 
 const Profile = ({ myprofile }) => {
   const API_URL = import.meta.env.VITE_API_URL;
@@ -21,6 +22,7 @@ const Profile = ({ myprofile }) => {
   const [post, setPost] = useState([]);
   const [userData, setUserData] = useState(null);
   const { id } = useParams();
+  const [updateFollowStatus, result] = useFollowUnfollowUserMutation();
   const user = myprofile ? myProfile : userData;
 
   useEffect(() => {
@@ -48,6 +50,18 @@ const Profile = ({ myprofile }) => {
         setPost(response.data);
       }
     });
+  };
+
+  const updateFollow = (userToFollow) => {
+    const userId = Cookies.get("id");
+    const formData = { user_id: userToFollow };
+    updateFollowStatus({ user_id: userId, formData })
+      .then(() => {
+        fetchUserData(); // Refetch suggestion data after following/unfollowing
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
@@ -89,8 +103,17 @@ const Profile = ({ myprofile }) => {
               </div>
             </div>
             <div className="buttons">
-              {!myprofile && <button>Follow</button>}
-              <button onClick={() => navigate("/profile_edit")}>Edit</button>
+              {user &&
+              user.followers &&
+              user.followers.includes(Cookies.get("id")) ? (
+                <button onClick={() => updateFollow(user.id)}>Unfollow</button>
+              ) : (
+                <button onClick={() => updateFollow(user.id)}>Follow</button>
+              )}
+
+              {user.id == Cookies.get("id") && (
+                <button onClick={() => navigate("/profile_edit")}>Edit</button>
+              )}
             </div>
           </div>
         </div>
