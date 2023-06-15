@@ -48,25 +48,47 @@ const Share = () => {
     // }
     console.log("data loading");
 
-    let formdata = {
-      media_url: media,
-      caption: caption,
-      media_type: media_type,
-      user: Cookies.get("id"),
-    };
-    console.log(formdata);
+    if (media_type == "Video") {
+      let formdata = {
+        video: media,
+        caption: caption,
+        media_type: media_type,
+        user: Cookies.get("id"),
+      };
+      console.log(formdata);
 
-    axiosInstance
-      .post(`/post/create_post/${Cookies.get("id")}`, formdata, {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      })
-      .then((response) => {
-        dispatch(shareStatus());
-        setMedia("");
-        setCaption("");
-      });
+      axiosInstance
+        .post(`/post/create_post/${Cookies.get("id")}`, formdata, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          dispatch(shareStatus());
+          setMedia("");
+          setCaption("");
+        });
+    } else {
+      let formdata = {
+        image: media,
+        caption: caption,
+        media_type: media_type,
+        user: Cookies.get("id"),
+      };
+      console.log(formdata);
+
+      axiosInstance
+        .post(`/post/create_post/${Cookies.get("id")}`, formdata, {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          dispatch(shareStatus());
+          setMedia("");
+          setCaption("");
+        });
+    }
   };
 
   return (

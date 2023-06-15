@@ -34,7 +34,7 @@ const Chat = () => {
   // fetching user data for the chat recievers info
   const fetchUserData = () => {
     axiosInstance
-      .get(`users/user_profile/${id}`)
+      .get(`users/user_profile/${id}?filter='chat`)
       .then((response) => {
         console.log(response.data);
         setUsers(response.data)
@@ -58,6 +58,7 @@ const Chat = () => {
 
 useEffect(()=>{
   fetchUserData();
+  setMessages([])
 },[id])
 
 
@@ -98,7 +99,7 @@ useEffect(()=>{
         <div className="user_info_head">
           <div className="user_bar">
             <div className="user_avatar">
-              <Avatar className="avatar">A</Avatar>
+              <Avatar src={users&&users.profile} className="avatar"/>
             </div>
             <div className="user_det">
               <p>{users&&users.username}</p>
@@ -107,7 +108,7 @@ useEffect(()=>{
           </div>
 
           <div className="head_icons">
-            <VideoCallOutlinedIcon onClick={handleSubmit} />
+            <VideoCallOutlinedIcon sx={{fontSize:'30px'}} onClick={handleSubmit} />
           </div>
         </div>
         <div className="messagespmessagesace" style={{ display: 'flex', flexDirection: 'column', justifyContent:'end' }}>
@@ -119,11 +120,12 @@ useEffect(()=>{
   </React.Fragment>
 ))}
         </div>
-
+<form action="submit">
         <div className="send_input">
           <input type="text" value={message} onChange={(e)=>setMessage(e.target.value)} placeholder="send message..." />
           <button onClick={sendMessageHandler}>send</button>
         </div>
+        </form>
       </div>
     </div>
   );

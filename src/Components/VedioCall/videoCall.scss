@@ -1,14 +1,23 @@
-#videos{
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+.videos {
+  display: flex;
+  flex-direction: column;
   gap: 2em;
 
 
-  .video-player{
-    background-color: black;
-    width: 100%;
-    height: 300px;
-  
-  }
-}
+  .streams {
+    display: flex;
+    justify-content: space-around;
 
+   
+  }
+
+  .icons {
+    align-self: center;
+
+    .icon {
+      cursor: pointer;
+      font-size: 40px;
+      margin: 5px;
+    }
+}
+}

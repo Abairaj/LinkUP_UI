@@ -15,7 +15,12 @@ const UserPost = ({home,explore,reels}) => {
   const filter = home ? 'home' : explore ? 'all' : reels ?'reels':'';
 
   
-  const loadPost = () => {
+  const [like, setLike] = useState(false);
+
+
+
+  const loadPost = (update = null) => {
+    console.log('load post working..............')
 
     axiosInstance
       .get(`/post/posts/${user.id}?filter=${filter}&limit=${limit}&offset=${offset}`)
@@ -26,6 +31,10 @@ const UserPost = ({home,explore,reels}) => {
 
         setPostCount(postCount);
         setLoading(false);
+        if (update = 'like'){
+          setPosts(newPosts)
+
+        }else{
         setPosts((prevPosts) => [
           ...prevPosts,
           ...newPosts.filter(
@@ -33,11 +42,29 @@ const UserPost = ({home,explore,reels}) => {
               !prevPosts.some((post) => post.post_id === newPost.post_id)
           ),
         ]);
+        }
+
         setLimit((prevlimit) => prevlimit + limit);
       })
       .catch((error) => {
         setError(error.message);
         setLoading(false);
+      });
+  };
+
+
+
+  const handleLikeUnlike = (post_id) => {
+    axiosInstance
+      .post(`/post/Post_like/${user.id}`, { post_id: post_id })
+      .then((response) => {
+        if (response) {
+          console.log(response);
+          setLike(!like);
+          loadPost();
+        } else {
+        console.log("error like");
+        }
       });
   };
 
@@ -60,7 +87,7 @@ const UserPost = ({home,explore,reels}) => {
 
   return (
     <div>
-      <Post post={posts} loading={loading} fetchPost={loadPost} />
+      <Post post={posts} loading={loading} handleLikeUnlike={handleLikeUnlike} />
       {loading && <p>Loading...</p>}
       {!loading && postCount === posts.length && <p>No more posts.</p>}
     </div>

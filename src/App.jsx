@@ -23,7 +23,9 @@ import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
 import VerifyOTP from "./Components/OTP/VerifyOTP";
 import VideoCall from "./Components/VedioCall/VedioCall";
 import UserPost from "./Components/UserPost/UserPost";
-import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute";
+import ProtectedRoute, {
+  AdminProtectedRoute,
+} from "./Components/ProtectedRoute/ProtectedRoute";
 import { AlertProvider } from "./context/alertContext";
 import { ChatLayout } from "./Components/ChatApp/Layouts";
 import Chat from "./Components/ChatApp/Chat";
@@ -44,15 +46,13 @@ function App() {
           <LeftBar />
           <div style={{ flex: 6 }}>
             <Outlet />
-            <TriggerCall/>
+            <TriggerCall />
           </div>
           <RightBar />
         </div>
       </div>
     );
   };
-
-
 
   const AdminLayout = () => {
     return (
@@ -105,7 +105,12 @@ function App() {
     },
     {
       path: "/admin_dashboard",
-      element: <AdminLayout />,
+      element: (
+        <AdminProtectedRoute>
+          {" "}
+          <AdminLayout />{" "}
+        </AdminProtectedRoute>
+      ),
       children: [
         {
           path: "", // No need to repeat "admin_dashboard" here
@@ -172,10 +177,7 @@ function App() {
     },
   ]);
 
-  return (
-    <RouterProvider router={router}>
-    </RouterProvider>
-  );
+  return <RouterProvider router={router}></RouterProvider>;
 }
 
 export default App;

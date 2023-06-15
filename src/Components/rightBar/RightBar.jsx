@@ -68,7 +68,7 @@ const RightBar = () => {
                       Unfollow
                     </button>
                   )}
-                  <button>Dismiss</button>
+                  {/* <button>Dismiss</button> */}
                 </div>
               </div>
             ))}

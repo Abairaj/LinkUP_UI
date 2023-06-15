@@ -1,6 +1,7 @@
 .admin_home {
   padding: 4px;
   display: flex;
+  flex-direction: column;
   justify-content: center;
 
   .user_statistics {
@@ -16,5 +17,12 @@
     background-color: black;
     color: white;
     text-align: center;
+  }
+
+  .charts{
+    align-self: center;
+    margin-top: 100px;
+    width: 800px;
+    height: 400px;
   }
 }

@@ -13,21 +13,9 @@ import axiosInstance from "../../axosInstance";
 import { useSelector } from "react-redux";
 import Comp from "./moreComp";
 
-const Post = ({ post, loading, fetchPost }) => {
-  const [like, setLike] = useState(false);
+const Post = ({ post, loading, handleLikeUnlike }) => {
 
-  const handleLikeUnlike = (post_id) => {
-    axiosInstance
-      .post(`/post/Post_like/${user.id}`, { post_id: post_id })
-      .then((response) => {
-        if (response) {
-          alert(response);
-          setLike(!like);
-        } else {
-          alert("error like");
-        }
-      });
-  };
+
 
   const user = useSelector((state) => state.user);
 
@@ -67,9 +55,9 @@ const Post = ({ post, loading, fetchPost }) => {
                 <div className="content">
                   <p>{posts.caption}</p>
                   {posts.media_type === "Image" ? (
-                    <img src={posts.media_url} alt="post" />
+                    <img src={posts.image} alt="post" />
                   ) : (
-                    <video src={posts.media_url} controls autoPlay muted />
+                    <video src={posts.video} controls autoPlay muted />
                   )}
                   <img src="" alt="" />
                 </div>

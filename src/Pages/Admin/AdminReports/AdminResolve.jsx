@@ -18,7 +18,7 @@ function ResolveReport({ report, fetchReport }) {
   const [open, setOpen] = useState(false);
   const [change, setChange] = useState(false);
   const [success, setSuccess] = useState(false);
-  const {successAlert, showSuccessAlert} = useContext(AlertContext);
+  const { successAlert, showSuccessAlert } = useContext(AlertContext);
 
   const handleDelete = (post_id) => {
     axiosInstance
@@ -180,15 +180,20 @@ function ResolveReport({ report, fetchReport }) {
               <div className="report_reason">
                 <p>{report.reason}</p>
               </div>
+              <div className="post_status">
+                <p>{report.post.deleted ? "Post Deleted" : ""}</p>
+              </div>
 
               <div className="action_btn">
-                <ConfirmPopup
-                  post_id={report.post.post_id}
-                  func={handleDelete}
-                  color={"red"}
-                  name={"Delete Post"}
-                  content={"Are you sure about deleting the post."}
-                />
+                {!report.post.deleted && (
+                  <ConfirmPopup
+                    post_id={report.post.post_id}
+                    func={handleDelete}
+                    color={"red"}
+                    name={"Delete Post"}
+                    content={"Are you sure about deleting the post."}
+                  />
+                )}
 
                 <Button
                   onClick={() => handleResoveReport(report.id)}

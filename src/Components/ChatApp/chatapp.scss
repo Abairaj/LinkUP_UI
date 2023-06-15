@@ -2,13 +2,21 @@
     min-width: 40vh;
     height: 100vh;
     border: 1px solid black;
+    border-top-left-radius: 32px;
+    border-bottom-left-radius: 32px;
+
 
 
     .userlist{
+        text-align: center;
 
         input{
-            padding: 10px;
-            width: 93%;
+            margin-top: 5px;
+            margin-right: 2px;
+            padding: 15px;
+            width: 88%;
+            border-radius: 32px;
+
         }
 
         

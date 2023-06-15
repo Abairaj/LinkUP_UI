@@ -29,7 +29,7 @@ const ChatApp = () => {
 
   const fetchUserData = () => {
     axiosInstance
-      .get(`users/user_profile/${user.id}`)
+      .get(`users/user_profile/${user.id}?filter=chat`)
       .then((response) => {
         console.log(response.data);
         setUsers(response.data)
@@ -70,6 +70,7 @@ const ChatApp = () => {
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
+  
 
   return (
     <div className="chatusers">
@@ -83,8 +84,8 @@ const ChatApp = () => {
         {userSearchlist.length > 0
           ? userSearchlist.map((usr) => {
               return (
-                <List key={usr.id}>
-                  <ListItem>
+                <List key={usr.id} onClick={()=>navigate(`/chat/${usr.id}`)}>
+                  <ListItem sx={{cursor:'pointer'}}>
                     <ListItemAvatar>
                       <Avatar src={usr.profile}>
                         <AccountCircleIcon />
@@ -101,7 +102,7 @@ const ChatApp = () => {
           :users && users.following.map((usr) => {
               return (
                 <List key={usr.id} onClick={()=>navigate(`/chat/${usr.id}`)}>
-                  <ListItem>
+                  <ListItem sx={{cursor:'pointer'}}>
                     <ListItemAvatar>
                       <Avatar src={usr.profile}>
                         <AccountCircleIcon />

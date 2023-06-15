@@ -21,8 +21,7 @@ const LeftBar = ({ Is_admin }) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-
-    navigate('/login');
+    navigate("/login");
     clearCookies();
     axiosInstance
       .post("users/logout/")
@@ -35,8 +34,6 @@ const LeftBar = ({ Is_admin }) => {
         console.log(error);
       });
   };
-
-  
 
   return (
     <div className="leftBar">
@@ -77,6 +74,14 @@ const LeftBar = ({ Is_admin }) => {
                   Reports
                 </span>
               </div>
+              <div
+                onClick={handleLogout}
+                style={{ cursor: "pointer" }}
+                className="item"
+              >
+                <LogoutOutlinedIcon />
+                <span>Logout</span>
+              </div>
             </>
           ) : (
             <>
@@ -107,17 +112,17 @@ const LeftBar = ({ Is_admin }) => {
 
               <div
                 style={{ cursor: "pointer" }}
-                onClick={() => navigate("/chat")}
+                onClick={() => navigate("/chat/2")}
                 className="item"
               >
                 <img src={messages_icon} alt="" />
                 <span>Chat</span>
               </div>
-
+              {/* 
               <div className="item">
                 <NotificationsNoneOutlinedIcon />
                 <span>Notification</span>
-              </div>
+              </div> */}
 
               <div
                 onClick={handleLogout}
