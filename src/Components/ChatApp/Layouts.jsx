@@ -6,7 +6,7 @@ export const ChatLayout = () => {
   return (
     <div
       className="chatLayout"
-      style={{ display: "flex", justifyContent: "center", overflowX: "scroll" }}
+      style={{ display: "flex", justifyContent: "center",}}
     >
       <div className="chatUsers">
         <ChatApp />

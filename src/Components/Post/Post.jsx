@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./post.scss";
 import Checkbox from "@mui/material/Checkbox";
-import FavoriteBorder from "@mui/icons-material/FavoriteBorder";
-import Favorite from "@mui/icons-material/Favorite";
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import { Link } from "react-router-dom";
@@ -12,8 +12,9 @@ import { getDuration } from "../helpers";
 import axiosInstance from "../../axosInstance";
 import { useSelector } from "react-redux";
 import Comp from "./moreComp";
+import { FavoriteBorderOutlined, FavoriteOutlined } from "@mui/icons-material";
 
-const Post = ({ post, loading, handleLikeUnlike }) => {
+const Post = ({ post, loading, handleLikeUnlike,handleDeletePost }) => {
 
 
 
@@ -49,7 +50,7 @@ const Post = ({ post, loading, handleLikeUnlike }) => {
                     </div>
                   </div>
                   <div className="more_button">
-                    <Comp user={posts.user} post_id={posts.post_id} />
+                    <Comp user={posts.user} post_id={posts.post_id} handleDeletePost={handleDeletePost} />
                   </div>
                 </div>
                 <div className="content">
@@ -65,8 +66,8 @@ const Post = ({ post, loading, handleLikeUnlike }) => {
                   <div className="item">
                     <div>
                       <Checkbox
-                        icon={<FavoriteBorder />}
-                        checkedIcon={<Favorite />}
+                        icon={<FavoriteBorderOutlinedIcon />}
+                        checkedIcon={<FavoriteOutlinedIcon />}
                         checked={posts && posts.likes.includes(user.id)}
                         onChange={() => handleLikeUnlike(posts.post_id)}
                       />
@@ -79,10 +80,10 @@ const Post = ({ post, loading, handleLikeUnlike }) => {
                     <TextsmsOutlinedIcon />
                     Comments
                   </div>
-                  <div className="item">
+                  {/* <div className="item">
                     <ShareOutlinedIcon />
                     Share
-                  </div>
+                  </div> */}
                 </div>
                 {commentOpen && <Comments post={posts} />}
               </div>

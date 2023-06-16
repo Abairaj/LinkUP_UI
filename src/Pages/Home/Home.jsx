@@ -1,15 +1,15 @@
-import Stories from "../../Components/Stories/Stories";
-import Share from "../../Components/Share/Share";
-import "./home.scss";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import UserPost from "../../Components/UserPost/UserPost";
 import { useUserDataQuery } from "../../Redux/Query/userDataQuery";
 import Cookies from "js.cookie";
 import { userData } from "../../Redux/Slice/UserProfileSlice";
-import { useEffect } from "react";
-const Home = () => {
-  const user = useSelector(state=>state.user)
+import { NotificationsTrigger } from "../../Components/ChatApp/Notification";
+import Share from "../../Components/Share/Share";
+import "./home.scss";
 
+const Home = () => {
+  const notification = useSelector((state) => state.user);
   const mode = useSelector((state) => state.theme.darkMode);
   const {
     data: userInfo,
@@ -21,17 +21,20 @@ const Home = () => {
 
   const fetchData = () => {
     refetchUserData(Cookies.get("id"));
-    console.log(userInfo,';;;;;;;;;;;;;;;')
+    console.log(userInfo, ";;;;;;;;;;;;;;;");
   };
 
   useEffect(() => {
     fetchData();
-  }, [userInfo]);
+  }, [userInfo, notification]);
+
   return (
     <div className="home">
-      {/* <Stories /> */}
+      <div className="notification">
+        <NotificationsTrigger />
+      </div>
       <Share />
-      <UserPost home = {true} />
+      <UserPost home={true} />
     </div>
   );
 };

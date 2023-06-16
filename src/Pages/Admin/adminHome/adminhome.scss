@@ -20,9 +20,15 @@
   }
 
   .charts{
-    align-self: center;
+    // align-self: center;
     margin-top: 100px;
-    width: 800px;
-    height: 400px;
+    // width: 100vw;
+    height: 500px;
+    display: flex;
+.chart{
+  margin: 35px;
+  width: 600px;
+}
+  
   }
 }

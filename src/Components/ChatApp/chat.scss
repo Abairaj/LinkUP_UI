@@ -1,64 +1,76 @@
 @import "../../styles.scss";
 
 .chat {
-    width: 100%;
+  width: 100%;
 
-    .pannel {
-      position: relative;
-      min-width: 60vw;
-      height: 100vh;
+  .pannel {
+    position: relative;
+    min-width: 60vw;
+    height: 100vh;
+    border: 1px solid black;
+    border-top-right-radius: 32px;
+
+    .user_info_head {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
       border: 1px solid black;
+      padding: 10px;
       border-top-right-radius: 32px;
-     
-      .user_info_head {
+
+      .user_bar {
         display: flex;
         flex-direction: row;
-        justify-content: space-between;
-        border: 1px solid black;
-        padding: 10px;
-        border-top-right-radius: 32px;
+        gap: 10px;
 
-        .user_bar {
-          display: flex;
-          flex-direction: row;
-          gap: 10px;
-
-          .avatar {
-            font-size: 20px;
-          }
-        }
-
-        .user_det {
-          gap: 5px;
-          p {
-            margin-bottom: 2px;
-          }
-        }
-
-        .head_icons {
-          padding: 5px;
+        .avatar {
+          font-size: 20px;
         }
       }
 
-      .send_input {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        display: flex;
-        width: 100%;
-
-        input {
-          padding: 12px;
-          width: 100%;
+      .user_det {
+        gap: 5px;
+        p {
+          margin-bottom: 2px;
         }
+      }
 
-        button {
-          background-color: #11009e;
-          color: white;
-          padding-left: 15px;
-          padding-right: 15px;
-          cursor: pointer;
-        }
+      .head_icons {
+        padding: 5px;
       }
     }
+    .messagespace {
+      display: flex;
+      flex-direction: column;
+      height: 90vh;
+      overflow-y: hidden; /* Hide the scrollbar for the container itself */
+    
+      .message-container {
+        flex: 1;
+        overflow-y: auto; /* Enable scrolling for the message container */
+        padding: 10px;
+      }
+    }
+    
+    .send_input {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      display: flex;
+      width: 100%;
+
+      input {
+        padding: 12px;
+        width: 100%;
+      }
+
+      button {
+        background-color: #11009e;
+        color: white;
+        padding-left: 15px;
+        padding-right: 15px;
+        cursor: pointer;
+      }
+    }
+  }
 }

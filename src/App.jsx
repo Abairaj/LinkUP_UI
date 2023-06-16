@@ -34,6 +34,8 @@ import CallAlert from "./Components/VedioCall/Call Alert";
 import { connectWebSocket } from "./socket";
 import { useSocket } from "./SocketProvider";
 import { TriggerCall } from "./Components/ChatApp/Triggercall";
+import { NotificationsTrigger } from "./Components/ChatApp/Notification";
+
 function App() {
   const user = useSelector((state) => state.user);
   const socket = useSocket();
@@ -171,6 +173,7 @@ function App() {
       path: "/call_alert/:id",
       element: <CallAlert />,
     },
+    
     {
       path: "*",
       element: <Navigate to="/" replace />,

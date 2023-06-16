@@ -111,7 +111,7 @@ const Profile = ({ myprofile }) => {
                 <button onClick={() => updateFollow(user.id)}>Follow</button>
               )}
 
-              {user.id == Cookies.get("id") && (
+              {user?.id == Cookies.get("id") && (
                 <button onClick={() => navigate("/profile_edit")}>Edit</button>
               )}
             </div>

@@ -3,8 +3,8 @@
 .editprofile {
   @include themify($themes) {
     background-color: themed("bg");
-    top: 0;
-
+    height: calc(100vh - 70px);
+    width: 100%;
     .head {
       h1 {
         font-size: 25px;
@@ -14,6 +14,7 @@
 
     .container {
       background-color: themed("bg");
+      
 
       .profileedit__profilebar {
         display: flex;

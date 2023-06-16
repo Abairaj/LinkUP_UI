@@ -13,13 +13,23 @@ const ProfilePosts = ({ posts }) => {
         {posts ? (
           posts.map((item) => (
             <ImageListItem key={item.post_id} sx={{ margin: "2px" }}>
-              <img
-                src={`${item.media_url}?w=164&h=200&fit=crop&auto=format`}
-                srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                alt={item.caption}
-                loading="lazy"
-                style={{ objectFit: "cover", width: "100%", height: "100%" }}
-              />
+              {item?.media_type === "Image" ? (
+                <img
+                  src={`${item.image}?w=164&h=200&fit=crop&auto=format`}
+                  srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.caption}
+                  loading="lazy"
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                />
+              ) : (
+                <video
+                  src={`${item.video}?w=164&h=200&fit=crop&auto=format`}
+                  srcSet={`${item.video}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  alt={item.caption}
+                  // loading="lazy"
+                  style={{ objectFit: "cover", width: "100%", height: "100%" }}
+                />
+              )}
             </ImageListItem>
           ))
         ) : (

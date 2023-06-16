@@ -62,7 +62,7 @@ const Navbar = ({ admin }) => {
   return (
     <div className="navbar">
       <div className="left">
-        <Link to={"/"} style={{ textDecoration: "none" }}>
+        <Link to={!admin?"/":'/admin_dashboard'} style={{ textDecoration: "none" }}>
           <span>LinkUp</span>
         </Link>
         {darkMode ? (

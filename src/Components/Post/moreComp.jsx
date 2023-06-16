@@ -7,7 +7,7 @@ import Cookies from "js.cookie";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import axiosInstance from "../../axosInstance";
 
-function Comp({ post_id, user }) {
+function Comp({ post_id, user ,handleDeletePost}) {
   const API_URL = import.meta.env.VITE_API_URL;
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMore, setOpenMore] = useState(false);
@@ -15,19 +15,6 @@ function Comp({ post_id, user }) {
     setOpenMore(false);
   };
 
-  const handleDeletePost = (post_id) => {
-    console.log(post_id);
-    axiosInstance
-      .patch(`post/create_post/${post_id}`)
-      .then((response) => {
-        console.log(response);
-        alert("deleted");
-      })
-      .catch((error) => {
-        console.log(error);
-        alert(error);
-      });
-  };
 
   const handlePopoverOpen = (event) => {
     setOpenMore(!openMore);

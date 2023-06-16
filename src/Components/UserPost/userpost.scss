@@ -1,0 +1,10 @@
+@import "../../styles.scss";
+
+
+
+.userpost{
+    @include themify($themes) {
+
+        background-color: themed('bgSoft');
+    }
+}

@@ -17,6 +17,7 @@ const ProtectedRoute = ({ children }) => {
       .get(`${API_URL}/users/auth/${Cookies.get("id")}/`,{headers:{Authorization:`Bearer ${Cookies.get('token')}`}})
       .then((response) => {
         if (response) {
+          if(!response.data.is_admin){
           console.log(response);
           setIsAuthenticated(true);
           dispatch(userData(response.data.data))
@@ -24,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
         } else {
           setIsAuthenticated(false);
         }
-      })
+      }})
       .catch((error) => {
         console.log(error,'this is error')
         setIsAuthenticated(false);

@@ -77,20 +77,30 @@ export default function AdminHome() {
           <h1>Total Users</h1>
           <h5>{data && data.user_count}</h5>
         </Box>
-
+{/* 
         <Box className="user_statistics_item">
           <h1>Users Online</h1>
           <h5>1453</h5>
-        </Box>
+        </Box> */}
 
         <Box className="user_statistics_item">
           <h1>Total Posts</h1>
           <h5>{data && data.post_count}</h5>
         </Box>
+
+        <Box className="user_statistics_item">
+          <h1>Deleted Posts</h1>
+          <h5>{data && data.deleted_post_count}</h5>
+        </Box>
       </div>
 
       <div id="chart" className="charts">
+        <div className="chart">
         {chartData ? <Bar data={chartData} options={options} /> : null}
+        </div>
+        <div className="chart">
+        {/* {chartData ? <Bar data={chartData} options={options} /> : null} */}
+        </div>
       </div>
     </div>
   );

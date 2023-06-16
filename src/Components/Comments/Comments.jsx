@@ -8,8 +8,11 @@ import {
 } from "../../Redux/Query/CommentQuery";
 import { useNavigate } from "react-router-dom";
 import { getDuration } from "../helpers";
+import { useSocket } from "../../SocketProvider";
+
 
 const Comments = ({ post }) => {
+  const socket = useSocket();
   const user = useSelector((state) => state.user);
   const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
@@ -37,6 +40,7 @@ const Comments = ({ post }) => {
       .unwrap()
       .then((response) => {
         console.log(response)
+        socket.send(JSON.stringify({'event':'notification','content':`${user.username} commented on your post`,'from':user.id,'to':post.user.id}))
         setCommentContent("");
         // Refresh comments after successful creation
         refetchComments();

@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import axiosInstance from "../../axosInstance";
 import Post from "../Post/Post";
 import { useSelector } from "react-redux";
+import './userpost.scss'
 
 const UserPost = ({home,explore,reels}) => {
   const [error, setError] = useState(false);
@@ -68,6 +69,22 @@ const UserPost = ({home,explore,reels}) => {
       });
   };
 
+
+
+  const handleDeletePost = (post_id) => {
+    console.log(post_id);
+    axiosInstance
+      .patch(`post/create_post/${post_id}`)
+      .then((response) => {
+        console.log(response);
+        alert("deleted");
+      })
+      .catch((error) => {
+        console.log(error);
+        loadPost();
+     });
+  };
+
   useEffect(() => {
     loadPost();
   }, [shareSuccess,filter]);
@@ -86,8 +103,8 @@ const UserPost = ({home,explore,reels}) => {
   
 
   return (
-    <div>
-      <Post post={posts} loading={loading} handleLikeUnlike={handleLikeUnlike} />
+    <div className="userpost">
+      <Post post={posts} loading={loading} handleLikeUnlike={handleLikeUnlike} handleDeletePost={handleDeletePost} />
       {loading && <p>Loading...</p>}
       {!loading && postCount === posts.length && <p>No more posts.</p>}
     </div>

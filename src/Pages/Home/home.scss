@@ -1,6 +1,12 @@
 @import "../../styles.scss";
 
 .home{
+  position: relative;
+  .notification{
+    top: 0;
+    left: 0;
+    position: absolute;
+  }
   @include themify($themes) {
     padding: 20px 70px;
     background-color: themed("bgSoft");

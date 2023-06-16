@@ -1,25 +1,27 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import ReactPlayer from "react-player";
 import Cookies from "js.cookie";
+import CallEndOutlinedIcon from "@mui/icons-material/CallEndOutlined";
 import peer from "./PeerConnectionServices";
 import { useSocket } from "../../SocketProvider";
 import { Button } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
-import VideocamOffIcon from '@mui/icons-material/VideocamOff';
-import VideocamIcon from '@mui/icons-material/Videocam';
+import VideocamOffIcon from "@mui/icons-material/VideocamOff";
+import VideocamIcon from "@mui/icons-material/Videocam";
 import "./videoCall.scss";
 
 const VideoCall = () => {
   const user = useSelector((state) => state.user);
+  const navigate = useNavigate();
   const { id } = useParams();
   const [localStream, setLocalStream] = useState([]);
   const [remoteStream, setRemoteStream] = useState([]);
   const [micOn, setMicOn] = useState(true);
-  const [camOn,setCamOn] = useState(false);
+  const [camOn, setCamOn] = useState(false);
   const socket = useSocket();
 
   const handleCallUser = useCallback(async () => {
@@ -60,6 +62,11 @@ const VideoCall = () => {
 
   const sentStream = useCallback(async () => {
     console.log("call accepted", localStream);
+    const stream = await navigator.mediaDevices.getUserMedia({
+      video: true,
+      audio: true,
+    });
+    setLocalStream(stream);
     for (const track of localStream.getTracks()) {
       peer.peer.addTrack(track, localStream);
     }
@@ -125,26 +132,45 @@ const VideoCall = () => {
   }, []);
 
   useEffect(() => {
-    peer.peer.addEventListener("track", async (ev) => {
+    const handleTrackEvent = (ev) => {
       const remoteStream = ev.streams;
       setRemoteStream(remoteStream[0]);
-    });
+    };
+
+    peer.peer.addEventListener("track", handleTrackEvent);
+
+    return () => {
+      peer.peer.removeEventListener("track", handleTrackEvent);
+      setRemoteStream(null);
+    };
   }, [socket]);
 
   useEffect(() => {
     handleCallUser();
+    return () => {
+      handleEndCall();
+    };
   }, []);
 
-
-  const handleSentStream = ()=>{
-    setCamOn(true)
+  const handleSentStream = () => {
+    setCamOn(true);
     sentStream();
-  }
+  };
 
-  async  function handleTurnOffCameraButtonClick() {
+  async function handleTurnOffCameraButtonClick() {
     // Get the user media stream with video enabled
+    // await localStream.getTracks().forEach((track) => track.stop());
+    // setRemoteStream([]);
     setCamOn(false);
   }
+
+  const handleEndCall = async () => {
+    if (localStream) {
+      await localStream.getTracks().forEach((track) => track.stop());
+
+      navigate(`/chat/${id}`);
+    }
+  };
 
   return (
     <div className="videos">
@@ -159,16 +185,45 @@ const VideoCall = () => {
         <div className="remotestream">
           {/* <h1>Remote Stream</h1> */}
           {remoteStream && (
-            <ReactPlayer className="remoteVideo"  playing url={remoteStream} />
+            <ReactPlayer className="remoteVideo" playing url={remoteStream} />
           )}
         </div>
       </div>
 
       <div className="icons">
-        {micOn ? <MicIcon sx={{color:'green'}} className="icon"  onClick={()=>setMicOn(false)} /> : <MicOffIcon sx={{color:'red'}} onClick={()=>setMicOn(true)} className="icon" />}
+        {micOn ? (
+          <MicIcon
+            sx={{ color: "green" }}
+            className="icon"
+            onClick={() => setMicOn(false)}
+          />
+        ) : (
+          <MicOffIcon
+            sx={{ color: "red" }}
+            onClick={() => setMicOn(true)}
+            className="icon"
+          />
+        )}
 
-        {camOn?<VideocamIcon sx={{color:'green'}} className="icon" onClick={handleTurnOffCameraButtonClick}/>:<VideocamOffIcon sx={{color:'red'}} className="icon" onClick={handleSentStream}/>}
+        {camOn ? (
+          <VideocamIcon
+            sx={{ color: "green" }}
+            className="icon"
+            onClick={handleTurnOffCameraButtonClick}
+          />
+        ) : (
+          <VideocamOffIcon
+            sx={{ color: "red" }}
+            className="icon"
+            onClick={handleSentStream}
+          />
+        )}
 
+        <CallEndOutlinedIcon
+          className="icon"
+          sx={{ color: "red" }}
+          onClick={handleEndCall}
+        />
       </div>
     </div>
   );

@@ -12,7 +12,7 @@ import { UserDataApi } from "./Query/userDataQuery";
 import { UserSuggestionApi } from "./Query/UserSuggestionsQuery";
 import UserProfileSlice from "./Slice/UserProfileSlice";
 import { explorePostApi } from "./Query/ExplorePosts";
-
+import notificationreducer from "./Slice/NotificationSlice";
 const persistConfig = {
   key: "root",
   storage,
@@ -27,6 +27,7 @@ const rootReducer = combineReducers({
   [explorePostApi.reducerPath]: explorePostApi.reducer,
   theme: darkModeReducer,
   user: UserProfilereducer,
+  notification: notificationreducer,
   shareSuccess: ShareSuccessreducer,
 });
 

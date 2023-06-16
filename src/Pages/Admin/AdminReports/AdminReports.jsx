@@ -75,7 +75,7 @@ export default function AdminReports() {
                 </ListItem>
               );
             })
-          : ""}
+          : "No reports"}
       </List>
     </div>
   );
