@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState, useRef } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -13,6 +13,12 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../../axosInstance";
 import "./chat.scss";
 import { useSocket } from "../../SocketProvider";
+const bull = (
+  <Box
+    component="span"
+    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
+  ></Box>
+);
 
 const Chat = () => {
   const user = useSelector((state) => state.user);
@@ -23,7 +29,6 @@ const Chat = () => {
   const socket = useSocket();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
-  const messageContainerRef = useRef(null);
 
   const fetchMessages = () => {
     axiosInstance
@@ -50,7 +55,7 @@ const Chat = () => {
       });
   };
 
-  // fetching user data for the chat receivers info
+  // fetching user data for the chat recievers info
   const fetchUserData = () => {
     axiosInstance
       .get(`users/user_profile/${id}?filter='chat`)
@@ -75,6 +80,14 @@ const Chat = () => {
         email: user.email,
       })
     );
+
+    socket.send(JSON.stringify({
+      event:'notification',
+      from:user.id,
+      to:id,
+      content:`You have a message from ${user.username}`,
+      type:'message'
+    }))
   }, []);
 
   useEffect(() => {
@@ -90,21 +103,21 @@ const Chat = () => {
     return () => {};
   }, [socket]);
 
-  // Listen for messages from remote user
+  // Listen for messages from remote uder
   socket.onmessage = (event) => {
-    const receivedMessage = JSON.parse(event.data).message;
-    if (receivedMessage.event === "chatmessage") {
-      console.log(receivedMessage, "////////////");
+    const recievedMessage = JSON.parse(event.data).message;
+    if (recievedMessage.event === "chatmessage") {
+      console.log(recievedMessage, "////////////");
       setMessages((prevMessages) => {
         return [
           ...prevMessages,
-          { local: false, message: receivedMessage.content },
+          { local: false, message: recievedMessage.content },
         ];
       });
     }
   };
 
-  // sending message to remote user
+  // sendig message to remote user
   const sendMessageHandler = (e) => {
     setMessages((prevMessages) => {
       return [...prevMessages, { local: true, message: message }];
@@ -115,12 +128,6 @@ const Chat = () => {
     );
     setMessage("");
   };
-
-  useEffect(() => {
-    // Scroll to the bottom of the message container
-    messageContainerRef.current.scrollTop =
-      messageContainerRef.current.scrollHeight;
-  }, [messages]);
 
   return (
     <div className="chat">
@@ -144,7 +151,7 @@ const Chat = () => {
           </div>
         </div>
         <div className="messagespace">
-          <div className="message-container" ref={messageContainerRef}>
+          <div className="message-container">
             {messages.map((msg, i) => (
               <React.Fragment key={i}>
                 {/* {console.log(msg)} */}

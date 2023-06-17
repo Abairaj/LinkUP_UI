@@ -7,7 +7,7 @@ import {
   Navigate,
   useNavigate,
 } from "react-router-dom";
-
+import { ToastContainer } from "react-toastify";
 import Navbar from "./Components/Navbar/Navbar";
 import LeftBar from "./Components/leftBar/LeftBar";
 import RightBar from "./Components/rightBar/RightBar";
@@ -173,14 +173,18 @@ function App() {
       path: "/call_alert/:id",
       element: <CallAlert />,
     },
-    
+
     {
       path: "*",
       element: <Navigate to="/" replace />,
     },
   ]);
-
-  return <RouterProvider router={router}></RouterProvider>;
+  return (
+    <>
+      <ToastContainer />
+      <RouterProvider router={router}></RouterProvider>;
+    </>
+  );
 }
 
 export default App;

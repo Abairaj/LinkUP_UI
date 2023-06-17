@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
@@ -18,8 +18,8 @@ const VideoCall = () => {
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
   const { id } = useParams();
-  const [localStream, setLocalStream] = useState([]);
-  const [remoteStream, setRemoteStream] = useState([]);
+  const [localStream, setLocalStream] = useState(null);
+  const [remoteStream, setRemoteStream] = useState(null);
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(false);
   const socket = useSocket();
@@ -39,7 +39,7 @@ const VideoCall = () => {
       })
     );
     setLocalStream(stream);
-  }, [id, socket]);
+  }, [id, socket, user.id]);
 
   const handleIncomingCall = useCallback(async (from, offer) => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -58,30 +58,29 @@ const VideoCall = () => {
         answer: ans,
       })
     );
-  }, []);
+  }, [id, socket, user.id]);
 
   const sentStream = useCallback(async () => {
-    console.log("call accepted", localStream);
     const stream = await navigator.mediaDevices.getUserMedia({
       video: true,
       audio: true,
     });
     setLocalStream(stream);
-    for (const track of localStream.getTracks()) {
-      peer.peer.addTrack(track, localStream);
+    for (const track of stream.getTracks()) {
+      peer.peer.addTrack(track, stream);
     }
-  });
+  }, []);
 
   const handleCallAccepted = useCallback(async (from, answer) => {
     peer.setLocalDescription(answer);
 
     sentStream();
-  }, []);
+  }, [sentStream]);
 
   const handleIncomingNegotiation = useCallback(async (from, offer) => {
     const ans = await peer.getAnswer(offer);
     socket.send(JSON.stringify({ event: "nego_done", answer: ans, to: id }));
-  }, []);
+  }, [id, socket]);
 
   const handleNegotiationFinal = useCallback(async (ans) => {
     await peer.setLocalDescription(ans);
@@ -90,26 +89,20 @@ const VideoCall = () => {
   socket.onmessage = (event) => {
     const message = JSON.parse(event.data).message;
 
-    if (message.event == "incoming_call") {
+    if (message.event === "incoming_call") {
       handleIncomingCall(message.from, message.offer);
-      console.log(message, "{{{{{{{{{{{{{[[[");
     }
 
-    if (message.event == "call_accepted") {
+    if (message.event === "call_accepted") {
       handleCallAccepted(message.from, message.answer);
-
-      console.log(message, "{{{{{{{{{{{{{[[[");
     }
 
-    if (message.event == "negotiationneeded") {
+    if (message.event === "negotiationneeded") {
       handleIncomingNegotiation(message.from, message.offer);
-
-      console.log(message, "{{{{{{{{{{{{{[[[");
     }
 
-    if (message.event == "nego_done") {
+    if (message.event === "nego_done") {
       handleNegotiationFinal(message.answer);
-      console.log(message, "{{{{{{{{{{{{{[[[");
     }
   };
 
@@ -118,7 +111,7 @@ const VideoCall = () => {
     socket.send(
       JSON.stringify({ event: "negotiationneeded", offer: offer, to: id })
     );
-  }, []);
+  }, [id, socket]);
 
   useEffect(() => {
     peer.peer.addEventListener("negotiationneeded", handleNegotiationNeeded);
@@ -129,7 +122,7 @@ const VideoCall = () => {
         handleNegotiationNeeded
       );
     };
-  }, []);
+  }, [handleNegotiationNeeded]);
 
   useEffect(() => {
     const handleTrackEvent = (ev) => {
@@ -143,7 +136,7 @@ const VideoCall = () => {
       peer.peer.removeEventListener("track", handleTrackEvent);
       setRemoteStream(null);
     };
-  }, [socket]);
+  }, [peer.peer]);
 
   useEffect(() => {
     handleCallUser();
@@ -152,22 +145,22 @@ const VideoCall = () => {
     };
   }, []);
 
-  const handleSentStream = () => {
+  const handleSentStream = useCallback(() => {
     setCamOn(true);
     sentStream();
-  };
+  }, [sentStream]);
 
-  async function handleTurnOffCameraButtonClick() {
-    // Get the user media stream with video enabled
-    // await localStream.getTracks().forEach((track) => track.stop());
-    // setRemoteStream([]);
+  const handleTurnOffCameraButtonClick = useCallback(() => {
     setCamOn(false);
-  }
+  }, []);
+
+  const handleToggleMic = useCallback(() => {
+    setMicOn((prevMicOn) => !prevMicOn);
+  }, []);
 
   const handleEndCall = async () => {
     if (localStream) {
       await localStream.getTracks().forEach((track) => track.stop());
-
       navigate(`/chat/${id}`);
     }
   };
@@ -176,14 +169,12 @@ const VideoCall = () => {
     <div className="videos">
       <div className="streams">
         <div className="mystream">
-          {/* <h1>My Stream</h1> */}
           {localStream && (
             <ReactPlayer className="localVideo" playing url={localStream} />
           )}
         </div>
 
         <div className="remotestream">
-          {/* <h1>Remote Stream</h1> */}
           {remoteStream && (
             <ReactPlayer className="remoteVideo" playing url={remoteStream} />
           )}
@@ -195,12 +186,12 @@ const VideoCall = () => {
           <MicIcon
             sx={{ color: "green" }}
             className="icon"
-            onClick={() => setMicOn(false)}
+            onClick={handleToggleMic}
           />
         ) : (
           <MicOffIcon
             sx={{ color: "red" }}
-            onClick={() => setMicOn(true)}
+            onClick={handleToggleMic}
             className="icon"
           />
         )}

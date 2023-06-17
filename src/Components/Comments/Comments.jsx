@@ -40,7 +40,7 @@ const Comments = ({ post }) => {
       .unwrap()
       .then((response) => {
         console.log(response)
-        socket.send(JSON.stringify({'event':'notification','content':`${user.username} commented on your post`,'from':user.id,'to':post.user.id}))
+        socket.send(JSON.stringify({'event':'notification','content':`${user.username} commented on your post`,'from':user.id,'to':post.user.id,'type':'comment'}))
         setCommentContent("");
         // Refresh comments after successful creation
         refetchComments();

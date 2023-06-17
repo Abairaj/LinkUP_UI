@@ -19,6 +19,7 @@ import axiosInstance from "../../axosInstance";
 import debounce from "lodash.debounce";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { Cookie } from "@mui/icons-material";
 
 const ChatApp = () => {
   const [searchVal, setSearchVal] = useState("");
@@ -82,7 +83,7 @@ const ChatApp = () => {
           onChange={handleSearchChange}
         />
         {userSearchlist.length > 0
-          ? userSearchlist.map((usr) => {
+          ? userSearchlist.filter((obj)=>{return obj.id!=user.id}).map((usr) => {
               return (
                 <List key={usr.id} onClick={()=>navigate(`/chat/${usr.id}`)}>
                   <ListItem sx={{cursor:'pointer'}}>
@@ -99,7 +100,7 @@ const ChatApp = () => {
                 </List>
               );
             })
-          :users && users.following.map((usr) => {
+          :users && users.following.filter((obj)=>{return obj.id!=user.id}).map((usr) => {
               return (
                 <List key={usr.id} onClick={()=>navigate(`/chat/${usr.id}`)}>
                   <ListItem sx={{cursor:'pointer'}}>

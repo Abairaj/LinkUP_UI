@@ -69,7 +69,7 @@ const Post = ({ post, loading, handleLikeUnlike,handleDeletePost }) => {
                         icon={<FavoriteBorderOutlinedIcon />}
                         checkedIcon={<FavoriteOutlinedIcon />}
                         checked={posts && posts.likes.includes(user.id)}
-                        onChange={() => handleLikeUnlike(posts.post_id)}
+                        onChange={() => handleLikeUnlike(posts)}
                       />
                     </div>
                   </div>
