@@ -10,14 +10,17 @@ const Register = () => {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
+
+
   const onFormSubmit = (data) => {
+    Cookies.set('email',data.email)
     axios
       .post(`${API_URL}/users/register/`, data)
       .then((response) => {
-        if (response.status == 201) {
+        if (response.status == 200) {
           Cookies.remove("id");
           Cookies.remove("token");
-          navigate("/login");
+          navigate("/verify_otp");
         } else if (response.status == 400) {
           alert("signup failed try again");
         }
