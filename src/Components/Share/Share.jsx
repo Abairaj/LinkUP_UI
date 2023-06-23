@@ -35,17 +35,7 @@ const Share = () => {
 
   const handleShare = () => {
     let media_type = findMediatype(media);
-    // Determine media_type based on selectedPost (assuming it contains the filename)
-    // const fileExtension = media.name
-    //   .slice(media.name.lastIndexOf("."))
-    //   .toLowerCase();
-    // if ([".mp4", ".avi", ".mov"].includes(fileExtension)) {
-    //   media_type = "Video";
-    // } else if (
-    //   [".jpg", ".jpeg", ".png", ".gif", ".webp"].includes(fileExtension)
-    // ) {
-    //   media_type = "Image";
-    // }
+
     console.log("data loading");
 
     if (media_type == "Video") {
@@ -57,8 +47,8 @@ const Share = () => {
       };
       console.log(formdata);
 
-      axiosInstance
-        .post(`/post/create_post/${Cookies.get("id")}`, formdata, {
+      axios
+        .post(`${API_URL}/post/create_post/${Cookies.get("id")}`, formdata, {
           headers: {
             "content-type": "multipart/form-data",
           },
