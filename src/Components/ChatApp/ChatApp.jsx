@@ -98,7 +98,7 @@ const ChatApp = () => {
                     />
                   </ListItem>
                 </List>
-              );
+              )
             })
           :users && users.following.filter((obj)=>{return obj.id!=user.id}).map((usr) => {
               return (
@@ -115,7 +115,7 @@ const ChatApp = () => {
                     />
                   </ListItem>
                 </List>
-              );
+              )
             })}
       </div>
     </div>

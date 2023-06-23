@@ -42,14 +42,9 @@
     .messagespace {
       display: flex;
       flex-direction: column;
-      height: 90vh;
-      overflow-y: hidden; /* Hide the scrollbar for the container itself */
+      height: 85vh;
+      overflow-y: scroll; /* Hide the scrollbar for the container itself */
     
-      .message-container {
-        flex: 1;
-        overflow-y: auto; /* Enable scrolling for the message container */
-        padding: 10px;
-      }
     }
     
     .send_input {

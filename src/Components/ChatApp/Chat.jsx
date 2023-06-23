@@ -151,14 +151,14 @@ const Chat = () => {
           </div>
         </div>
         <div className="messagespace">
-          <div className="message-container">
+          {/* <div className="message-container"> */}
             {messages.map((msg, i) => (
               <React.Fragment key={i}>
                 {/* {console.log(msg)} */}
                 <Messages message={msg} />
               </React.Fragment>
             ))}
-          </div>
+          {/* </div> */}
         </div>
         <form action="submit">
           <div className="send_input">

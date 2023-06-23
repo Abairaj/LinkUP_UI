@@ -4,6 +4,7 @@ const Messages = ({ message }) => {
   const localMessageStyle = {
     margin: "20px",
     backgroundColor: "#2979ff",
+    color:'#E8F6EF',
     maxWidth: "fit-content", // Adjust the maximum width as per your preference
     padding: "10px 15px",
     borderRadius: "32px",
