@@ -19,8 +19,8 @@ const Login = ({ admin }) => {
   const onFormsubmit = (data) => {
     const url = admin ? "/admin/" : "/users/login/";
 
-    axiosInstance
-      .post(`${url}`, data)
+    axios
+      .post(`${API_URL}${url}`, data,{headers:{Authorization:`Bearer ${Cookies.get('token')}`}})
       .then((response) => {
         if (response.status === 200) {
           dispatch(userData(response.data.user));
