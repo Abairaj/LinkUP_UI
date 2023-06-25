@@ -42,7 +42,7 @@ const LeftBar = ({ Is_admin }) => {
           <div className="user">
             {!Is_admin ? (
               <>
-                <img src={user.profile} alt="" />
+                <Avatar src={user.profile} alt="" >{user.username[0]}</Avatar>
                 <span
                   style={{ cursor: "pointer" }}
                   onClick={() => navigate(`/profile/${user.id}`)}

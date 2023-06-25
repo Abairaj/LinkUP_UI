@@ -108,7 +108,7 @@ const Navbar = ({ admin }) => {
         >
           {!admin && (
             <div className="user">
-              <img src={user.profile} alt="" />
+              <Avatar src={user.profile} >{user.username[0]}</Avatar>
               <span>{user.username}</span>
             </div>
           )}
