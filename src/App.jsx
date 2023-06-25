@@ -59,7 +59,7 @@ function App() {
         <div style={{ display: "flex" }}>
           <LeftBar Is_admin={true} />
           <div style={{ flex: 9 }}>
-            <Outlet admin={true} />0{" "}
+            <Outlet admin={true} />{" "}
           </div>
         </div>
       </div>

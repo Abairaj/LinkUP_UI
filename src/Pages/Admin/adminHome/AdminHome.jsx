@@ -72,31 +72,82 @@ export default function AdminHome() {
     };
   }, []);
 
-  return (
-    <div className="admin_home">
-      <div className="user_statistics">
-        <Box className="user_statistics_item">
-          <h1>Total Users</h1>
-          <h5>{data && data.user_count}</h5>
-        </Box>
+  return(
 
-        <Box className="user_statistics_item">
-          <h1>Total Posts</h1>
-          <h5>{data && data.post_count}</h5>
-        </Box>
+<div className="admin_home">
 
-        <Box className="user_statistics_item">
-          <h1>Deleted Posts</h1>
-          <h5>{data && data.deleted_post_count}</h5>
-        </Box>
-      </div>
-
-      <div id="chart" className="charts">
-        <div className="chart">
-          {chartData ? <Bar data={chartData} options={options} /> : null}
-        </div>
-        <div className="chart"></div>
-      </div>
+<div class="scrollbox">
+  
+  <div class = "scrollcontent">
+      <p>Total amount</p>
     </div>
+  
+    
+  <div class = "scrollcontent">
+      <p>Total amount</p>
+    </div>
+  
+    
+  <div class = "scrollcontent">
+      <p>Total amount</p>
+    </div>
+  
+    
+  <div class = "scrollcontent">
+      <p>Total amount</p>
+    </div>
+  
+    <div class = "scrollcontent">
+      <p>Total amount</p>
+    </div>
+  
+    <div class = "scrollcontent">
+      <p>Total amount</p>
+    </div>
+  
+    <div class = "scrollcontent">
+      <p>Total amount</p>
+    </div>
+  
+  </div>
+
+
+  <div id="chart" className="charts">
+  <div className="chart">
+    {chartData ? <Bar data={chartData} options={options} /> : null}
+  </div>
+  <div className="chart"></div>
+</div>
+ 
+</div>
   );
 }
+
+
+{/* <div className="admin_home">
+<div className="scroll_box">
+  <div className="scroll_content">
+    <Box className="user_statistics_item">
+      <h1>Total Users</h1>
+      <h5>{data && data.user_count}</h5>
+    </Box>
+
+    <Box className="user_statistics_item">
+      <h1>Total Posts</h1>
+      <h5>{data && data.post_count}</h5>
+    </Box>
+
+    <Box className="user_statistics_item">
+      <h1>Deleted Posts</h1>
+      <h5>{data && data.deleted_post_count}</h5>
+    </Box>
+  </div>
+</div>
+
+<div id="chart" className="charts">
+  <div className="chart">
+    {chartData ? <Bar data={chartData} options={options} /> : null}
+  </div>
+  <div className="chart"></div>
+</div>
+</div> */}

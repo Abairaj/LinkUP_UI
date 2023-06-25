@@ -1,31 +1,25 @@
 .admin_home {
-  padding: 4px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-
-  .user_statistics {
+  .scrollbox {
+    background-color: pink;
+    height: 200px;
     display: flex;
-    flex-direction: row;
-    margin: 10px;
-  }
+    overflow-x: scroll;
+    width: 1500px;
 
-  .user_statistics_item {
-    margin: 5px;
-    width: 300px;
-    height: 150px;
-    background-color: black;
-    color: white;
-    text-align: center;
+    .scrollcontent {
+      border: 1px solid black;
+      width: 300px;
+      background-color: blue;
+      text-align: center;
+      margin: 5px;
+    }
   }
 
   .charts {
-    margin-top: 100px;
-    height: 500px;
-    display: flex;
+    margin: 5px;
     .chart {
-      margin: 35px;
-      width: 600px;
+      width: 700px;
+
     }
   }
 }
