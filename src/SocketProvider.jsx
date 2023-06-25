@@ -10,7 +10,7 @@ export const useSocket = ()=>{
 }
 
 export const SocketProvider = (props)=>{
-    const socket = useMemo(()=> new WebSocket(`wss://54.92.214.175:8001/userConnect/${Cookies.get('id')}`),[])
+    const socket = useMemo(()=> new WebSocket(`wss://www.quantumtimes.shop:8001/userConnect/${Cookies.get('id')}`),[])
 
 
     return (
