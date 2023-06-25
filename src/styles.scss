@@ -51,10 +51,8 @@ $themes: (
   }
 }
 
-
 @mixin laptop {
-  @media(max-width: 1290px){
+  @media (max-width: 1290px) {
     @content;
   }
 }
-

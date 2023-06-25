@@ -10,7 +10,7 @@
     background-color: themed("bg");
     color: themed("textColor");
 
-    @include mobile{
+    @include mobile {
       display: none;
     }
 

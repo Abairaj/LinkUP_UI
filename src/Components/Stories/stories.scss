@@ -12,7 +12,7 @@
     justify-content: space-between;
   }
 
-  @include tablet{
+  @include tablet {
     height: 150px;
     gap: 20px;
   }
@@ -63,11 +63,11 @@
       justify-content: center;
 
       @include mobile {
-       left: 0;
-       right: 0;
-       top: 0;
-       bottom: 0;
-       margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        margin: auto;
       }
     }
   }

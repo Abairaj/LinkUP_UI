@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import "./share.scss";
 import { Avatar } from "@mui/material";
-import AddCircleOutlinedIcon from "@mui/icons-material/AddCircleOutlined";
 import AddAPhotoOutlinedIcon from "@mui/icons-material/AddAPhotoOutlined";
 import VideoCameraFrontOutlinedIcon from "@mui/icons-material/VideoCameraFrontOutlined";
 import { useState } from "react";

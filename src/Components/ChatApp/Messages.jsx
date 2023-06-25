@@ -4,8 +4,8 @@ const Messages = ({ message }) => {
   const localMessageStyle = {
     margin: "20px",
     backgroundColor: "#2979ff",
-    color:'#E8F6EF',
-    maxWidth: "fit-content", // Adjust the maximum width as per your preference
+    color: "#E8F6EF",
+    maxWidth: "fit-content",
     padding: "10px 15px",
     borderRadius: "32px",
     alignSelf: "flex-end",
@@ -15,7 +15,7 @@ const Messages = ({ message }) => {
     margin: "20px",
     borderRadius: "32px",
     backgroundColor: "#dadada",
-    maxWidth: "fit-content", // Adjust the maximum width as per your preference
+    maxWidth: "fit-content",
     padding: "10px 15px",
     alignSelf: "flex-start",
   };

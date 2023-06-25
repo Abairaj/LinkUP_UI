@@ -1,8 +1,8 @@
 @import "../../styles.scss";
 
-.home{
+.home {
   position: relative;
-  .notification{
+  .notification {
     top: 0;
     left: 0;
     position: absolute;
@@ -15,8 +15,8 @@
       padding: 10px;
     }
 
-    @include tablet{
+    @include tablet {
       padding: 20px;
     }
   }
- }
+}

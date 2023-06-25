@@ -68,43 +68,10 @@ const RightBar = () => {
                       Unfollow
                     </button>
                   )}
-                  {/* <button>Dismiss</button> */}
                 </div>
               </div>
             ))}
         </div>
-
-        {/* <div className="item">
-          <span>Latest Activities</span>
-          <div className="user">
-            <div className="userinfo">
-              <img src="" alt="" />
-              <span>Abairaj.K</span>
-            </div>
-            <div className="buttons">
-              <span>1 minute ago</span>
-            </div>
-          </div>
-          <div className="user">
-            <div className="userinfo">
-              <img src="" alt="" />
-              <span>Abairaj.K</span>
-            </div>
-            <div className="buttons">
-              <span>2 minutes ago</span>
-            </div>
-          </div>
-        </div> */}
-        {/* <div className="item">
-          <span>Online friends</span>
-          <div className="user">
-            <div className="userinfo">
-              <img src="" alt="" />
-              <div className="online" />
-              <span>Abairaj.K</span>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );

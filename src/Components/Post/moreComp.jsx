@@ -1,20 +1,17 @@
 import React, { useState } from "react";
-import { Avatar } from "@mui/material";
 import Popover from "@mui/material/Popover";
 import Typography from "@mui/material/Typography";
 import ReportReason from "../ReportReason/ReportReason";
 import Cookies from "js.cookie";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
-import axiosInstance from "../../axosInstance";
 
-function Comp({ post_id, user ,handleDeletePost}) {
+function Comp({ post_id, user, handleDeletePost }) {
   const API_URL = import.meta.env.VITE_API_URL;
   const [anchorEl, setAnchorEl] = useState(null);
   const [openMore, setOpenMore] = useState(false);
   const handlePopoverClose = () => {
     setOpenMore(false);
   };
-
 
   const handlePopoverOpen = (event) => {
     setOpenMore(!openMore);

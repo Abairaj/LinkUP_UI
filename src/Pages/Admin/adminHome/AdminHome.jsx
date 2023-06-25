@@ -32,7 +32,9 @@ export default function AdminHome() {
       .then((response) => {
         console.log(response.data);
         setData(response.data);
-        const registrations = response.data.user_per_day.map((item) => item.registrations);
+        const registrations = response.data.user_per_day.map(
+          (item) => item.registrations
+        );
         const chartData = {
           labels: response.data.user_per_day.map((item) => item.day),
           datasets: [
@@ -77,11 +79,6 @@ export default function AdminHome() {
           <h1>Total Users</h1>
           <h5>{data && data.user_count}</h5>
         </Box>
-{/* 
-        <Box className="user_statistics_item">
-          <h1>Users Online</h1>
-          <h5>1453</h5>
-        </Box> */}
 
         <Box className="user_statistics_item">
           <h1>Total Posts</h1>
@@ -96,11 +93,9 @@ export default function AdminHome() {
 
       <div id="chart" className="charts">
         <div className="chart">
-        {chartData ? <Bar data={chartData} options={options} /> : null}
+          {chartData ? <Bar data={chartData} options={options} /> : null}
         </div>
-        <div className="chart">
-        {/* {chartData ? <Bar data={chartData} options={options} /> : null} */}
-        </div>
+        <div className="chart"></div>
       </div>
     </div>
   );

@@ -8,7 +8,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useTheme } from "@mui/material/styles";
 
-export default function ConfirmPopup({ name, content,color,post_id,func }) {
+export default function ConfirmPopup({ name, content, color, post_id, func }) {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
   const fullScreen = useMediaQuery(theme.breakpoints.down("md"));
@@ -24,7 +24,11 @@ export default function ConfirmPopup({ name, content,color,post_id,func }) {
 
   return (
     <div>
-      <Button variant="outlined" sx={{color:color , borderColor:color}} onClick={handleClickOpen}>
+      <Button
+        variant="outlined"
+        sx={{ color: color, borderColor: color }}
+        onClick={handleClickOpen}
+      >
         {name}
       </Button>
       <Dialog

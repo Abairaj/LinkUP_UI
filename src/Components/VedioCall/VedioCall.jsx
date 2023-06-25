@@ -1,13 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { v4 as uuidv4 } from "uuid";
 import ReactPlayer from "react-player";
-import Cookies from "js.cookie";
 import CallEndOutlinedIcon from "@mui/icons-material/CallEndOutlined";
 import peer from "./PeerConnectionServices";
 import { useSocket } from "../../SocketProvider";
-import { Button } from "@mui/material";
 import MicIcon from "@mui/icons-material/Mic";
 import MicOffIcon from "@mui/icons-material/MicOff";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
@@ -41,24 +38,27 @@ const VideoCall = () => {
     setLocalStream(stream);
   }, [id, socket, user.id]);
 
-  const handleIncomingCall = useCallback(async (from, offer) => {
-    const stream = await navigator.mediaDevices.getUserMedia({
-      video: true,
-      audio: true,
-    });
-    setLocalStream(stream);
+  const handleIncomingCall = useCallback(
+    async (from, offer) => {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true,
+      });
+      setLocalStream(stream);
 
-    const ans = await peer.getAnswer(offer);
+      const ans = await peer.getAnswer(offer);
 
-    socket.send(
-      JSON.stringify({
-        event: "call_accepted",
-        to: id,
-        from: user.id,
-        answer: ans,
-      })
-    );
-  }, [id, socket, user.id]);
+      socket.send(
+        JSON.stringify({
+          event: "call_accepted",
+          to: id,
+          from: user.id,
+          answer: ans,
+        })
+      );
+    },
+    [id, socket, user.id]
+  );
 
   const sentStream = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -71,16 +71,22 @@ const VideoCall = () => {
     }
   }, []);
 
-  const handleCallAccepted = useCallback(async (from, answer) => {
-    peer.setLocalDescription(answer);
+  const handleCallAccepted = useCallback(
+    async (from, answer) => {
+      peer.setLocalDescription(answer);
 
-    sentStream();
-  }, [sentStream]);
+      sentStream();
+    },
+    [sentStream]
+  );
 
-  const handleIncomingNegotiation = useCallback(async (from, offer) => {
-    const ans = await peer.getAnswer(offer);
-    socket.send(JSON.stringify({ event: "nego_done", answer: ans, to: id }));
-  }, [id, socket]);
+  const handleIncomingNegotiation = useCallback(
+    async (from, offer) => {
+      const ans = await peer.getAnswer(offer);
+      socket.send(JSON.stringify({ event: "nego_done", answer: ans, to: id }));
+    },
+    [id, socket]
+  );
 
   const handleNegotiationFinal = useCallback(async (ans) => {
     await peer.setLocalDescription(ans);

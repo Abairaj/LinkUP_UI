@@ -2,18 +2,13 @@ import "./navbar.scss";
 import { useState, useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import { Avatar } from "@mui/material";
 import debounce from "lodash.debounce";
 import { toggle } from "./../../Redux/Slice/DarkModeSlice";
 import {
-  HomeOutlined,
   DarkModeOutlined,
   SearchOutlined,
   WbSunnyOutlined,
-  NotificationsOutlined,
-  EmailOutlined,
-  PersonOutlineOutlined,
 } from "@mui/icons-material";
 import axiosInstance from "../../axosInstance";
 
@@ -23,7 +18,6 @@ const Navbar = ({ admin }) => {
   const darkMode = useSelector((state) => state.theme.darkMode);
   const user = useSelector((state) => state.user);
   const [userSearchlist, setUserSearchList] = useState([]);
-  const API_URL = import.meta.env.VITE_API_URL;
   const [searchVal, setSearchVal] = useState("");
 
   const handleSearch = (key) => {
@@ -62,7 +56,10 @@ const Navbar = ({ admin }) => {
   return (
     <div className="navbar">
       <div className="left">
-        <Link to={!admin?"/":'/admin_dashboard'} style={{ textDecoration: "none" }}>
+        <Link
+          to={!admin ? "/" : "/admin_dashboard"}
+          style={{ textDecoration: "none" }}
+        >
           <span>LinkUp</span>
         </Link>
         {darkMode ? (
@@ -105,9 +102,6 @@ const Navbar = ({ admin }) => {
         )}
       </div>
       <div className="right">
-        {/* <PersonOutlineOutlinedIcon />
-        <EmailOutlinedIcon />
-        <NotificationsOutlinedIcon /> */}
         <Link
           to={`my_profile/${user.full_name}`}
           style={{ cursor: "pointer", textDecoration: "none" }}

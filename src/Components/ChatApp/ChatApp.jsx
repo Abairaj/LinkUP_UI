@@ -1,29 +1,19 @@
-import React, {
-  useState,
-  useMemo,
-  useEffect,
-  useSyncExternalStore,
-} from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import ListItemAvatar from "@mui/material/ListItemAvatar";
 import Avatar from "@mui/material/Avatar";
-import ImageIcon from "@mui/icons-material/Image";
-import WorkIcon from "@mui/icons-material/Work";
-import BeachAccessIcon from "@mui/icons-material/BeachAccess";
-import TextField from "@mui/material/TextField";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import "./chatapp.scss";
 import axiosInstance from "../../axosInstance";
 import debounce from "lodash.debounce";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Cookie } from "@mui/icons-material";
 
 const ChatApp = () => {
   const [searchVal, setSearchVal] = useState("");
-  const [users,setUsers] = useState();
+  const [users, setUsers] = useState();
   const [userSearchlist, setUserSearchList] = useState([]);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
@@ -33,14 +23,12 @@ const ChatApp = () => {
       .get(`users/user_profile/${user.id}?filter=chat`)
       .then((response) => {
         console.log(response.data);
-        setUsers(response.data)
+        setUsers(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
   };
-
-
 
   const handleSearch = (key) => {
     if (key === "") {
@@ -71,7 +59,6 @@ const ChatApp = () => {
       debouncedSearch.cancel();
     };
   }, [debouncedSearch]);
-  
 
   return (
     <div className="chatusers">
@@ -83,40 +70,55 @@ const ChatApp = () => {
           onChange={handleSearchChange}
         />
         {userSearchlist.length > 0
-          ? userSearchlist.filter((obj)=>{return obj.id!=user.id}).map((usr) => {
-              return (
-                <List key={usr.id} onClick={()=>navigate(`/chat/${usr.id}`)}>
-                  <ListItem sx={{cursor:'pointer'}}>
-                    <ListItemAvatar>
-                      <Avatar src={usr.profile}>
-                        <AccountCircleIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={usr.username}
-                      secondary={usr.last_login}
-                    />
-                  </ListItem>
-                </List>
-              )
-            })
-          :users && users.following.filter((obj)=>{return obj.id!=user.id}).map((usr) => {
-              return (
-                <List key={usr.id} onClick={()=>navigate(`/chat/${usr.id}`)}>
-                  <ListItem sx={{cursor:'pointer'}}>
-                    <ListItemAvatar>
-                      <Avatar src={usr.profile}>
-                        <AccountCircleIcon />
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={usr.username}
-                      secondary={usr.last_login}
-                    />
-                  </ListItem>
-                </List>
-              )
-            })}
+          ? userSearchlist
+              .filter((obj) => {
+                return obj.id != user.id;
+              })
+              .map((usr) => {
+                return (
+                  <List
+                    key={usr.id}
+                    onClick={() => navigate(`/chat/${usr.id}`)}
+                  >
+                    <ListItem sx={{ cursor: "pointer" }}>
+                      <ListItemAvatar>
+                        <Avatar src={usr.profile}>
+                          <AccountCircleIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={usr.username}
+                        secondary={usr.last_login}
+                      />
+                    </ListItem>
+                  </List>
+                );
+              })
+          : users &&
+            users.following
+              .filter((obj) => {
+                return obj.id != user.id;
+              })
+              .map((usr) => {
+                return (
+                  <List
+                    key={usr.id}
+                    onClick={() => navigate(`/chat/${usr.id}`)}
+                  >
+                    <ListItem sx={{ cursor: "pointer" }}>
+                      <ListItemAvatar>
+                        <Avatar src={usr.profile}>
+                          <AccountCircleIcon />
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={usr.username}
+                        secondary={usr.last_login}
+                      />
+                    </ListItem>
+                  </List>
+                );
+              })}
       </div>
     </div>
   );

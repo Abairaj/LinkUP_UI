@@ -6,7 +6,7 @@
   .pannel {
     position: relative;
     min-width: 60vw;
-    height: 100vh;
+    height: 90vh;
     border: 1px solid black;
     border-top-right-radius: 32px;
 
@@ -42,11 +42,14 @@
     .messagespace {
       display: flex;
       flex-direction: column;
-      height: 85vh;
-      overflow-y: scroll; /* Hide the scrollbar for the container itself */
-    
+      height: 80vh;
+      overflow-y: scroll;
+
+      &::-webkit-scrollbar{
+        display: none;
+      }
     }
-    
+
     .send_input {
       position: absolute;
       bottom: 0;

@@ -1,11 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import { Avatar, Divider, Stack, TextField } from "@mui/material";
+import { Avatar } from "@mui/material";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
 import Messages from "./Messages";
 import { useNavigate, useParams } from "react-router-dom";
@@ -81,13 +76,15 @@ const Chat = () => {
       })
     );
 
-    socket.send(JSON.stringify({
-      event:'notification',
-      from:user.id,
-      to:id,
-      content:`You have a message from ${user.username}`,
-      type:'message'
-    }))
+    socket.send(
+      JSON.stringify({
+        event: "notification",
+        from: user.id,
+        to: id,
+        content: `You have a message from ${user.username}`,
+        type: "message",
+      })
+    );
   }, []);
 
   useEffect(() => {
@@ -151,14 +148,11 @@ const Chat = () => {
           </div>
         </div>
         <div className="messagespace">
-          {/* <div className="message-container"> */}
-            {messages.map((msg, i) => (
-              <React.Fragment key={i}>
-                {/* {console.log(msg)} */}
-                <Messages message={msg} />
-              </React.Fragment>
-            ))}
-          {/* </div> */}
+          {messages.map((msg, i) => (
+            <React.Fragment key={i}>
+              <Messages message={msg} />
+            </React.Fragment>
+          ))}
         </div>
         <form action="submit">
           <div className="send_input">

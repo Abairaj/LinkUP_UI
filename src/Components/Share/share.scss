@@ -16,7 +16,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        .profile_img{
+        .profile_img {
           width: 40px;
           height: 40px;
           border-radius: 50%;
@@ -31,7 +31,7 @@
           width: 60%;
           color: themed("textColor");
         }
-        .selected_image{
+        .selected_image {
           height: 200px;
           width: 200px;
           border-radius: none;

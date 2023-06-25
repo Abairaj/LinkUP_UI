@@ -1,8 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import "./verifyotp.scss";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Cookies from "js.cookie";
 import { useState } from "react";
 import axiosInstance from "../../axosInstance";
@@ -18,7 +18,7 @@ export default function VerifyOTP() {
       .post(`users/verify_otp/`, { email: email, otp: otp })
       .then((response) => {
         if (response.status === 200) {
-          Cookies.remove('email');
+          Cookies.remove("email");
           navigate("/login");
           setError("");
         }

@@ -6,7 +6,7 @@ export const ChatLayout = () => {
   return (
     <div
       className="chatLayout"
-      style={{ display: "flex", justifyContent: "center" }}
+      style={{ display: "flex", justifyContent: "center",padding:'20px' }}
     >
       <div className="chatUsers">
         <ChatApp />
@@ -17,5 +17,5 @@ export const ChatLayout = () => {
         <Outlet />
       </div>
     </div>
-  )
+  );
 };

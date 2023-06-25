@@ -19,16 +19,13 @@
     text-align: center;
   }
 
-  .charts{
-    // align-self: center;
+  .charts {
     margin-top: 100px;
-    // width: 100vw;
     height: 500px;
     display: flex;
-.chart{
-  margin: 35px;
-  width: 600px;
-}
-  
+    .chart {
+      margin: 35px;
+      width: 600px;
+    }
   }
 }

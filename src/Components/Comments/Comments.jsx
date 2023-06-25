@@ -10,7 +10,6 @@ import { useNavigate } from "react-router-dom";
 import { getDuration } from "../helpers";
 import { useSocket } from "../../SocketProvider";
 
-
 const Comments = ({ post }) => {
   const socket = useSocket();
   const user = useSelector((state) => state.user);
@@ -39,14 +38,22 @@ const Comments = ({ post }) => {
     })
       .unwrap()
       .then((response) => {
-        console.log(response)
-        socket.send(JSON.stringify({'event':'notification','content':`${user.username} commented on your post`,'from':user.id,'to':post.user.id,'type':'comment'}))
+        console.log(response);
+        socket.send(
+          JSON.stringify({
+            event: "notification",
+            content: `${user.username} commented on your post`,
+            from: user.id,
+            to: post.user.id,
+            type: "comment",
+          })
+        );
         setCommentContent("");
         // Refresh comments after successful creation
         refetchComments();
       })
       .catch((error) => {
-        console.log(error)
+        console.log(error);
       });
   };
 
@@ -81,7 +88,6 @@ const Comments = ({ post }) => {
       {isFetchingComments ? (
         <div>Loading comments...</div>
       ) : fetchCommentsError ? (
-        // <div>Error occurred while fetching comments</div>
         console.log(fetchCommentsError)
       ) : commentsData && commentsData.length > 0 ? (
         <>

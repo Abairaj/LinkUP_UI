@@ -1,9 +1,4 @@
 import "./profile.scss";
-import PlaceIcon from "@mui/icons-material/Place";
-import LanguageIcon from "@mui/icons-material/Language";
-import EmailOutlinedIcon from "@mui/icons-material/EmailOutlined";
-import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Post from "../../Components/Post/Post";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import male_contact from "../../assets/malecontact.png";
@@ -16,7 +11,6 @@ import ProfilePosts from "./ProfilePosts";
 import { useFollowUnfollowUserMutation } from "../../Redux/Query/followUnfollowQuery";
 
 const Profile = ({ myprofile }) => {
-  const API_URL = import.meta.env.VITE_API_URL;
   const navigate = useNavigate();
   const myProfile = useSelector((state) => state.user);
   const [post, setPost] = useState([]);

@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import "./register.scss";
-import axios from  'axios'
-import Cookies from 'js.cookie'
+import axios from "axios";
+import Cookies from "js.cookie";
 
 const Register = () => {
   const navigate = useNavigate();
@@ -10,10 +10,8 @@ const Register = () => {
   const { register, handleSubmit, formState } = useForm();
   const { errors } = formState;
 
-
-
   const onFormSubmit = (data) => {
-    Cookies.set('email',data.email)
+    Cookies.set("email", data.email);
     axios
       .post(`${API_URL}/users/register/`, data)
       .then((response) => {
@@ -52,8 +50,7 @@ const Register = () => {
           </div>
           <div className="right">
             <h1>Register</h1>
-            <form onSubmit={handleSubmit(onFormSubmit)}
->
+            <form onSubmit={handleSubmit(onFormSubmit)}>
               <input
                 type="text"
                 className="username"
@@ -84,7 +81,7 @@ const Register = () => {
               />
               <p className="error">{errors.full_name?.message}</p>
               <input
-              className="email"
+                className="email"
                 type="email"
                 {...register("email", {
                   required: "Email field can't be empty",
@@ -95,7 +92,7 @@ const Register = () => {
                 })}
                 placeholder="Email"
               />
-               <p className="error">{errors.email?.message}</p>
+              <p className="error">{errors.email?.message}</p>
               <input
                 type="password"
                 className="password"

@@ -6,7 +6,6 @@ const ShareSuccessSlice = createSlice({
   reducers: {
     shareStatus: (state) => {
       const shareSuccess = !state;
-      console.log(shareSuccess, "..................");
 
       return !state;
     },

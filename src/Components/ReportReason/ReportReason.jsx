@@ -31,10 +31,10 @@ export default function ReportReason({
       reporting_user: reporting_user,
       reason: report,
     };
-    console.log(formData)
+    console.log(formData);
     handleClose();
     axiosInstance
-      .post(`/report/`,formData)
+      .post(`/report/`, formData)
       .then((response) => {
         console.log(response);
       })

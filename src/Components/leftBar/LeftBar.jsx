@@ -118,11 +118,6 @@ const LeftBar = ({ Is_admin }) => {
                 <img src={messages_icon} alt="" />
                 <span>Chat</span>
               </div>
-              {/* 
-              <div className="item">
-                <NotificationsNoneOutlinedIcon />
-                <span>Notification</span>
-              </div> */}
 
               <div
                 onClick={handleLogout}
@@ -136,41 +131,6 @@ const LeftBar = ({ Is_admin }) => {
           )}
         </div>
         <hr />
-        {/* <div className="menu">
-          <span>Your Shortcuts</span>
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>Friends</span>
-          </div>{" "}
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>Followers</span>
-          </div>{" "}
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>Following</span>
-          </div>{" "}
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>My Post</span>
-          </div>{" "}
-        </div> */}
-        <hr />
-        {/* <div className="menu">
-          <span>Others</span>
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>Friends</span>
-          </div>{" "}
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>Friends</span>
-          </div>{" "}
-          <div className="item">
-            <img src={friend} alt="" />
-            <span>Friends</span>
-          </div>
-        </div> */}
       </div>
     </div>
   );

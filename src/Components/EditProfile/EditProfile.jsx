@@ -1,7 +1,6 @@
 import "./editProfile.scss";
 import React, { useState, useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
 import Cookies from "js.cookie";
 import Button from "@mui/material/Button";
@@ -12,11 +11,9 @@ import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
-import axios from "axios";
 import axiosInstance from "../../axosInstance";
 
 export default function EditProfile() {
-  const ApiURL = import.meta.env.VITE_API_URL;
   const User = useSelector((state) => state.user);
   const [profile, setProfile] = useState("");
   const { register, handleSubmit, formState, reset } = useForm();

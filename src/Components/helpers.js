@@ -1,26 +1,25 @@
-import Cookies from 'js.cookie'; 
- 
- // to show hours ago and days ago
-  export const getDuration = (created_at) => {
-    const currentTime = new Date();
-    const postTime = new Date(created_at);
-    const timeDiff = currentTime - postTime;
-    const duration = Math.floor(timeDiff / (1000 * 60 * 60));
-    const daysAgo = Math.floor(duration / 24);
+import Cookies from "js.cookie";
 
-    if (daysAgo > 0) {
-      return `${daysAgo}d`;
-    } else if (duration === 0) {
-      return "Just now";
-    } else if (duration === 1) {
-      return "1h";
-    } else {
-      return `${duration}h`;
-    }
-  };
+// to show hours ago and days ago
+export const getDuration = (created_at) => {
+  const currentTime = new Date();
+  const postTime = new Date(created_at);
+  const timeDiff = currentTime - postTime;
+  const duration = Math.floor(timeDiff / (1000 * 60 * 60));
+  const daysAgo = Math.floor(duration / 24);
 
-
-  export const clearCookies = () =>{
-    Cookies.remove('token');
-    Cookies.remove('id');
+  if (daysAgo > 0) {
+    return `${daysAgo}d`;
+  } else if (duration === 0) {
+    return "Just now";
+  } else if (duration === 1) {
+    return "1h";
+  } else {
+    return `${duration}h`;
   }
+};
+
+export const clearCookies = () => {
+  Cookies.remove("token");
+  Cookies.remove("id");
+};

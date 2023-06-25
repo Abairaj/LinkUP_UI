@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useSelector } from "react-redux";
 import {
   createBrowserRouter,
   RouterProvider,
   Outlet,
   Navigate,
-  useNavigate,
 } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import Navbar from "./Components/Navbar/Navbar";
@@ -21,7 +20,6 @@ import AdminHome from "./Pages/Admin/adminHome/AdminHome";
 import Usertable from "./Pages/Admin/adminUserManagement/Usertable";
 import AdminReports from "./Pages/Admin/AdminReports/AdminReports";
 import VerifyOTP from "./Components/OTP/VerifyOTP";
-import VideoCall from "./Components/VedioCall/VedioCall";
 import UserPost from "./Components/UserPost/UserPost";
 import ProtectedRoute, {
   AdminProtectedRoute,
@@ -31,10 +29,8 @@ import { ChatLayout } from "./Components/ChatApp/Layouts";
 import Chat from "./Components/ChatApp/Chat";
 import VedioCall from "./Components/VedioCall/VedioCall";
 import CallAlert from "./Components/VedioCall/Call Alert";
-import { connectWebSocket } from "./socket";
 import { useSocket } from "./SocketProvider";
 import { TriggerCall } from "./Components/ChatApp/Triggercall";
-import { NotificationsTrigger } from "./Components/ChatApp/Notification";
 
 function App() {
   const user = useSelector((state) => state.user);

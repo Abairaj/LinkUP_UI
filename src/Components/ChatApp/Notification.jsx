@@ -8,7 +8,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export const NotificationsTrigger = () => {
-  const [open, setOpen] = useState(false);
   const notification = useSelector((state) => state.notification);
   const socket = useSocket();
 
@@ -17,27 +16,14 @@ export const NotificationsTrigger = () => {
     socket.onmessage = (event) => {
       const message = JSON.parse(event.data).message;
       if (message.event === "notification") {
-        // setOpen(true);]
         toast.info(notification);
       }
     };
   }, [notification]);
 
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpen(false);
-  };
+
 
   return (
-    // <Stack spacing={2} sx={{ width: '100%',position:'absolute',top:0,left:0 }}>
-    //   <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
-    //     <MuiAlert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
-    //       {notification}
-    //     </MuiAlert>
-    //   </Snackbar>
-    // </Stack>
-    <></>
+ <></>
   );
 };

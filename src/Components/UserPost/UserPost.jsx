@@ -54,7 +54,6 @@ const UserPost = ({ home, explore, reels }) => {
   };
 
   const handleLikeUnlike = (post) => {
-    console.log(post, "pppppppppppppppppppppppp");
     axiosInstance
       .post(`/post/Post_like/${user.id}`, { post_id: post.post_id })
       .then((response) => {
@@ -62,22 +61,21 @@ const UserPost = ({ home, explore, reels }) => {
           console.log(response);
           setLike(!like);
           let msg;
-          console.log(response.data.message.liked,';;;;;;;;;;;;;;;;;;;;;;;;')
-          if(response.data.message.liked){
-            console.log('first')
-            msg = 'Liked'
-          }else{
-            console.log('second')
-            msg = 'Unliked'
+          if (response.data.message.liked) {
+            console.log("first");
+            msg = "Liked";
+          } else {
+            console.log("second");
+            msg = "Unliked";
           }
-          console.log('sending ..........')
+          console.log("sending ..........");
           socket.send(
             JSON.stringify({
               event: "notification",
               to: post.user.id,
               from: user.id,
               content: `${user.username} ${msg} Your Post`,
-              type:'Like'
+              type: "Like",
             })
           );
 

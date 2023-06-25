@@ -1,23 +1,17 @@
 import React, { useState } from "react";
 import "./post.scss";
 import Checkbox from "@mui/material/Checkbox";
-import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
-import FavoriteOutlinedIcon from '@mui/icons-material/FavoriteOutlined';
+import FavoriteBorderOutlinedIcon from "@mui/icons-material/FavoriteBorderOutlined";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import TextsmsOutlinedIcon from "@mui/icons-material/TextsmsOutlined";
-import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 import { Link } from "react-router-dom";
 import Comments from "../Comments/Comments";
 import { Avatar } from "@mui/material";
 import { getDuration } from "../helpers";
-import axiosInstance from "../../axosInstance";
 import { useSelector } from "react-redux";
 import Comp from "./moreComp";
-import { FavoriteBorderOutlined, FavoriteOutlined } from "@mui/icons-material";
 
-const Post = ({ post, loading, handleLikeUnlike,handleDeletePost }) => {
-
-
-
+const Post = ({ post, loading, handleLikeUnlike, handleDeletePost }) => {
   const user = useSelector((state) => state.user);
 
   const [commentOpen, setCommentOpen] = useState(false);
@@ -50,7 +44,11 @@ const Post = ({ post, loading, handleLikeUnlike,handleDeletePost }) => {
                     </div>
                   </div>
                   <div className="more_button">
-                    <Comp user={posts.user} post_id={posts.post_id} handleDeletePost={handleDeletePost} />
+                    <Comp
+                      user={posts.user}
+                      post_id={posts.post_id}
+                      handleDeletePost={handleDeletePost}
+                    />
                   </div>
                 </div>
                 <div className="content">
@@ -80,10 +78,6 @@ const Post = ({ post, loading, handleLikeUnlike,handleDeletePost }) => {
                     <TextsmsOutlinedIcon />
                     Comments
                   </div>
-                  {/* <div className="item">
-                    <ShareOutlinedIcon />
-                    Share
-                  </div> */}
                 </div>
                 {commentOpen && <Comments post={posts} />}
               </div>

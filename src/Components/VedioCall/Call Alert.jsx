@@ -7,7 +7,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Sound from "react-sound";
 import ringtone from "../.././assets/Whatsapp.mp3";
-import { useNavigate, useLocation ,useParams } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 export default function CallAlert() {
   const [open, setOpen] = React.useState(true);
   const [ring, setRing] = React.useState(true);
@@ -18,20 +18,17 @@ export default function CallAlert() {
     setOpen(true);
   };
 
-  const handleReject = ()=>{
+  const handleReject = () => {
     setOpen(false);
-    navigate(`/`)
-  }
+    navigate(`/`);
+  };
 
   const handleAccept = () => {
     setOpen(false);
     navigate(`/video_call_web/${id}`);
   };
 
-  React.useEffect(() => {
- 
- 
-  });
+  React.useEffect(() => {});
 
   return (
     <div>

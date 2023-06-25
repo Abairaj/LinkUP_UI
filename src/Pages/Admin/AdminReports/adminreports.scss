@@ -5,6 +5,15 @@
     background-color: themed("bgSoft");
     height: 100%;
 
+    .searchreport {
+      margin: 2px;
+
+      input {
+        padding: 8px;
+        width: 48vw;
+      }
+    }
+
     .admin_report_list {
       background-color: themed("bgSoft");
       color: themed("textColor");
@@ -43,8 +52,7 @@
   height: 500px;
   position: relative;
 
-
-  .user_bar{
+  .user_bar {
     display: flex;
     flex-direction: row;
   }
@@ -81,8 +89,7 @@
     border-color: black;
   }
 
-
-  .action_btn{
+  .action_btn {
     margin-top: 5px;
     display: flex;
     gap: 18px;
@@ -90,6 +97,4 @@
     bottom: 0;
     right: 0;
   }
-
-
 }

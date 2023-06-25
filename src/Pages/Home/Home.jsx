@@ -1,9 +1,8 @@
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import UserPost from "../../Components/UserPost/UserPost";
 import { useUserDataQuery } from "../../Redux/Query/userDataQuery";
 import Cookies from "js.cookie";
-import { userData } from "../../Redux/Slice/UserProfileSlice";
 import { NotificationsTrigger } from "../../Components/ChatApp/Notification";
 import Share from "../../Components/Share/Share";
 import "./home.scss";
@@ -17,11 +16,9 @@ const Home = () => {
     error: userDataFetchingError,
     refetch: refetchUserData,
   } = useUserDataQuery();
-  const dispatch = useDispatch();
 
   const fetchData = () => {
     refetchUserData(Cookies.get("id"));
-    console.log(userInfo, ";;;;;;;;;;;;;;;");
   };
 
   useEffect(() => {
