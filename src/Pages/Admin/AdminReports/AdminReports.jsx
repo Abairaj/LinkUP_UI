@@ -17,13 +17,16 @@ import Stack from "@mui/material/Stack";
 export default function AdminReports() {
   const [report, setReport] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
 
   const fetchReports = () => {
     axiosInstance
-      .get(`/report`)
+      .get(`/report?page=${page}`)
       .then((response) => {
         console.log(response.data);
-        setReport(response.data);
+        setReport(response.data.results);
+        setTotalPages(response.data.total_pages);
       })
       .catch((errors) => {
         console.log(errors);
@@ -32,7 +35,7 @@ export default function AdminReports() {
 
   useEffect(() => {
     fetchReports();
-  }, []);
+  }, [page]);
 
   const handleSearch = (value) => {
     setSearchValue(value);
@@ -44,7 +47,9 @@ export default function AdminReports() {
       .get(`/report/search_report?key=${value}`)
       .then((response) => {
         console.log(response.data);
-        setReport(response.data);
+        setReport(response.data.results);
+        setTotalPages(response.data.total_pages);
+        setPage(1); // Reset page to 1 when performing a search
       })
       .catch((errors) => {
         console.log(errors);
@@ -55,6 +60,10 @@ export default function AdminReports() {
     () => debounce(fetchFilteredReports, 700),
     []
   );
+
+  const handlePageChange = (event, value) => {
+    setPage(value);
+  };
 
   return (
     <div className="admin_report">
@@ -112,7 +121,12 @@ export default function AdminReports() {
       </List>
 
       <Stack spacing={4}>
-        <Pagination count={10} color="secondary" />
+        <Pagination
+          count={totalPages}
+          color="secondary"
+          page={page}
+          onChange={handlePageChange}
+        />
       </Stack>
     </div>
   );

@@ -39,9 +39,7 @@ const Register = () => {
           <div className="left">
             <h1>LinkUp</h1>
             <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam
-              laborum repellat veritatis expedita aliquam obcaecati rerum,
-              doloremque cum, non excepturi libero. Nesciunt, fuga?
+
             </p>
             <span>Do you have an Account?</span>
             <Link to="/login">

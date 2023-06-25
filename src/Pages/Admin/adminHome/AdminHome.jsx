@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Box } from "@mui/material";
 import "./adminhome.scss";
 import axiosInstance from "../../../axosInstance";
-import { Bar } from "react-chartjs-2";
+import { Bar, Doughnut } from "react-chartjs-2";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,6 +11,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  ArcElement,
 } from "chart.js";
 
 export default function AdminHome() {
@@ -20,9 +21,12 @@ export default function AdminHome() {
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    ArcElement
   );
 
+  const chartRef = useRef(null);
+  const doughnutChartRef = useRef(null);
   const [data, setData] = useState([]);
   const [chartData, setChartData] = useState(null);
 
@@ -63,91 +67,86 @@ export default function AdminHome() {
   useEffect(() => {
     fetchUserCount();
 
-    // Cleanup function to destroy the chart instance when unmounting
     return () => {
-      const chartInstance = ChartJS.getChart("chart");
-      if (chartInstance) {
-        chartInstance.destroy();
+      if (chartRef.current !== null) {
+        chartRef.current.destroy();
+      }
+      if (doughnutChartRef.current !== null) {
+        doughnutChartRef.current.destroy();
       }
     };
   }, []);
 
-  return(
+  useEffect(() => {
+    if (chartData) {
+      if (chartRef.current === null) {
+        chartRef.current = new ChartJS("chart", {
+          type: "bar",
+          data: chartData,
+          options: options,
+        });
+      } else {
+        chartRef.current.data = chartData;
+        chartRef.current.update();
+      }
+    }
+  }, [chartData]);
 
-<div className="admin_home">
+  // Custom doughnut chart data for deleted posts and total posts
+  const doughnutChartData = {
+    labels: ["Deleted Posts", "Total Posts"],
+    datasets: [
+      {
+        data: [data.deleted_post_count, data.post_count],
+        backgroundColor: ["red", "green"],
+      },
+    ],
+  };
 
-<div class="scrollbox">
-  
-  <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-    
-  <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-    
-  <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-    
-  <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-    <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-    <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-    <div class = "scrollcontent">
-      <p>Total amount</p>
-    </div>
-  
-  </div>
+  useEffect(() => {
+    if (data && data.post_count && data.deleted_post_count) {
+      if (doughnutChartRef.current === null) {
+        doughnutChartRef.current = new ChartJS("doughnutChart", {
+          type: "doughnut",
+          data: doughnutChartData,
+          options: options,
+        });
+      } else {
+        doughnutChartRef.current.data = doughnutChartData;
+        doughnutChartRef.current.update();
+      }
+    }
+  }, [data]);
 
+  return (
+    <div className="admin_home">
+      <div className="scroll_box">
+        <div className="scroll_content">
+          <Box className="scrollitem">
+            <h1>Total Users</h1>
+            <h5>{data && data.user_count}</h5>
+          </Box>
 
-  <div id="chart" className="charts">
-  <div className="chart">
-    {chartData ? <Bar data={chartData} options={options} /> : null}
-  </div>
-  <div className="chart"></div>
-</div>
- 
-</div>
+          <Box className="scrollitem">
+            <h1>Total Posts</h1>
+            <h5>{data && data.post_count}</h5>
+          </Box>
+
+          <Box className="scrollitem">
+            <h1>Deleted Posts</h1>
+            <h5>{data && data.deleted_post_count}</h5>
+          </Box>
+        </div>
+      </div>
+
+      <div className="charts">
+        <div className="chart">
+          <canvas id="chart"></canvas>
+        </div>
+        <div className="chart">
+          <canvas id="doughnutChart"></canvas>
+        </div>
+      </div>
+    </div>
   );
 }
-
-
-{/* <div className="admin_home">
-<div className="scroll_box">
-  <div className="scroll_content">
-    <Box className="user_statistics_item">
-      <h1>Total Users</h1>
-      <h5>{data && data.user_count}</h5>
-    </Box>
-
-    <Box className="user_statistics_item">
-      <h1>Total Posts</h1>
-      <h5>{data && data.post_count}</h5>
-    </Box>
-
-    <Box className="user_statistics_item">
-      <h1>Deleted Posts</h1>
-      <h5>{data && data.deleted_post_count}</h5>
-    </Box>
-  </div>
-</div>
-
-<div id="chart" className="charts">
-  <div className="chart">
-    {chartData ? <Bar data={chartData} options={options} /> : null}
-  </div>
-  <div className="chart"></div>
-</div>
-</div> */}

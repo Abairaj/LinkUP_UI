@@ -87,7 +87,12 @@ function ResolveReport({ report, fetchReport }) {
           <Grid container alignItems="center" justifyContent="center">
             <Grid item xs className="reported_posts">
               <div className="reported_post">
-                <img src={report.post.media_url} alt="post" />
+                {report.post.image && (
+                  <img src={report.post.image} alt="post" />
+                )}
+                {report.post.image && (
+                  <video src={report.post.video} alt="post" />
+                )}
               </div>
             </Grid>
             <Divider orientation="vertical" flexItem>
@@ -195,12 +200,18 @@ function ResolveReport({ report, fetchReport }) {
                   />
                 )}
 
-                <Button
-                  onClick={() => handleResoveReport(report.id)}
-                  variant="outlined"
-                >
-                  Resolved
-                </Button>
+                {report.resolved ? (
+                  <Button disabled variant="outlined" sx={(color = "red")}>
+                    Resolved
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => handleResoveReport(report.id)}
+                    variant="outlined"
+                  >
+                    Resolve
+                  </Button>
+                )}
               </div>
             </Grid>
           </Grid>
