@@ -104,15 +104,14 @@ function App() {
     {
       path: "/admin_dashboard",
       element: (
-        // <AdminProtectedRoute>
-          // {" "}
-          <AdminLayout />
-          // {" "}
-        // </AdminProtectedRoute>
+        <AdminProtectedRoute>
+          {" "}
+          <AdminLayout />{" "}
+        </AdminProtectedRoute>
       ),
       children: [
         {
-          path: "", // No need to repeat "admin_dashboard" here
+          path: "",
           element: <AdminHome />,
         },
         {

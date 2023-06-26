@@ -10,6 +10,7 @@ import { Avatar } from "@mui/material";
 import { getDuration } from "../helpers";
 import { useSelector } from "react-redux";
 import Comp from "./moreComp";
+import NoCOmponenet from "../NoComponent/NoCOmponenet";
 
 const Post = ({ post, loading, handleLikeUnlike, handleDeletePost }) => {
   const user = useSelector((state) => state.user);
@@ -84,7 +85,9 @@ const Post = ({ post, loading, handleLikeUnlike, handleDeletePost }) => {
             </div>
           ))
         ) : (
-          <div>No post</div>
+          <div>
+            <NoCOmponenet/>
+          </div>
         )
       ) : (
         <div>Loading...</div>

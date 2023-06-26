@@ -26,9 +26,16 @@
     display: flex;
     overflow-x: scroll;
     width: 80vw;
+    margin-top: 10px;
+    &::-webkit-scrollbar{
+      display: none;
+    }
 
     @media only screen and (max-width: 600px) {
       width: 100vw;
+      &::-webkit-scrollbar{
+        display: none;
+      }
     }
     .chart {
       width: 700px;

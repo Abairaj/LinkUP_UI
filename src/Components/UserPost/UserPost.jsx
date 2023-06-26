@@ -124,8 +124,10 @@ const UserPost = ({ home, explore, reels }) => {
         handleLikeUnlike={handleLikeUnlike}
         handleDeletePost={handleDeletePost}
       />
+      <div style={{textAlign:'center',color:'whitesmoke'}}>
       {loading && <p>Loading...</p>}
       {!loading && postCount === posts.length && <p>No more posts.</p>}
+    </div>
     </div>
   );
 };
