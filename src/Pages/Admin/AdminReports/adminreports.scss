@@ -3,7 +3,7 @@
 .admin_report {
   @include themify($themes) {
     background-color: themed("bgSoft");
-    height: 100%;
+    height: 100vh;
 
     .searchreport {
       margin: 2px;

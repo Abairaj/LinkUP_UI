@@ -87,7 +87,7 @@ export default function AdminReports() {
           },
         }}
       >
-        {report.length > 0 ? (
+        {report&&report.length > 0 ? (
           report.map((obj) => (
             <ListItem
               key={obj.id}
