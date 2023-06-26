@@ -1,8 +1,12 @@
 .admin_home {
+  overflow-x: scroll;
+  width: 80vw;
+  @media only screen and (max-width: 600px) {
+    width: 100vw;
+  }
   .scroll_box {
     height: 200px;
     display: flex;
-    overflow-x: scroll;
     width: fit-content;
 
     .scroll_content {
@@ -19,10 +23,13 @@
   }
 
   .charts {
-    // margin: 10px;
     display: flex;
     overflow-x: scroll;
-    width: fit-content;
+    width: 80vw;
+
+    @media only screen and (max-width: 600px) {
+      width: 100vw;
+    }
     .chart {
       width: 700px;
       height: 300px;

@@ -104,10 +104,11 @@ function App() {
     {
       path: "/admin_dashboard",
       element: (
-        <AdminProtectedRoute>
-          {" "}
-          <AdminLayout />{" "}
-        </AdminProtectedRoute>
+        // <AdminProtectedRoute>
+          // {" "}
+          <AdminLayout />
+          // {" "}
+        // </AdminProtectedRoute>
       ),
       children: [
         {
