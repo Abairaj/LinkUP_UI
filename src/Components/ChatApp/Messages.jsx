@@ -1,17 +1,8 @@
 import React from "react";
+import { convertToTimeOnly } from "../helpers";
 
 const Messages = ({ message }) => {
-  function convertToTimeOnly(dateTime) {
-    var time = new Date(dateTime);
-    var hours = time.getHours();
-    var minutes = time.getMinutes();
 
-    // Add leading zeros if necessary
-    hours = hours < 10 ? "0" + hours : hours;
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-
-    return hours + ":" + minutes;
-  }
   const localMessageStyle = {
     margin: "20px",
     backgroundColor: "#2979ff",
@@ -35,17 +26,17 @@ const Messages = ({ message }) => {
     margin: "20px",
     color: "#E8F6EF",
     maxWidth: "fit-content",
-    // padding: "10px 15px",
     borderRadius: "32px",
     alignSelf: "flex-end",
-    display:'flex'
+    display: "flex",
+    flexDirection: "row-reverse" 
   };
+  
 
   const remoteMessageStyle2 = {
     margin: "20px",
     borderRadius: "32px",
     maxWidth: "fit-content",
-    // padding: "10px 15px",
     alignSelf: "flex-start",
     display:'flex'
   };
@@ -59,7 +50,7 @@ const Messages = ({ message }) => {
         {message.message}
       </div>
       <div className="time">
-        <p style={{ margin: 0,color:'black',textAlign:'end' }}>{convertToTimeOnly(message.created_at)}</p>
+        <p style={{ margin: 0,color:'black',textAlign:'end',fontSize:'13px' }}>{convertToTimeOnly(message.created_at)}</p>
       </div>
     </div>
   );

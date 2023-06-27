@@ -23,3 +23,15 @@ export const clearCookies = () => {
   Cookies.remove("token");
   Cookies.remove("id");
 };
+
+
+export function convertToTimeOnly(dateTime) {
+  var time = new Date(dateTime);
+  var hours = time.getHours();
+  var minutes = time.getMinutes();
+
+  hours = hours < 10 ? "0" + hours : hours;
+  minutes = minutes < 10 ? "0" + minutes : minutes;
+
+  return hours + ":" + minutes;
+}

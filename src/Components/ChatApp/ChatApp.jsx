@@ -10,6 +10,7 @@ import axiosInstance from "../../axosInstance";
 import debounce from "lodash.debounce";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { convertToTimeOnly } from "../helpers";
 
 const ChatApp = () => {
   const [searchVal, setSearchVal] = useState("");
@@ -88,7 +89,7 @@ const ChatApp = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={usr.username}
-                        secondary={usr.last_login}
+                        secondary={convertToTimeOnly(usr.last_login)}
                       />
                     </ListItem>
                   </List>
@@ -113,7 +114,7 @@ const ChatApp = () => {
                       </ListItemAvatar>
                       <ListItemText
                         primary={usr.username}
-                        secondary={usr.last_login}
+                        secondary={convertToTimeOnly(usr.last_login)}
                       />
                     </ListItem>
                   </List>

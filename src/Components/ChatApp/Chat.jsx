@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect,useRef,useState } from "react";
 import Box from "@mui/material/Box";
 import { Avatar } from "@mui/material";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
@@ -24,6 +24,16 @@ const Chat = () => {
   const socket = useSocket();
   const navigate = useNavigate();
   const [message, setMessage] = useState("");
+  const messageRef = useRef(null);
+
+  useEffect(() => {
+    messageRef.current.scrollTop = messageRef.current.scrollHeight;
+  }, [messages]);
+
+  // Scroll to the bottom when the component first opens
+  useEffect(() => {
+    messageRef.current.scrollTop = messageRef.current.scrollHeight;
+  }, []);
 
   const fetchMessages = () => {
     axiosInstance
@@ -145,7 +155,7 @@ const Chat = () => {
             />
           </div>
         </div>
-        <div className="messagespace">
+        <div className="messagespace" ref={messageRef}>
           {messages.map((msg, i) => (
             <React.Fragment key={i}>
               <Messages message={msg} />
