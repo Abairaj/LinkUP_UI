@@ -20,7 +20,7 @@ const Login = ({ admin }) => {
     const url = admin ? "/admin/" : "/users/login/";
 
     axios
-      .post(`${API_URL}${url}`, data,{headers:{Authorization:`Bearer ${Cookies.get('token')}`}})
+      .post(`${API_URL}${url}`, data)
       .then((response) => {
         if (response.status === 200) {
           dispatch(userData(response.data.user));

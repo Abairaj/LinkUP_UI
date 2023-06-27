@@ -19,18 +19,19 @@ export default function AdminReports() {
   const [searchValue, setSearchValue] = useState("");
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
 
-  const fetchReports = () => {
-    axiosInstance
-      .get(`/report?page=${page}`)
-      .then((response) => {
-        console.log(response.data);
-        setReport(response.data.results);
-        setTotalPages(response.data.total_pages);
-      })
-      .catch((errors) => {
-        console.log(errors);
-      });
+  const fetchReports = async () => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(`/report?page=${page}`);
+      setReport(response.data.results);
+      setTotalPages(response.data.total_pages);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -42,18 +43,18 @@ export default function AdminReports() {
     debouncedSearch(value);
   };
 
-  const fetchFilteredReports = (value) => {
-    axiosInstance
-      .get(`/report/search_report?key=${value}`)
-      .then((response) => {
-        console.log(response.data);
-        setReport(response.data.results);
-        setTotalPages(response.data.total_pages);
-        setPage(1); // Reset page to 1 when performing a search
-      })
-      .catch((errors) => {
-        console.log(errors);
-      });
+  const fetchFilteredReports = async (value) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.get(`/report?key=${value}`);
+      setReport(response.data.results);
+      setTotalPages(response.data.total_pages);
+      setPage(1); // Reset page to 1 when performing a search
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const debouncedSearch = useMemo(
@@ -87,33 +88,37 @@ export default function AdminReports() {
           },
         }}
       >
-        {report&&report.length > 0 ? (
+        {loading ? (
+          <p>Loading...</p>
+        ) : report && report.length > 0 ? (
           report.map((obj) => (
-            <ListItem
-              key={obj.id}
-              sx={{ border: "1px solid gray" }}
-              alignItems="flex-start"
-            >
-              <ListItemAvatar>
-                <Avatar alt="Remy Sharp" src={obj.reported_user.profile} />
-              </ListItemAvatar>
-              <ListItemText
-                secondary={
-                  <React.Fragment>
-                    <Typography
-                      sx={{ display: "inline" }}
-                      component="span"
-                      variant="body2"
-                      color="text.primary"
-                    >
-                      <h1>{obj.reported_user.username}</h1>
-                    </Typography>
-                    <p>{obj.reason}</p>
-                  </React.Fragment>
-                }
-              />
-              <ResolveReport report={obj} fetchReport={fetchReports} />
-            </ListItem>
+            <React.Fragment key={obj.id}>
+              <ListItem
+                sx={{ border: "1px solid gray" }}
+                alignItems="flex-start"
+              >
+                <ListItemAvatar>
+                  <Avatar alt="Remy Sharp" src={obj.reported_user.profile} />
+                </ListItemAvatar>
+                <ListItemText
+                  secondary={
+                    <React.Fragment>
+                      <Typography
+                        sx={{ display: "inline" }}
+                        component="span"
+                        variant="body2"
+                        color="text.primary"
+                      >
+                        <h1>{obj.reported_user.username}</h1>
+                      </Typography>
+                      <p>{obj.reason}</p>
+                    </React.Fragment>
+                  }
+                />
+                <ResolveReport report={obj} fetchReport={() => fetchReports} />
+              </ListItem>
+              <Divider />
+            </React.Fragment>
           ))
         ) : (
           <p>No reports</p>

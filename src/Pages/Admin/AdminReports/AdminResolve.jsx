@@ -201,7 +201,7 @@ function ResolveReport({ report, fetchReport }) {
                 )}
 
                 {report.resolved ? (
-                  <Button disabled variant="outlined" sx={(color = "red")}>
+                  <Button disabled variant="outlined" sx={{color :"red"}}>
                     Resolved
                   </Button>
                 ) : (

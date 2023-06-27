@@ -32,15 +32,14 @@ const Chat = () => {
         console.log(response);
         response.data.map((obj) => {
           if (obj.sender === user.id) {
-            console.log(obj.id, obj.content, "[[[[[[[[[[[[[");
             setMessages((prevMessages) => [
               ...prevMessages,
-              { local: true, message: obj.content },
+              { local: true, message: obj.content,created_at:obj.created_at },
             ]);
           } else {
             setMessages((prevMessages) => [
               ...prevMessages,
-              { local: false, message: obj.content },
+              { local: false, message: obj.content,created_at:obj.created_at },
             ]);
           }
         });
@@ -104,11 +103,10 @@ const Chat = () => {
   socket.onmessage = (event) => {
     const recievedMessage = JSON.parse(event.data).message;
     if (recievedMessage.event === "chatmessage") {
-      console.log(recievedMessage, "////////////");
       setMessages((prevMessages) => {
         return [
           ...prevMessages,
-          { local: false, message: recievedMessage.content },
+          { local: false, message: recievedMessage.content ,created_at:Date.now()},
         ];
       });
     }
@@ -117,7 +115,7 @@ const Chat = () => {
   // sendig message to remote user
   const sendMessageHandler = (e) => {
     setMessages((prevMessages) => {
-      return [...prevMessages, { local: true, message: message }];
+      return [...prevMessages, { local: true, message: message,created_at:Date.now() }];
     });
     e.preventDefault();
     socket.send(
