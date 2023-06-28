@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect,useRef,useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Box from "@mui/material/Box";
 import { Avatar } from "@mui/material";
 import VideoCallOutlinedIcon from "@mui/icons-material/VideoCallOutlined";
@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import axiosInstance from "../../axosInstance";
 import "./chat.scss";
 import { useSocket } from "../../SocketProvider";
+import SendIcon from "@mui/icons-material/Send";
+
 const bull = (
   <Box
     component="span"
@@ -44,12 +46,16 @@ const Chat = () => {
           if (obj.sender === user.id) {
             setMessages((prevMessages) => [
               ...prevMessages,
-              { local: true, message: obj.content,created_at:obj.created_at },
+              { local: true, message: obj.content, created_at: obj.created_at },
             ]);
           } else {
             setMessages((prevMessages) => [
               ...prevMessages,
-              { local: false, message: obj.content,created_at:obj.created_at },
+              {
+                local: false,
+                message: obj.content,
+                created_at: obj.created_at,
+              },
             ]);
           }
         });
@@ -116,7 +122,11 @@ const Chat = () => {
       setMessages((prevMessages) => {
         return [
           ...prevMessages,
-          { local: false, message: recievedMessage.content ,created_at:Date.now()},
+          {
+            local: false,
+            message: recievedMessage.content,
+            created_at: Date.now(),
+          },
         ];
       });
     }
@@ -125,7 +135,10 @@ const Chat = () => {
   // sendig message to remote user
   const sendMessageHandler = (e) => {
     setMessages((prevMessages) => {
-      return [...prevMessages, { local: true, message: message,created_at:Date.now() }];
+      return [
+        ...prevMessages,
+        { local: true, message: message, created_at: Date.now() },
+      ];
     });
     e.preventDefault();
     socket.send(
@@ -170,7 +183,9 @@ const Chat = () => {
               onChange={(e) => setMessage(e.target.value)}
               placeholder="send message..."
             />
-            <button onClick={sendMessageHandler}>send</button>
+            <button onClick={sendMessageHandler}>
+              <SendIcon />
+            </button>
           </div>
         </form>
       </div>

@@ -26,12 +26,16 @@ export const clearCookies = () => {
 
 
 export function convertToTimeOnly(dateTime) {
-  var time = new Date(dateTime);
-  var hours = time.getHours();
-  var minutes = time.getMinutes();
+  const options = {
+    month: "short",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  };
 
-  hours = hours < 10 ? "0" + hours : hours;
-  minutes = minutes < 10 ? "0" + minutes : minutes;
+  const formatter = new Intl.DateTimeFormat("en-US", options);
+  const formattedDate = formatter.format(new Date(dateTime));
 
-  return hours + ":" + minutes;
+  return formattedDate;
 }

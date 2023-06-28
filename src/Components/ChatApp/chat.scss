@@ -60,14 +60,25 @@
       input {
         padding: 12px;
         width: 100%;
+        position: relative;
       }
 
       button {
-        background-color: #11009e;
-        color: white;
-        padding-left: 15px;
-        padding-right: 15px;
+        background: none;
+        border: none;
         cursor: pointer;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        outline: none;
+        position: absolute;
+        right: 0;
+        top: 9px;
+
+        &:hover{
+          color: #007bff;
+        }
       }
     }
   }
