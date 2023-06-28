@@ -9,8 +9,10 @@ export const useSocket = ()=>{
     return socket;
 }
 
+var ws_path = ws_scheme + '://' + window.location.host + ":8001/"; // PRODUCTION
+
 export const SocketProvider = (props)=>{
-    const socket = useMemo(()=> new WebSocket(`ws://127.0.0.1:8000/userConnect/${Cookies.get('id')}`),[])
+    const socket = useMemo(()=> new WebSocket(`${ws_path}/userConnect/${Cookies.get('id')}`),[])
 
 
     return (
