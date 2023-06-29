@@ -6,12 +6,14 @@ import { Avatar } from "@mui/material";
 import debounce from "lodash.debounce";
 import { toggle } from "./../../Redux/Slice/DarkModeSlice";
 import {
+  Chat,
   DarkModeOutlined,
+  MoreHoriz,
   SearchOutlined,
   WbSunnyOutlined,
 } from "@mui/icons-material";
 import axiosInstance from "../../axosInstance";
-
+import MorePopover from "./MorePopover";
 const Navbar = ({ admin }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -19,6 +21,8 @@ const Navbar = ({ admin }) => {
   const user = useSelector((state) => state.user);
   const [userSearchlist, setUserSearchList] = useState([]);
   const [searchVal, setSearchVal] = useState("");
+  const [mobSearch, setMobSearch] = useState(false);
+  const isMobile = window.innerWidth <= 678;
 
   const handleSearch = (key) => {
     if (key === "") {
@@ -60,60 +64,81 @@ const Navbar = ({ admin }) => {
           to={!admin ? "/" : "/admin_dashboard"}
           style={{ textDecoration: "none" }}
         >
-          <span>LinkUp</span>
+          {!mobSearch && <span>LinkUp</span>}
         </Link>
-        {darkMode ? (
-          <WbSunnyOutlined onClick={handleToggle} />
-        ) : (
-          <DarkModeOutlined onClick={handleToggle} />
-        )}
+        {darkMode
+          ? !mobSearch && <WbSunnyOutlined onClick={handleToggle} />
+          : !mobSearch && <DarkModeOutlined onClick={handleToggle} />}
 
         {!admin && (
           <div className="search">
-            <SearchOutlined />
-            <input
-              type="text"
-              value={searchVal}
-              onChange={handleSearchChange}
-              placeholder="Search..."
-            />
+            {isMobile ? (
+              <SearchOutlined onClick={() => setMobSearch(!mobSearch)} />
+            ) : (
+              <SearchOutlined />
+            )}
 
-            <div className="search_list">
-              {userSearchlist.length > 0 && (
-                <div className="search-suggestions">
-                  {userSearchlist.map((user) => (
-                    <div
-                      onClick={() => navigate(`/profile/${user.id}`)}
-                      key={user.id}
-                      className="user_info"
-                    >
-                      {user.profile ? (
-                        <Avatar src={user.profile} />
-                      ) : (
-                        <Avatar>{user.username[0]}</Avatar>
-                      )}
-                      <p key={user.id}>{user.username}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
+            {(isMobile && mobSearch) || !isMobile ? (
+              <input
+                type="text"
+                value={searchVal}
+                onChange={handleSearchChange}
+                placeholder="Search..."
+              />
+            ) : null}
+
+            {(isMobile && mobSearch) || !isMobile ? (
+              <div className="search_list">
+                {userSearchlist.length > 0 && (
+                  <div className="search-suggestions">
+                    {userSearchlist.map((user) => (
+                      <div
+                        onClick={() => navigate(`/profile/${user.id}`)}
+                        key={user.id}
+                        className="user_info"
+                      >
+                        {user.profile ? (
+                          <Avatar src={user.profile} />
+                        ) : (
+                          <Avatar>{user.username[0]}</Avatar>
+                        )}
+                        <p key={user.id}>{user.username}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            ) : null}
           </div>
         )}
-      </div>
-      <div className="right">
-        <Link
-          to={`my_profile/${user.full_name}`}
-          style={{ cursor: "pointer", textDecoration: "none" }}
-        >
-          {!admin && (
-            <div className="user">
-              <Avatar src={user.profile} >{user.username[0]}</Avatar>
-              <span>{user.username}</span>
+
+        {!admin && !mobSearch && isMobile && (
+          <>
+            <div onClick={()=>navigate(`my_profile/${user.full_name}`)} className="user">
+              <Avatar style={{width:'30px',height:'30px'}} src={user.profile}>{user.username[0]}</Avatar>
             </div>
-          )}
-        </Link>
+
+            <div className="icons">
+              <MorePopover />
+            </div>
+          </>
+        )}
       </div>
+      {!isMobile || !mobSearch ? (
+        <div className="right">
+          <Link
+            to={`my_profile/${user.full_name}`}
+            style={{ cursor: "pointer", textDecoration: "none" }}
+          >
+            {!admin && (
+              <div className="user">
+                <Avatar src={user.profile}>{user.username[0]}</Avatar>
+                <span>{user.username}</span>
+              </div>
+            )}
+          </Link>
+        </div>
+      ) : null}
     </div>
   );
 };

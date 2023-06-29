@@ -31,7 +31,7 @@ import VedioCall from "./Components/VedioCall/VedioCall";
 import CallAlert from "./Components/VedioCall/Call Alert";
 import { useSocket } from "./SocketProvider";
 import { TriggerCall } from "./Components/ChatApp/Triggercall";
-
+import VideoCalls from './Components/Call/VideoCalling';
 function App() {
   const user = useSelector((state) => state.user);
   const socket = useSocket();
@@ -129,14 +129,8 @@ function App() {
       ],
     },
     {
-      path: "/chat",
+      path: "/chat/:id",
       element: <ChatLayout />,
-      children: [
-        {
-          path: ":id",
-          element: <Chat />,
-        },
-      ],
     },
     ,
     {
@@ -173,6 +167,10 @@ function App() {
     {
       path: "*",
       element: <Navigate to="/" replace />,
+    },
+    {
+      path: "call",
+      element: <VideoCalls/>,
     },
   ]);
   return (

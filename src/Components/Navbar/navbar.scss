@@ -35,13 +35,13 @@
 
         input {
           border: none;
-          width: 500px;
+          width: 100%;
           background-color: transparent;
           color: themed("textColor");
           position: relative;
 
           @include mobile {
-            display: none;
+            max-width: 200px; /* Adjusted max-width for mobile */
           }
 
           @include tablet {
@@ -97,11 +97,16 @@
         display: none;
       }
 
+    
       .user {
         display: flex;
         align-items: center;
         gap: 10px;
         font-weight: 500;
+
+        @include mobile {
+          font-weight: 100;
+        }
 
         @include tablet {
           display: none;

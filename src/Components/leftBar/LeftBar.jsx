@@ -112,7 +112,7 @@ const LeftBar = ({ Is_admin }) => {
 
               <div
                 style={{ cursor: "pointer" }}
-                onClick={() => navigate("/chat/2")}
+                onClick={() => navigate("/chat/0")}
                 className="item"
               >
                 <img src={messages_icon} alt="" />

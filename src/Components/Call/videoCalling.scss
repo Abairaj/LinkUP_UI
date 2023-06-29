@@ -1,0 +1,45 @@
+.videocall {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    position: fixed;
+  
+    .streams {
+      position: relative;
+      .remotestream {
+        background-color: black;
+        width: 350px;
+        height: 500px;
+        position: relative; /* Add this property */
+      }
+    }
+  
+    .localstream {
+      background-color: red;
+      width: 100px;
+      height: 100px;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+    }
+  
+    @media only screen and (max-width: 600px) {
+      .streams {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .remotestream {
+        width: 100%;
+        height: auto;
+      }
+      .localstream {
+        position: absolute;
+      }
+    }
+  }
+  
