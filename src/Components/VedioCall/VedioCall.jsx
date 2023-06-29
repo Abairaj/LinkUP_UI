@@ -1,7 +1,6 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import ReactPlayer from "react-player";
 import CallEndOutlinedIcon from "@mui/icons-material/CallEndOutlined";
 import peer from "./PeerConnectionServices";
 import { useSocket } from "../../SocketProvider";
@@ -20,6 +19,8 @@ const VideoCall = () => {
   const [micOn, setMicOn] = useState(true);
   const [camOn, setCamOn] = useState(false);
   const socket = useSocket();
+  const localVideoRef = useRef(null);
+  const remoteVideoRef = useRef(null);
 
   const handleCallUser = useCallback(async () => {
     const stream = await navigator.mediaDevices.getUserMedia({
@@ -35,6 +36,10 @@ const VideoCall = () => {
         offer: offer,
       })
     );
+    if (stream && localVideoRef.current) {
+      localVideoRef.current.srcObject = stream;
+    }
+
     setLocalStream(stream);
   }, [id, socket, user.id]);
 
@@ -44,6 +49,7 @@ const VideoCall = () => {
         video: true,
         audio: true,
       });
+
       setLocalStream(stream);
 
       const ans = await peer.getAnswer(offer);
@@ -73,8 +79,7 @@ const VideoCall = () => {
 
   const handleCallAccepted = useCallback(
     async (from, answer) => {
-      peer.setLocalDescription(answer);
-
+      await peer.setLocalDescription(answer);
       sentStream();
     },
     [sentStream]
@@ -134,6 +139,9 @@ const VideoCall = () => {
     const handleTrackEvent = (ev) => {
       const remoteStream = ev.streams;
       setRemoteStream(remoteStream[0]);
+      if (remoteVideoRef.current) {
+        remoteVideoRef.current.srcObject = remoteStream[0];
+      }
     };
 
     peer.peer.addEventListener("track", handleTrackEvent);
@@ -174,29 +182,32 @@ const VideoCall = () => {
   return (
     <div className="videos">
       <div className="streams">
-        <div className="mystream">
-          {localStream && (
-            <ReactPlayer className="localVideo" playing url={localStream} />
-          )}
-        </div>
-
-        <div className="remotestream">
-          {remoteStream && (
-            <ReactPlayer className="remoteVideo" playing url={remoteStream} />
-          )}
-        </div>
+        local
+        <video
+          ref={localVideoRef}
+          className="localVideo"
+          autoPlay
+          playsInline
+        />
+        remote
+        <video
+          ref={remoteVideoRef}
+          className="remoteVideo"
+          autoPlay
+          playsInline
+        />
       </div>
 
       <div className="icons">
         {micOn ? (
           <MicIcon
-            sx={{ color: "green" }}
+            sx={{ color: "green", fontSize: "38px" }}
             className="icon"
             onClick={handleToggleMic}
           />
         ) : (
           <MicOffIcon
-            sx={{ color: "red" }}
+            sx={{ color: "red", fontSize: "38px" }}
             onClick={handleToggleMic}
             className="icon"
           />
@@ -204,13 +215,13 @@ const VideoCall = () => {
 
         {camOn ? (
           <VideocamIcon
-            sx={{ color: "green" }}
+            sx={{ color: "green", fontSize: "38px" }}
             className="icon"
             onClick={handleTurnOffCameraButtonClick}
           />
         ) : (
           <VideocamOffIcon
-            sx={{ color: "red" }}
+            sx={{ color: "red", fontSize: "38px" }}
             className="icon"
             onClick={handleSentStream}
           />
@@ -218,7 +229,7 @@ const VideoCall = () => {
 
         <CallEndOutlinedIcon
           className="icon"
-          sx={{ color: "red" }}
+          sx={{ color: "red", fontSize: "38px" }}
           onClick={handleEndCall}
         />
       </div>

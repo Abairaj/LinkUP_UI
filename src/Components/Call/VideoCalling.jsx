@@ -5,6 +5,7 @@ import { useSocket } from "../../SocketProvider";
 const VideoCalls = () => {
   const socket = useSocket();
   const handleJoinroom = useCallback((data) => {
+    console.log(data,'///////////////')
     const { email, room } = data;
     console.log(email, room);
   });
