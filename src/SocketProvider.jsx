@@ -9,8 +9,8 @@ export const useSocket = ()=>{
     return socket;
 }
 
-// var ws_path = "wss://quantumtimes.shop:8001";
-var ws_path = "ws://127.0.0.1:8000";
+var ws_path = "wss://quantumtimes.shop:8001";
+// var ws_path = "ws://127.0.0.1:8000";
 
 
 export const SocketProvider = (props)=>{
