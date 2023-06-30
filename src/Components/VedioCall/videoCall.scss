@@ -48,3 +48,26 @@
     }
   }
 }
+
+@media (max-width: 1000px) {
+  .videos {
+    padding-top: 20px;
+    .streams {
+      justify-self: center;
+      height: 700px;
+      width: 600px;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      video {
+        width: 80vw;
+        height: 400px;
+      }
+    }
+
+    .icons {
+      padding-top: 100px;
+    }
+  }
+}

@@ -9,6 +9,7 @@ import MicOffIcon from "@mui/icons-material/MicOff";
 import VideocamOffIcon from "@mui/icons-material/VideocamOff";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import "./videoCall.scss";
+import { Button } from "@mui/material";
 
 const VideoCall = () => {
   const user = useSelector((state) => state.user);
@@ -248,7 +249,7 @@ const VideoCall = () => {
           onClick={handleEndCall}
         />
 
-        <button className="icon" style={{backgroundColor:'green'}} onClick={handleSentStream}>start</button>
+        <Button className="icon" style={{backgroundColor:'green',color:'whitesmoke',textAlign:'center'}} onClick={handleSentStream}>start</Button>
       </div>
     </div>
   );
