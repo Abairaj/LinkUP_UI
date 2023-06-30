@@ -67,56 +67,56 @@ export default function AdminHome() {
   useEffect(() => {
     fetchUserCount();
 
-    return () => {
-      if (chartRef.current !== null) {
-        chartRef.current.destroy();
-      }
-      if (doughnutChartRef.current !== null) {
-        doughnutChartRef.current.destroy();
-      }
-    };
+    // return () => {
+    //   if (chartRef.current !== null) {
+    //     chartRef.current.destroy();
+    //   }
+    //   if (doughnutChartRef.current !== null) {
+    //     doughnutChartRef.current.destroy();
+    //   }
+    // };
   }, []);
 
-  useEffect(() => {
-    if (chartData) {
-      if (chartRef.current === null) {
-        chartRef.current = new ChartJS("chart", {
-          type: "bar",
-          data: chartData,
-          options: options,
-        });
-      } else {
-        chartRef.current.data = chartData;
-        chartRef.current.update();
-      }
-    }
-  }, [chartData]);
+  // useEffect(() => {
+  //   if (chartData) {
+  //     if (chartRef.current === null) {
+  //       chartRef.current = new ChartJS("chart", {
+  //         type: "bar",
+  //         data: chartData,
+  //         options: options,
+  //       });
+  //     } else {
+  //       chartRef.current.data = chartData;
+  //       chartRef.current.update();
+  //     }
+  //   }
+  // }, [chartData]);
 
   // Custom doughnut chart data for deleted posts and total posts
-  const doughnutChartData = {
-    labels: ["Deleted Posts", "Total Posts"],
-    datasets: [
-      {
-        data: [data.deleted_post_count, data.post_count],
-        backgroundColor: ["red", "green"],
-      },
-    ],
-  };
+  // const doughnutChartData = {
+  //   labels: ["Deleted Posts", "Total Posts"],
+  //   datasets: [
+  //     {
+  //       data: [data.deleted_post_count, data.post_count],
+  //       backgroundColor: ["red", "green"],
+  //     },
+  //   ],
+  // };
 
-  useEffect(() => {
-    if (data && data.post_count && data.deleted_post_count) {
-      if (doughnutChartRef.current === null) {
-        doughnutChartRef.current = new ChartJS("doughnutChart", {
-          type: "doughnut",
-          data: doughnutChartData,
-          options: options,
-        });
-      } else {
-        doughnutChartRef.current.data = doughnutChartData;
-        doughnutChartRef.current.update();
-      }
-    }
-  }, [data]);
+  // useEffect(() => {
+  //   if (data && data.post_count && data.deleted_post_count) {
+  //     if (doughnutChartRef.current === null) {
+  //       doughnutChartRef.current = new ChartJS("doughnutChart", {
+  //         type: "doughnut",
+  //         data: doughnutChartData,
+  //         options: options,
+  //       });
+  //     } else {
+  //       doughnutChartRef.current.data = doughnutChartData;
+  //       doughnutChartRef.current.update();
+  //     }
+  //   }
+  // }, [data]);
 
   return (
     <div className="admin_home">
