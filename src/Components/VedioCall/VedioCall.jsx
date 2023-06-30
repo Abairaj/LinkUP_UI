@@ -228,7 +228,7 @@ const VideoCall = () => {
           />
         )}
 
-        {camOn ? (
+        {/* {camOn ? (
           <VideocamIcon
             sx={{ color: "green", fontSize: "38px" }}
             className="icon"
@@ -240,7 +240,7 @@ const VideoCall = () => {
             className="icon"
             onClick={toggleCam}
           />
-        )}
+        )} */}
 
         <CallEndOutlinedIcon
           className="icon"
@@ -248,7 +248,7 @@ const VideoCall = () => {
           onClick={handleEndCall}
         />
 
-        <button onClick={handleSentStream}>start</button>
+        <button className="icon" style={{backgroundColor:'green'}} onClick={handleSentStream}>start</button>
       </div>
     </div>
   );
