@@ -140,12 +140,16 @@ export default function AdminHome() {
       </div>
 
       <div className="charts">
-        <div className="chart">
-          <canvas id="chart"></canvas>
-        </div>
-        <div className="chart">
-          <canvas id="doughnutChart"></canvas>
-        </div>
+        {chartData && (
+          <div className="chart">
+            <canvas id="chart"></canvas>
+          </div>
+        )}
+        {data && data.post_count && data.deleted_post_count && (
+          <div className="chart">
+            <canvas id="doughnutChart"></canvas>
+          </div>
+        )}
       </div>
     </div>
   );
