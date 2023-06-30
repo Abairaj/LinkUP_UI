@@ -27,6 +27,7 @@ const VideoCall = () => {
       video: true,
       audio: true,
     });
+    setLocalStream(stream);
     const offer = await peer.getOffer();
     socket.send(
       JSON.stringify({
@@ -39,9 +40,8 @@ const VideoCall = () => {
     if (stream && localVideoRef.current) {
       localVideoRef.current.srcObject = stream;
     }
+  }, [id, socket, user.id,localStream]);
 
-    setLocalStream(stream);
-  }, [id, socket, user.id]);
 
   const handleIncomingCall = useCallback(
     async (from, offer) => {
@@ -173,12 +173,27 @@ const VideoCall = () => {
   }, []);
 
   const handleEndCall = async () => {
+    console.log("handle endcall");
     if (localStream) {
       await localStream.getTracks().forEach((track) => track.stop());
+      peer.peer.close();
       navigate(`/chat/${id}`);
+      window.location.reload()      
+
     }
   };
 
+  const toggleCam = () => {
+    if (localStream) {
+      const videoTracks = localStream.getVideoTracks();
+      if (videoTracks.length > 0) {
+        const videoTrack = videoTracks[0];
+        videoTrack.enabled = !camOn;
+        setCamOn(!camOn);
+      }
+    }
+  };
+  
   return (
     <div className="videos">
       <div className="streams">
@@ -191,7 +206,7 @@ const VideoCall = () => {
         />
         remote
         <video
-          ref={remoteVideoRef}
+          ref={peer.peer && remoteVideoRef}
           className="remoteVideo"
           autoPlay
           playsInline
@@ -223,7 +238,7 @@ const VideoCall = () => {
           <VideocamOffIcon
             sx={{ color: "red", fontSize: "38px" }}
             className="icon"
-            onClick={handleSentStream}
+            onClick={toggleCam}
           />
         )}
 
@@ -232,6 +247,8 @@ const VideoCall = () => {
           sx={{ color: "red", fontSize: "38px" }}
           onClick={handleEndCall}
         />
+
+        <button onClick={handleSentStream}>start</button>
       </div>
     </div>
   );
