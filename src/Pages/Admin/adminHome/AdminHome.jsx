@@ -139,7 +139,7 @@ export default function AdminHome() {
         </div>
       </div>
 
-      <div className="charts">
+      {/* <div className="charts">
         {chartData && (
           <div className="chart">
             <canvas id="chart"></canvas>
@@ -150,7 +150,7 @@ export default function AdminHome() {
             <canvas id="doughnutChart"></canvas>
           </div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 }
