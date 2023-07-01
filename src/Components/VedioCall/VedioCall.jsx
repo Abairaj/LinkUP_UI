@@ -174,7 +174,6 @@ const VideoCall = () => {
   }, []);
 
   const handleEndCall = async () => {
-    console.log("handle endcall");
     if (localStream) {
       await localStream.getTracks().forEach((track) => track.stop());
       peer.peer.close();

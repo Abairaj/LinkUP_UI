@@ -6,16 +6,18 @@ import { useNavigate } from "react-router-dom";
 import Cookies from "js.cookie";
 import { useState } from "react";
 import axiosInstance from "../../axosInstance";
+import axios from "axios";
 
 export default function VerifyOTP() {
   const email = Cookies.get("email");
   const [error, setError] = useState();
   const [otp, setOTP] = useState();
+  const API_URL = import.meta.env.VITE_API_URL
   const navigate = useNavigate();
 
   const submitOTP = () => {
-    axiosInstance
-      .post(`users/verify_otp/`, { email: email, otp: otp })
+    axios
+      .post(`${API_URL}/users/verify_otp/`, { email: email, otp: otp })
       .then((response) => {
         if (response.status === 200) {
           Cookies.remove("email");

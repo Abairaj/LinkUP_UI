@@ -16,7 +16,7 @@ export default function CallAlert() {
   const navigate = useNavigate();
   const { id } = useParams();
   const location = useLocation();
-  const user = useSelector(state=>state.user);
+  const user = useSelector((state) => state.user);
   const socket = useSocket();
   const handleClickOpen = () => {
     setOpen(true);
